@@ -1,4 +1,4 @@
-namespace ConstructEd.Models
+namespace ConstructEd.Models  
 {
     public class ErrorViewModel
     {

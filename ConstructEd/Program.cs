@@ -1,3 +1,8 @@
+using ConstructEd.Data;
+using ConstructEd.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+
 namespace ConstructEd
 {
     public class Program
@@ -8,6 +13,13 @@ namespace ConstructEd
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+
+            builder.Services.AddDbContext<DataContext>
+                (options => options.UseSqlServer(builder.Configuration.GetConnectionString("CS")));
+
+            builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+            .AddEntityFrameworkStores<DataContext>()
+            .AddDefaultTokenProviders();
 
             var app = builder.Build();
 
