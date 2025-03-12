@@ -4,12 +4,14 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ConstructEd.Data
 {
-    public class DataContext: IdentityDbContext<ApplicationUser>
+    public class DataContext : IdentityDbContext<ApplicationUser>
     {
         public DataContext(DbContextOptions<DataContext> options) : base(options) { }
+
         public DbSet<Course> Courses { get; set; }
         public DbSet<CourseContent> CourseContents { get; set; }
         public DbSet<Enrollment> Enrollments { get; set; }
         public DbSet<Payment> Payments { get; set; }
+
     }
 }
