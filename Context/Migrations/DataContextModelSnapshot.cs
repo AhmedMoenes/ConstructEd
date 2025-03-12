@@ -122,7 +122,7 @@ namespace ConstructEd.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,4)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -208,7 +208,7 @@ namespace ConstructEd.Data.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<decimal>("Amount")
-                        .HasColumnType("decimal(18,4)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("CourseId")
                         .HasColumnType("int");

@@ -1,5 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
-using System;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -61,11 +61,11 @@ namespace ConstructEd.Data.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Price = table.Column<decimal>(type: "decimal(18,4)", nullable: false),
+                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Duration = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Category = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETDATE()"),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETDATE()")
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -229,12 +229,6 @@ namespace ConstructEd.Data.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateIndex(
-             name: "IX_Courses_CreatedAt",
-             table: "Courses",
-             column: "CreatedAt");
-
-
             migrationBuilder.CreateTable(
                 name: "Payments",
                 columns: table => new
@@ -242,7 +236,7 @@ namespace ConstructEd.Data.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CourseId = table.Column<int>(type: "int", nullable: false),
-                    Amount = table.Column<decimal>(type: "decimal(18,4)", nullable: false),
+                    Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     PaymentDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     TransactionId = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)

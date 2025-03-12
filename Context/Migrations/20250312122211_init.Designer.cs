@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ConstructEd.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20250312025059_init")]
+    [Migration("20250312122211_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -125,7 +125,7 @@ namespace ConstructEd.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,4)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -211,7 +211,7 @@ namespace ConstructEd.Data.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<decimal>("Amount")
-                        .HasColumnType("decimal(18,4)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("CourseId")
                         .HasColumnType("int");
