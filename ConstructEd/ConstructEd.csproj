@@ -13,7 +13,6 @@
   <ItemGroup>
     <ProjectReference Include="..\ConstructEd.Model\ConstructEd.Models.csproj" />
     <ProjectReference Include="..\Context\ConstructEd.Data.csproj" />
-    <ProjectReference Include="..\Repository\Repository.csproj" />
   </ItemGroup>
 
 </Project>
