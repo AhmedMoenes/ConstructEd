@@ -1,5 +1,6 @@
 using ConstructEd.Data;
 using ConstructEd.Models;
+using ConstructEd.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,7 +14,11 @@ namespace ConstructEd
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
-
+            builder.Services.AddScoped<ICourseContentRepository,CourseContentRepository>();
+            builder.Services.AddScoped<ICourseRepository,CourseRepository>();
+            builder.Services.AddScoped<ICourseContentRepository,CourseContentRepository>();
+            builder.Services.AddScoped<ICourseContentRepository,CourseContentRepository>();
+            builder.Services.AddScoped<ICourseContentRepository,CourseContentRepository>();
             builder.Services.AddDbContext<DataContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("CS")));
 
