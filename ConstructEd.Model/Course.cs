@@ -25,8 +25,8 @@ namespace ConstructEd.Models
         public Category Category { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
-        public IEnumerable<Enrollment> Enrollments { get; set; } 
+        public ICollection<Enrollment>Enrollments { get; set; } = new HashSet<Enrollment>();
 
-        public IEnumerable<CourseContent> CourseContents { get; set; } 
+        public ICollection<CourseContent> CourseContents { get; set; }=new HashSet<CourseContent>(); 
     }
 }

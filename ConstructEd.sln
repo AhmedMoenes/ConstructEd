@@ -3,11 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.13.35825.156
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConstructEd", "ConstructEd\ConstructEd.csproj", "{42204BF4-E6E5-46C9-B5A2-044B3895CA99}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConstructEd", "ConstructEd\ConstructEd.csproj", "{42204BF4-E6E5-46C9-B5A2-044B3895CA99}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConstructEd.Data", "Context\ConstructEd.Data.csproj", "{4664EA73-7BE8-47D8-9682-1F660BB2224F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConstructEd.Data", "Context\ConstructEd.Data.csproj", "{4664EA73-7BE8-47D8-9682-1F660BB2224F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConstructEd.Models", "ConstructEd.Model\ConstructEd.Models.csproj", "{993FE232-C186-43A5-B471-C1A581C0359B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConstructEd.Models", "ConstructEd.Model\ConstructEd.Models.csproj", "{993FE232-C186-43A5-B471-C1A581C0359B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Repository", "Repository\Repository.csproj", "{9E285AE2-A60B-4D2C-A2B1-DB3CCFED6E8B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{993FE232-C186-43A5-B471-C1A581C0359B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{993FE232-C186-43A5-B471-C1A581C0359B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{993FE232-C186-43A5-B471-C1A581C0359B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9E285AE2-A60B-4D2C-A2B1-DB3CCFED6E8B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9E285AE2-A60B-4D2C-A2B1-DB3CCFED6E8B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9E285AE2-A60B-4D2C-A2B1-DB3CCFED6E8B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9E285AE2-A60B-4D2C-A2B1-DB3CCFED6E8B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
