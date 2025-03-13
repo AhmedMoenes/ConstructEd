@@ -19,6 +19,7 @@ namespace ConstructEd
             builder.Services.AddScoped<ICourseContentRepository,CourseContentRepository>();
             builder.Services.AddScoped<ICourseContentRepository,CourseContentRepository>();
             builder.Services.AddScoped<ICourseContentRepository,CourseContentRepository>();
+
             builder.Services.AddDbContext<DataContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("CS")));
 
