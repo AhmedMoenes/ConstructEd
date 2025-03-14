@@ -32,7 +32,7 @@ namespace ConstructEd.Controllers
             return View("Index",paymentViewModels);
         }
 
-        // GET: Payment/Details/5
+        // GET: Payment/Details/1
         public async Task<IActionResult> Details(int id)
         {
             var payment = await _paymentRepository.GetByIdAsync(id);
@@ -42,7 +42,7 @@ namespace ConstructEd.Controllers
             }
 
             var paymentViewModel = _mapper.Map<PaymentViewModel>(payment);
-            return View(paymentViewModel);
+            return View("Details",paymentViewModel);
         }
 
         // GET: Payment/Create

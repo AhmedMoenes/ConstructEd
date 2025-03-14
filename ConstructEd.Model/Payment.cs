@@ -74,9 +74,8 @@ namespace ConstructEd.Models
         [Required]
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
-        [Required]
         [StringLength(450)]
-        public string CreatedBy { get; set; }
+        public string? CreatedBy { get; set; }
 
         public DateTime? ModifiedAt { get; set; }
 

@@ -80,10 +80,10 @@ namespace ConstructEd.ViewModels
 
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd HH:mm:ss}")]
         [Display(Name = "Modified Date")]
-        public string ModifiedAt { get; set; }
+        public string? ModifiedAt { get; set; }
 
         [Display(Name = "Modified By")]
-        public string ModifiedBy { get; set; }
+        public string? ModifiedBy { get; set; }
     }
 
     // For creating new payments
