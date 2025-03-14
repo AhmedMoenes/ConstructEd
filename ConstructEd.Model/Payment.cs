@@ -12,8 +12,6 @@ namespace ConstructEd.Models
         public int Id { get; set; }
 
         [Required]
-        [Range(0.01, double.MaxValue)]
-        [Column(TypeName = "decimal(18, 2)")]
         public decimal Amount { get; set; }
 
         [Required]

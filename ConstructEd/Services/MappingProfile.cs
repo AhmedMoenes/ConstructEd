@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ConstructEd.Models;
+
 using ConstructEd.ViewModels;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
@@ -21,6 +22,7 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.ModifiedAt, opt => opt.MapFrom(src => src.ModifiedAt != null ? src.ModifiedAt.Value.ToString("yyyy-MM-dd HH:mm:ss") : null));
 
         // Mappings for ApplicationUser and RegisterViewModel
+        // Source --> Destination
         CreateMap<RegisterViewModel, ApplicationUser>()
             .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.Email)) 
             .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email))

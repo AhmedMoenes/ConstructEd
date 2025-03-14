@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using ConstructEd.Models;
 using ConstructEd.ViewModels;
-using ConstructEd.Repositories;
 using Microsoft.AspNetCore.Identity;
+using ConstructEd.Services;
 
 public class AuthService : IAuthService
 {

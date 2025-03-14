@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 
 
-namespace ConstructEd.Repositories
+namespace ConstructEd.Services
 {
     public interface IAuthService
     {

@@ -1,8 +1,6 @@
 ﻿using ConstructEd.Data;
 using ConstructEd.Models;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace ConstructEd.Repositories
 {
@@ -30,6 +28,11 @@ namespace ConstructEd.Repositories
                 .Include(n => n.Course)
                 .Include(b => b.User)
                 .ToListAsync();
+        }
+
+        public Task<List<Enrollment>> GetByCourseIdAsync(string courseId)
+        {
+            throw new NotImplementedException();
         }
 
         public async Task<Enrollment> GetByIdAsync(int id)
