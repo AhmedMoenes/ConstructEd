@@ -1,8 +1,10 @@
 ﻿using ConstructEd.Data;
 using ConstructEd.Models;
+using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace ConstructEd.Repositories
-
 {
     public class CourseRepository : ICourseRepository
     {
@@ -12,36 +14,40 @@ namespace ConstructEd.Repositories
         {
             this.dataContext = dataContext;
         }
-        public void Delete(int id)
+
+        public async Task DeleteAsync(int id)
         {
-            Course emp = GetById(id);
-            dataContext.Remove(emp);
+            var emp = await GetByIdAsync(id);
+            if (emp != null)
+            {
+                dataContext.Remove(emp);
+            }
         }
 
-        public ICollection<Course> GetAll()
+        public async Task<ICollection<Course>> GetAllAsync()
         {
-            return dataContext.Courses.ToList();
+            return await dataContext.Courses.ToListAsync();
         }
 
-        public Course GetById(int id)
+        public async Task<Course> GetByIdAsync(int id)
         {
-
-            return dataContext.Courses.FirstOrDefault(e => e.Id == id);
+            return await dataContext.Courses.FirstOrDefaultAsync(e => e.Id == id);
         }
 
-        public void Insert(Course obj)
+        public async Task InsertAsync(Course obj)
         {
-            dataContext.Add(obj);
+            await dataContext.AddAsync(obj);
         }
 
-        public int Save()
+        public async Task<int> SaveAsync()
         {
-            return dataContext.SaveChanges();
+            return await dataContext.SaveChangesAsync();
         }
 
-        public void Update(Course obj)
+        public async Task UpdateAsync(Course obj)
         {
-            dataContext.Update(obj);
+            dataContext.Update(obj); 
+            await Task.CompletedTask; 
         }
     }
 }

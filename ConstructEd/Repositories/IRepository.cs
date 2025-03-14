@@ -2,16 +2,16 @@
 {
     public interface IRepository<T>
     {
-        ICollection<T> GetAll();
+        Task<ICollection<T>> GetAllAsync();
 
-        T GetById(int id);
+        Task<T> GetByIdAsync(int id);
 
-        void Insert(T obj);
+        Task InsertAsync(T obj);
 
-        void Update(T obj);
+        Task UpdateAsync(T obj);
 
-        void Delete(int id);
+        Task DeleteAsync(int id);
 
-        int Save();
+        Task<int> SaveAsync();
     }
 }

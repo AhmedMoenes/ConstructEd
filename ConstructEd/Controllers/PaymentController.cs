@@ -46,7 +46,7 @@ namespace ConstructEd.Controllers
         }
 
         // GET: Payment/Create
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             return View();
@@ -54,8 +54,8 @@ namespace ConstructEd.Controllers
 
         // POST: Payment/Create
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin")]
+        //[ValidateAntiForgeryToken]
+        //[Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create(PaymentViewModel paymentViewModel)
         {
             if (ModelState.IsValid)

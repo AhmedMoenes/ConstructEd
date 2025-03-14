@@ -1,9 +1,10 @@
 ﻿using ConstructEd.Data;
 using ConstructEd.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace ConstructEd.Repositories
-
 {
     public class EnrollmentRepository : IEnrollmentRepository
     {
@@ -13,36 +14,46 @@ namespace ConstructEd.Repositories
         {
             this.dataContext = dataContext;
         }
-        public void Delete(int id)
+
+        public async Task DeleteAsync(int id)
         {
-            Enrollment emp = GetById(id);
-            dataContext.Remove(emp);
+            var emp = await GetByIdAsync(id);
+            if (emp != null)
+            {
+                dataContext.Remove(emp);
+            }
         }
 
-        public ICollection<Enrollment> GetAll()
+        public async Task<ICollection<Enrollment>> GetAllAsync()
         {
-            return dataContext.Enrollments.Include(n=>n.Course).Include(b=>b.User).ToList();
+            return await dataContext.Enrollments
+                .Include(n => n.Course)
+                .Include(b => b.User)
+                .ToListAsync();
         }
 
-        public Enrollment GetById(int id)
+        public async Task<Enrollment> GetByIdAsync(int id)
         {
-
-            return dataContext.Enrollments.Include(n => n.Course).Include(b => b.User).FirstOrDefault(e => e.Id == id);
+            return await dataContext.Enrollments
+                .Include(n => n.Course)
+                .Include(b => b.User)
+                .FirstOrDefaultAsync(e => e.Id == id);
         }
 
-        public void Insert(Enrollment obj)
+        public async Task InsertAsync(Enrollment obj)
         {
-            dataContext.Add(obj);
+            await dataContext.AddAsync(obj);
         }
 
-        public int Save()
+        public async Task<int> SaveAsync()
         {
-            return dataContext.SaveChanges();
+            return await dataContext.SaveChangesAsync();
         }
 
-        public void Update(Enrollment obj)
+        public async Task UpdateAsync(Enrollment obj)
         {
-            dataContext.Update(obj);
+            dataContext.Update(obj); 
+            await Task.CompletedTask;
         }
     }
 }

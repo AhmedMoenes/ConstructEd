@@ -13,50 +13,6 @@ namespace ConstructEd.Repositories
             this.dataContext = dataContext;
         }
 
-        #region Synchronous Methods
-        public void Delete(int id)
-        {
-            Payment payment = GetById(id);
-            if (payment != null)
-            {
-                dataContext.Remove(payment);
-            }
-        }
-
-        public ICollection<Payment> GetAll()
-        {
-            return dataContext.Payments
-                .Include(p => p.Course)
-                .Include(p => p.User)
-                .ToList();
-        }
-
-        public Payment GetById(int id)
-        {
-            return dataContext.Payments
-                .Include(p => p.Course)
-                .Include(p => p.User)
-                .FirstOrDefault(p => p.Id == id);
-        }
-
-        public void Insert(Payment obj)
-        {
-            dataContext.Add(obj);
-        }
-
-        public int Save()
-        {
-            return dataContext.SaveChanges();
-        }
-
-        public void Update(Payment obj)
-        {
-            obj.ModifiedAt = DateTime.UtcNow;
-            dataContext.Update(obj);
-        }
-
-        #endregion
-
         #region Asynchronous Methods
         public async Task DeleteAsync(int id)
         {

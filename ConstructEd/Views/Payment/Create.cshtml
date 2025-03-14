@@ -1,0 +1,51 @@
+﻿@model ConstructEd.ViewModels.PaymentViewModel
+@{
+    ViewData["Title"] = "Create Payment";
+}
+
+<h1>Create New Payment</h1>
+
+<form asp-controller="Payment" asp-action="Create" method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="form-group">
+        <label asp-for="TransactionId">Transaction ID</label>
+        <input asp-for="TransactionId" class="form-control" />
+        <span asp-validation-for="TransactionId" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Amount">Amount</label>
+        <input asp-for="Amount" class="form-control" type="number" step="0.01" />
+        <span asp-validation-for="Amount" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="PaymentDate">Payment Date</label>
+        <input asp-for="PaymentDate" class="form-control" value="@DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")" />
+        <span asp-validation-for="PaymentDate" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Status">Status</label>
+        <select asp-for="Status" class="form-control">
+            <option value="Pending">Pending</option>
+            <option value="Completed">Completed</option>
+            <option value="Failed">Failed</option>
+        </select>
+        <span asp-validation-for="Status" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="CourseId">Course ID</label>
+        <input asp-for="CourseId" class="form-control" type="number" />
+        <span asp-validation-for="CourseId" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Create Payment</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

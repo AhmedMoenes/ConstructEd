@@ -1,6 +1,8 @@
 ﻿using ConstructEd.Models;
-using ConstructEd.Data;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using ConstructEd.Data;
 
 namespace ConstructEd.Repositories
 {
@@ -12,36 +14,44 @@ namespace ConstructEd.Repositories
         {
             this.dataContext = dataContext;
         }
-        public void Delete(int id)
+
+        public async Task DeleteAsync(int id)
         {
-            CourseContent emp = GetById(id);
-            dataContext.Remove(emp);
+            var emp = await GetByIdAsync(id);
+            if (emp != null)
+            {
+                dataContext.Remove(emp);
+            }
         }
 
-        public ICollection<CourseContent> GetAll()
+        public async Task<ICollection<CourseContent>> GetAllAsync()
         {
-            return dataContext.CourseContents.Include(m => m.Course).ToList();
+            return await dataContext.CourseContents
+                .Include(m => m.Course)
+                .ToListAsync();
         }
 
-        public CourseContent GetById(int id)
+        public async Task<CourseContent> GetByIdAsync(int id)
         {
-            
-            return dataContext.CourseContents.Include(m=>m.Course).FirstOrDefault(e => e.Id == id);
+            return await dataContext.CourseContents
+                .Include(m => m.Course)
+                .FirstOrDefaultAsync(e => e.Id == id);
         }
 
-        public void Insert(CourseContent obj)
+        public async Task InsertAsync(CourseContent obj)
         {
-            dataContext.Add(obj);
+            await dataContext.AddAsync(obj);
         }
 
-        public int Save()
+        public async Task<int> SaveAsync()
         {
-           return dataContext.SaveChanges();
+            return await dataContext.SaveChangesAsync();
         }
 
-        public void Update(CourseContent obj)
+        public async Task UpdateAsync(CourseContent obj)
         {
-            dataContext.Update(obj);
+            dataContext.Update(obj); 
+            await Task.CompletedTask;
         }
     }
 }

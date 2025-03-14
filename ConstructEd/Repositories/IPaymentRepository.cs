@@ -15,13 +15,7 @@ namespace ConstructEd.Repositories
         Task<ICollection<Payment>> GetByDateRangeAsync(DateTime startDate, DateTime endDate);
         Task<ICollection<Payment>> GetByCourseIdAsync(int courseId);
         Task<ICollection<Payment>> GetByUserIdAsync(string userId);
-        Task UpdateAsync(Payment payment);
-        Task<int> SaveAsync();
-        Task InsertAsync(Payment payment);
         Task<Payment> GetByTransactionIdAsync(string transactionId);
-        Task<Payment> GetByIdAsync(int id);
-        Task<ICollection<Payment>> GetAllAsync();
-        Task DeleteAsync(int id);
 
         #endregion
 
