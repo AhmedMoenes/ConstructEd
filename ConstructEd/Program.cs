@@ -13,6 +13,7 @@ namespace ConstructEd
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
+            builder.Services.AddAutoMapper(typeof(MappingProfile));
             builder.Services.AddControllersWithViews();
             builder.Services.AddScoped<ICourseContentRepository, CourseContentRepository>();
             builder.Services.AddScoped<ICourseRepository, CourseRepository>();
