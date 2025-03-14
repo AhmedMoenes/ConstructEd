@@ -7,16 +7,17 @@ namespace ConstructEd.Controllers
     {
         private readonly ICourseContentRepository _courseContentRepository;
         private readonly ICourseRepository _courseRepository;
-        private readonly IEnrollmentRepository enrollmentRepository;
-        private readonly IPaymentRepository paymentRepository;
+        private readonly IEnrollmentRepository _enrollmentRepository;
+        private readonly IPaymentRepository _paymentRepository;
 
         public CourseController(ICourseContentRepository courseContentRepository,
           ICourseRepository courseRepository,IEnrollmentRepository enrollmentRepository,IPaymentRepository paymentRepository)
         {
             _courseContentRepository = courseContentRepository;
             _courseRepository = courseRepository;
-            this.enrollmentRepository = enrollmentRepository;
-            this.paymentRepository = paymentRepository;
+            _enrollmentRepository = enrollmentRepository;
+            _paymentRepository = paymentRepository;
         }
+        
     }
 }
