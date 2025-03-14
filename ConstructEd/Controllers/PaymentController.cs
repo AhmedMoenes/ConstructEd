@@ -67,7 +67,7 @@ namespace ConstructEd.Controllers
                     TransactionId = paymentViewModel.TransactionId,
                     Status = Enum.Parse<PaymentStatus>(paymentViewModel.Status),
                     UserId = User.FindFirstValue(ClaimTypes.NameIdentifier),
-                    CourseId = int.Parse(paymentViewModel.CourseTitle) // Assuming CourseTitle is used to pass CourseId
+                    //CourseId = int.Parse(paymentViewModel.CourseTitle) // Assuming CourseTitle is used to pass CourseId
                 };
 
                 await _paymentRepository.InsertAsync(payment);
