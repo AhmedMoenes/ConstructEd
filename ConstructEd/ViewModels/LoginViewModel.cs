@@ -10,6 +10,6 @@ namespace ConstructEd.ViewModels
 
         [Required]
         [DataType(DataType.Password)]
-        public string PassWord { get; set; }
+        public string Password { get; set; }
     }
 }
