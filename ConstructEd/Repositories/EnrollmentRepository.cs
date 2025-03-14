@@ -43,15 +43,15 @@ namespace ConstructEd.Repositories
         public async Task<Enrollment?> GetByUserAndCourseAsync(string userId, int courseId)
         {
             return await dataContext.Enrollments
-         .FirstOrDefaultAsync(e => e.UserId == userId && e.CourseId == courseId);
+                         .FirstOrDefaultAsync(e => e.UserId == userId && e.CourseId == courseId);
         }
 
         public async Task<List<Enrollment>> GetByUserIdAsync(string userId)
         {
             return await dataContext.Enrollments
-        .Include(e => e.Course)
-        .Where(e => e.UserId == userId)
-        .ToListAsync();
+                        .Include(e => e.Course)
+                        .Where(e => e.UserId == userId)
+                        .ToListAsync();
         }
 
         public async Task InsertAsync(Enrollment obj)
