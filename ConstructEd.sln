@@ -9,8 +9,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConstructEd.Data", "Context
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConstructEd.Models", "ConstructEd.Model\ConstructEd.Models.csproj", "{993FE232-C186-43A5-B471-C1A581C0359B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "vsav", "vsav\vsav.csproj", "{360C2462-35C5-4893-B6C9-F1F20FCED91B}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,10 +27,6 @@ Global
 		{993FE232-C186-43A5-B471-C1A581C0359B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{993FE232-C186-43A5-B471-C1A581C0359B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{993FE232-C186-43A5-B471-C1A581C0359B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{360C2462-35C5-4893-B6C9-F1F20FCED91B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{360C2462-35C5-4893-B6C9-F1F20FCED91B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{360C2462-35C5-4893-B6C9-F1F20FCED91B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{360C2462-35C5-4893-B6C9-F1F20FCED91B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

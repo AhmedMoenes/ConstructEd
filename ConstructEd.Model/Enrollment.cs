@@ -7,8 +7,6 @@ namespace ConstructEd.Models
     {
         [Key]
         public int Id { get; set; }
-
-     
         public DateTime EnrollmentDate { get; set; } = DateTime.UtcNow;
         public int Progress { get; set; }
 
