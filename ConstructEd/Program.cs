@@ -14,14 +14,13 @@ namespace ConstructEd
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
-            builder.Services.AddScoped<ICourseContentRepository,CourseContentRepository>();
-            builder.Services.AddScoped<ICourseRepository,CourseRepository>();
-            builder.Services.AddScoped<ICourseContentRepository,CourseContentRepository>();
-            builder.Services.AddScoped<ICourseContentRepository,CourseContentRepository>();
-            builder.Services.AddScoped<ICourseContentRepository,CourseContentRepository>();
+            builder.Services.AddScoped<ICourseContentRepository, CourseContentRepository>();
+            builder.Services.AddScoped<ICourseRepository, CourseRepository>();
+            builder.Services.AddScoped<IEnrollmentRepository, EnrollmentRepository>();
+            builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
 
             builder.Services.AddDbContext<DataContext>(options =>
-            options.UseSqlServer(builder.Configuration.GetConnectionString("CS")));
+                     options.UseSqlServer(builder.Configuration.GetConnectionString("CS")));
 
             builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
             .AddEntityFrameworkStores<DataContext>()
