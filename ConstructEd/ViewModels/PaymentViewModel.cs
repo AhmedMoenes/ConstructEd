@@ -30,7 +30,7 @@ namespace ConstructEd.ViewModels
         [Required]
         [StringLength(3)]
         [Display(Name = "Currency")]
-        public string CurrencyCode { get; set; } = "USD";
+        public string CurrencyCode { get; set; } = "EGP";
 
         [Display(Name = "Payment Provider")]
         public string PaymentProvider { get; set; }
@@ -105,7 +105,7 @@ namespace ConstructEd.ViewModels
         [Required]
         [StringLength(3)]
         [Display(Name = "Currency")]
-        public string CurrencyCode { get; set; } = "USD";
+        public string CurrencyCode { get; set; } = "EGP";
 
         [Display(Name = "Payment Provider")]
         public string PaymentProvider { get; set; }
