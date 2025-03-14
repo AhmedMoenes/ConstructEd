@@ -20,7 +20,7 @@ namespace ConstructEd.Models
         public string Title { get; set; }
         public string Description { get; set; }
         public decimal Price { get; set; }
-        public TimeSpan Duration { get; set; }
+        public decimal Duration { get; set; }
         public bool IsActive { get; set; } 
         public Category Category { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
