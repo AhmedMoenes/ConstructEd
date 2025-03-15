@@ -40,6 +40,16 @@ namespace ConstructEd.Repositories
                 .FirstOrDefaultAsync(e => e.Id == id);
         }
 
+        public Task<Enrollment?> GetByUserAndCourseAsync(string userId, int courseId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<Enrollment>> GetByUserIdAsync(string userId)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task InsertAsync(Enrollment obj)
         {
             await dataContext.AddAsync(obj);
