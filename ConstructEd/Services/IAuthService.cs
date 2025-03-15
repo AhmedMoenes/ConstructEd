@@ -8,6 +8,7 @@ namespace ConstructEd.Services
     {
         Task<IdentityResult> RegisterUserAsync(RegisterViewModel model);
         Task<SignInResult> LoginUserAsync(LoginViewModel model);
+        Task<IdentityResult> AddRoleAsync(RoleViewModel model);
         Task LogoutAsync();
     }
 }

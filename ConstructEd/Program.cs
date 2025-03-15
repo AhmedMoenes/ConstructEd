@@ -17,8 +17,10 @@ namespace ConstructEd
             builder.Services.AddAutoMapper(typeof(MappingProfile));
             builder.Services.AddControllersWithViews();
             builder.Services.AddScoped<FakePaymentService>();
-            builder.Services.AddScoped<ICourseContentRepository, CourseContentRepository>();
+            builder.Services.AddScoped<IAuthService, AuthService>();
+            builder.Services.AddScoped<IPluginRepository, PluginRepository>();
             builder.Services.AddScoped<ICourseRepository, CourseRepository>();
+            builder.Services.AddScoped<ICourseContentRepository, CourseContentRepository>();
             builder.Services.AddScoped<IEnrollmentRepository, EnrollmentRepository>();
             builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
 

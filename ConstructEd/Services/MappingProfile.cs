@@ -8,7 +8,7 @@ public class MappingProfile : Profile
 {
     public MappingProfile()
     {
-        // Payment to PaymentViewModel mapping (For displaying payments)
+        // Payment to PaymentViewModel mapping (For displaying payments) // Fix?
         CreateMap<Payment, PaymentViewModel>()
             .ForMember(dest => dest.TransactionID, opt => opt.MapFrom(src => src.TransactionID))
             .ForMember(dest => dest.CardNumber, opt => opt.Ignore()) // Don't expose full card number
@@ -39,7 +39,7 @@ public class MappingProfile : Profile
         // Mappings for ApplicationUser and RegisterViewModel
         // Source --> Destination
         CreateMap<RegisterViewModel, ApplicationUser>()
-            .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.Email)) 
+            .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.Email)) // Fix?
             .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email))
             .ForMember(dest => dest.PhoneNumber, opt => opt.MapFrom(src => src.PhoneNumber))
             .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => src.FullName))

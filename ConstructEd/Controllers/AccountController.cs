@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
-using ConstructEd.Repositories;
 using ConstructEd.Services;
 using ConstructEd.ViewModels;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ConstructEd.Controllers
@@ -20,15 +20,16 @@ namespace ConstructEd.Controllers
         [HttpGet]
         public IActionResult Register()
         {
-            return View("Register");
+            return View(nameof(Register));
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
             if (ModelState.IsValid)
             {
-                var result = await _authService.RegisterUserAsync(model);
+                IdentityResult result = await _authService.RegisterUserAsync(model);
 
                 if (result.Succeeded)
                 {
@@ -39,7 +40,7 @@ namespace ConstructEd.Controllers
                         Password = model.Password
                     });
 
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction(nameof(HomeController.Index), nameof(HomeController));
                 }
 
                 foreach (var error in result.Errors)
@@ -47,16 +48,17 @@ namespace ConstructEd.Controllers
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
             }
-            return View(model);
+            return View(nameof(Register), model);
         }
 
         [HttpGet]
         public IActionResult Login()
         {
-            return View("Login");
+            return View(nameof(Login));
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
             if (ModelState.IsValid)
@@ -68,19 +70,19 @@ namespace ConstructEd.Controllers
                     return RedirectToAction("Index", "Home");
                 }
 
-                ModelState.AddModelError(string.Empty, "Invalid login attempt");
+                ModelState.AddModelError(string.Empty, "Invalid Username or Password");
             }
-            return View(model);
+            return View(nameof(Login), model);
         }
 
         [HttpPost]
         public async Task<IActionResult> Logout()
         {
             await _authService.LogoutAsync();
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction(nameof(HomeController.Index), nameof(HomeController));
         }
 
-        // To Do : Forget Password, Reset Password  , External Login Via Google, Facebook ## //z
+        // To Do : Forget Password, Reset Password  , External Login Via Google, Facebook ## //
 
     }
 }

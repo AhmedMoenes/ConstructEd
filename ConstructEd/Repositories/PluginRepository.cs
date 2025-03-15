@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ConstructEd.Repositories
 {
-    public class CourseRepository : ICourseRepository
+    public class PluginRepository: IPluginRepository
     {
         private readonly DataContext _dataContext;
 
-        public CourseRepository(DataContext dataContext)
+        public PluginRepository(DataContext dataContext)
         {
             _dataContext = dataContext;
         }
@@ -21,31 +21,32 @@ namespace ConstructEd.Repositories
                 _dataContext.Remove(entity);
             }
         }
-
-        public async Task<ICollection<Course>> GetAllAsync()
+        public async Task<ICollection<Plugin>> GetAllAsync()
         {
-            return await _dataContext.Courses.ToListAsync();
+            return await _dataContext.Plugins.ToListAsync();
         }
 
-        public async Task<Course> GetByIdAsync(int id)
+        public async Task<Plugin> GetByIdAsync(int id)
         {
-            return await _dataContext.Courses.FirstOrDefaultAsync(e => e.Id == id);
+            return await _dataContext.Plugins.FirstOrDefaultAsync(e => e.Id == id);
         }
-
         public async Task InsertAsync(Course obj)
         {
             await _dataContext.AddAsync(obj);
         }
+        public Task InsertAsync(Plugin obj)
+        {
+            throw new NotImplementedException();
+        }
 
         public async Task SaveAsync()
         {
-            await _dataContext.SaveChangesAsync();
+             await _dataContext.SaveChangesAsync();
         }
-
-        public async Task UpdateAsync(Course obj)
+        public async Task UpdateAsync(Plugin obj)
         {
-            _dataContext.Update(obj); 
-            await Task.CompletedTask; 
+            _dataContext.Update(obj);
+            await Task.CompletedTask;
         }
     }
 }
