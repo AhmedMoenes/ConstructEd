@@ -24,262 +24,262 @@ namespace ConstructEd.Controllers
             _mapper = mapper;
         }
 
-        // GET: Payment/Index
-        public async Task<IActionResult> Index()
-        {
-            var payments = await _paymentRepository.GetAllAsync();
-            var paymentViewModels = _mapper.Map<List<PaymentViewModel>>(payments);
-            return View("Index",paymentViewModels);
-        }
+        //// GET: Payment/Index
+        //public async Task<IActionResult> Index()
+        //{
+        //    var payments = await _paymentRepository.GetAllAsync();
+        //    var paymentViewModels = _mapper.Map<List<PaymentViewModel>>(payments);
+        //    return View("Index",paymentViewModels);
+        //}
 
-        // GET: Payment/Details/1
-        public async Task<IActionResult> Details(int id)
-        {
-            var payment = await _paymentRepository.GetByIdAsync(id);
-            if (payment == null)
-            {
-                return NotFound();
-            }
+        //// GET: Payment/Details/1
+        //public async Task<IActionResult> Details(int id)
+        //{
+        //    var payment = await _paymentRepository.GetByIdAsync(id);
+        //    if (payment == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            var paymentViewModel = _mapper.Map<PaymentViewModel>(payment);
-            return View("Details",paymentViewModel);
-        }
+        //    var paymentViewModel = _mapper.Map<PaymentViewModel>(payment);
+        //    return View("Details",paymentViewModel);
+        //}
 
-        // GET: Payment/Create
+        //// GET: Payment/Create
+        ////[Authorize(Roles = "Admin")]
+        //public IActionResult Create()
+        //{
+        //    return View();
+        //}
+
+        //// POST: Payment/Create
+        //[HttpPost]
+        ////[ValidateAntiForgeryToken]
+        ////[Authorize(Roles = "Admin")]
+        //public async Task<IActionResult> Create(PaymentViewModel paymentViewModel)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        var payment = new Payment
+        //        {
+        //            Amount = paymentViewModel.Amount,
+        //            PaymentDate = DateTime.Parse(paymentViewModel.PaymentDate),
+        //            TransactionId = paymentViewModel.TransactionId,
+        //            UserId = User.FindFirstValue(ClaimTypes.NameIdentifier),
+        //            CourseId = int.Parse(paymentViewModel.CourseTitle) // Assuming CourseTitle is used to pass CourseId
+        //        };
+
+        //        await _paymentRepository.InsertAsync(payment);
+        //        await _paymentRepository.SaveAsync();
+        //        return RedirectToAction(nameof(Index));
+        //    }
+        //    return View(paymentViewModel);
+        //}
+
+        //// GET: Payment/Edit/5
         //[Authorize(Roles = "Admin")]
-        public IActionResult Create()
-        {
-            return View();
-        }
+        //public async Task<IActionResult> Edit(int id)
+        //{
+        //    var payment = await _paymentRepository.GetByIdAsync(id);
+        //    if (payment == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-        // POST: Payment/Create
-        [HttpPost]
+        //    var paymentViewModel = _mapper.Map<PaymentViewModel>(payment);
+        //    return View(paymentViewModel);
+        //}
+
+        //// POST: Payment/Edit/5
+        //[HttpPost]
         //[ValidateAntiForgeryToken]
         //[Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Create(PaymentViewModel paymentViewModel)
-        {
-            if (ModelState.IsValid)
-            {
-                var payment = new Payment
-                {
-                    Amount = paymentViewModel.Amount,
-                    PaymentDate = DateTime.Parse(paymentViewModel.PaymentDate),
-                    TransactionId = paymentViewModel.TransactionId,
-                    UserId = User.FindFirstValue(ClaimTypes.NameIdentifier),
-                    CourseId = int.Parse(paymentViewModel.CourseTitle) // Assuming CourseTitle is used to pass CourseId
-                };
+        //public async Task<IActionResult> Edit(int id, PaymentViewModel paymentViewModel)
+        //{
+        //    if (id != int.Parse(paymentViewModel.TransactionId))
+        //    {
+        //        return NotFound();
+        //    }
 
-                await _paymentRepository.InsertAsync(payment);
-                await _paymentRepository.SaveAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(paymentViewModel);
-        }
+        //    if (ModelState.IsValid)
+        //    {
+        //        try
+        //        {
+        //            var payment = await _paymentRepository.GetByIdAsync(id);
+        //            if (payment == null)
+        //            {
+        //                return NotFound();
+        //            }
 
-        // GET: Payment/Edit/5
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Edit(int id)
-        {
-            var payment = await _paymentRepository.GetByIdAsync(id);
-            if (payment == null)
-            {
-                return NotFound();
-            }
+        //            payment.Amount = paymentViewModel.Amount;
+        //            payment.TransactionId = paymentViewModel.TransactionId;
+        //            payment.Status = Enum.Parse<PaymentStatus>(paymentViewModel.Status);
 
-            var paymentViewModel = _mapper.Map<PaymentViewModel>(payment);
-            return View(paymentViewModel);
-        }
+        //            await _paymentRepository.UpdateAsync(payment);
+        //            await _paymentRepository.SaveAsync();
+        //        }
+        //        catch (Exception)
+        //        {
+        //            if (!await PaymentExists(id))
+        //            {
+        //                return NotFound();
+        //            }
+        //            else
+        //            {
+        //                throw;
+        //            }
+        //        }
+        //        return RedirectToAction(nameof(Index));
+        //    }
+        //    return View(paymentViewModel);
+        //}
 
-        // POST: Payment/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Edit(int id, PaymentViewModel paymentViewModel)
-        {
-            if (id != int.Parse(paymentViewModel.TransactionId))
-            {
-                return NotFound();
-            }
+        //// GET: Payment/Delete/5
+        //[Authorize(Roles = "Admin")]
+        //public async Task<IActionResult> Delete(int id)
+        //{
+        //    var payment = await _paymentRepository.GetByIdAsync(id);
+        //    if (payment == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    var payment = await _paymentRepository.GetByIdAsync(id);
-                    if (payment == null)
-                    {
-                        return NotFound();
-                    }
+        //    var paymentViewModel = _mapper.Map<PaymentViewModel>(payment);
+        //    return View(paymentViewModel);
+        //}
 
-                    payment.Amount = paymentViewModel.Amount;
-                    payment.TransactionId = paymentViewModel.TransactionId;
-                    payment.Status = Enum.Parse<PaymentStatus>(paymentViewModel.Status);
+        //// POST: Payment/Delete/5
+        //[HttpPost, ActionName("Delete")]
+        //[ValidateAntiForgeryToken]
+        //[Authorize(Roles = "Admin")]
+        //public async Task<IActionResult> DeleteConfirmed(int id)
+        //{
+        //    await _paymentRepository.DeleteAsync(id);
+        //    await _paymentRepository.SaveAsync();
+        //    return RedirectToAction(nameof(Index));
+        //}
 
-                    await _paymentRepository.UpdateAsync(payment);
-                    await _paymentRepository.SaveAsync();
-                }
-                catch (Exception)
-                {
-                    if (!await PaymentExists(id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(paymentViewModel);
-        }
+        //// GET: Payment/UserPayments
+        //public async Task<IActionResult> UserPayments()
+        //{
+        //    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        //    var payments = await _paymentRepository.GetAllAsync();
+        //    var userPayments = payments.Where(p => p.UserId == userId).ToList();
 
-        // GET: Payment/Delete/5
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Delete(int id)
-        {
-            var payment = await _paymentRepository.GetByIdAsync(id);
-            if (payment == null)
-            {
-                return NotFound();
-            }
+        //    var paymentViewModels = _mapper.Map<List<PaymentViewModel>>(userPayments);
+        //    return View(paymentViewModels);
+        //}
 
-            var paymentViewModel = _mapper.Map<PaymentViewModel>(payment);
-            return View(paymentViewModel);
-        }
+        //// GET: Payment/CoursePayments/5
+        //[Authorize(Roles = "Admin,Instructor")]
+        //public async Task<IActionResult> CoursePayments(int courseId)
+        //{
+        //    var payments = await _paymentRepository.GetAllAsync();
+        //    var coursePayments = payments.Where(p => p.CourseId == courseId).ToList();
 
-        // POST: Payment/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            await _paymentRepository.DeleteAsync(id);
-            await _paymentRepository.SaveAsync();
-            return RedirectToAction(nameof(Index));
-        }
+        //    var paymentViewModels = _mapper.Map<List<PaymentViewModel>>(coursePayments);
+        //    return View(paymentViewModels);
+        //}
 
-        // GET: Payment/UserPayments
-        public async Task<IActionResult> UserPayments()
-        {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var payments = await _paymentRepository.GetAllAsync();
-            var userPayments = payments.Where(p => p.UserId == userId).ToList();
+        //// POST: Payment/ProcessPayment
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> ProcessPayment(int courseId)
+        //{
+        //    try
+        //    {
+        //        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            var paymentViewModels = _mapper.Map<List<PaymentViewModel>>(userPayments);
-            return View(paymentViewModels);
-        }
+        //        // In a real application, you would integrate with a payment gateway here
+        //        // For this example, we'll simulate a successful payment
 
-        // GET: Payment/CoursePayments/5
-        [Authorize(Roles = "Admin,Instructor")]
-        public async Task<IActionResult> CoursePayments(int courseId)
-        {
-            var payments = await _paymentRepository.GetAllAsync();
-            var coursePayments = payments.Where(p => p.CourseId == courseId).ToList();
+        //        var payment = new Payment
+        //        {
+        //            Amount = 99.99m, // This would come from the course price
+        //            PaymentDate = DateTime.UtcNow,
+        //            TransactionId = Guid.NewGuid().ToString("N").Substring(0, 20),
+        //            Status = PaymentStatus.Completed,
+        //            UserId = userId,
+        //            CourseId = courseId
+        //        };
 
-            var paymentViewModels = _mapper.Map<List<PaymentViewModel>>(coursePayments);
-            return View(paymentViewModels);
-        }
+        //        await _paymentRepository.InsertAsync(payment);
+        //        await _paymentRepository.SaveAsync();
 
-        // POST: Payment/ProcessPayment
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ProcessPayment(int courseId)
-        {
-            try
-            {
-                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        //        // Redirect to a thank you page or course access page
+        //        return RedirectToAction("ThankYou", new { id = payment.Id });
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        // Log the exception
+        //        ModelState.AddModelError("", "Payment processing failed: " + ex.Message);
+        //        return RedirectToAction("Checkout", "Course", new { id = courseId });
+        //    }
+        //}
 
-                // In a real application, you would integrate with a payment gateway here
-                // For this example, we'll simulate a successful payment
+        //// GET: Payment/ThankYou/5
+        //public async Task<IActionResult> ThankYou(int id)
+        //{
+        //    var payment = await _paymentRepository.GetByIdAsync(id);
+        //    if (payment == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-                var payment = new Payment
-                {
-                    Amount = 99.99m, // This would come from the course price
-                    PaymentDate = DateTime.UtcNow,
-                    TransactionId = Guid.NewGuid().ToString("N").Substring(0, 20),
-                    Status = PaymentStatus.Completed,
-                    UserId = userId,
-                    CourseId = courseId
-                };
+        //    var paymentViewModel = _mapper.Map<PaymentViewModel>(payment);
+        //    return View(paymentViewModel);
+        //}
 
-                await _paymentRepository.InsertAsync(payment);
-                await _paymentRepository.SaveAsync();
+        //// GET: Payment/Receipt/5
+        //public async Task<IActionResult> Receipt(int id)
+        //{
+        //    var payment = await _paymentRepository.GetByIdAsync(id);
+        //    if (payment == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-                // Redirect to a thank you page or course access page
-                return RedirectToAction("ThankYou", new { id = payment.Id });
-            }
-            catch (Exception ex)
-            {
-                // Log the exception
-                ModelState.AddModelError("", "Payment processing failed: " + ex.Message);
-                return RedirectToAction("Checkout", "Course", new { id = courseId });
-            }
-        }
+        //    var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        //    if (payment.UserId != currentUserId && !User.IsInRole("Admin"))
+        //    {
+        //        return Forbid();
+        //    }
 
-        // GET: Payment/ThankYou/5
-        public async Task<IActionResult> ThankYou(int id)
-        {
-            var payment = await _paymentRepository.GetByIdAsync(id);
-            if (payment == null)
-            {
-                return NotFound();
-            }
+        //    var paymentViewModel = _mapper.Map<PaymentViewModel>(payment);
+        //    return View(paymentViewModel);
+        //}
 
-            var paymentViewModel = _mapper.Map<PaymentViewModel>(payment);
-            return View(paymentViewModel);
-        }
+        //// Helper method to check if a payment exists
+        //private async Task<bool> PaymentExists(int id)
+        //{
+        //    var payment = await _paymentRepository.GetByIdAsync(id);
+        //    return payment != null;
+        //}
 
-        // GET: Payment/Receipt/5
-        public async Task<IActionResult> Receipt(int id)
-        {
-            var payment = await _paymentRepository.GetByIdAsync(id);
-            if (payment == null)
-            {
-                return NotFound();
-            }
+        //// GET: Payment/VerifyPayment?transactionId=XXX
+        //[AllowAnonymous]
+        //public async Task<IActionResult> VerifyPayment(string transactionId)
+        //{
+        //    if (string.IsNullOrEmpty(transactionId))
+        //    {
+        //        return BadRequest("Transaction ID is required");
+        //    }
 
-            var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (payment.UserId != currentUserId && !User.IsInRole("Admin"))
-            {
-                return Forbid();
-            }
+        //    var payments = await _paymentRepository.GetAllAsync();
+        //    var payment = payments.FirstOrDefault(p => p.TransactionId == transactionId);
 
-            var paymentViewModel = _mapper.Map<PaymentViewModel>(payment);
-            return View(paymentViewModel);
-        }
+        //    if (payment == null)
+        //    {
+        //        return NotFound("Payment not found");
+        //    }
 
-        // Helper method to check if a payment exists
-        private async Task<bool> PaymentExists(int id)
-        {
-            var payment = await _paymentRepository.GetByIdAsync(id);
-            return payment != null;
-        }
-
-        // GET: Payment/VerifyPayment?transactionId=XXX
-        [AllowAnonymous]
-        public async Task<IActionResult> VerifyPayment(string transactionId)
-        {
-            if (string.IsNullOrEmpty(transactionId))
-            {
-                return BadRequest("Transaction ID is required");
-            }
-
-            var payments = await _paymentRepository.GetAllAsync();
-            var payment = payments.FirstOrDefault(p => p.TransactionId == transactionId);
-
-            if (payment == null)
-            {
-                return NotFound("Payment not found");
-            }
-
-            return Json(new
-            {
-                transactionId = payment.TransactionId,
-                status = payment.Status.ToString(),
-                date = payment.PaymentDate.ToString("yyyy-MM-dd HH:mm:ss"),
-                verified = true
-            });
-        }
+        //    return Json(new
+        //    {
+        //        transactionId = payment.TransactionId,
+        //        status = payment.Status.ToString(),
+        //        date = payment.PaymentDate.ToString("yyyy-MM-dd HH:mm:ss"),
+        //        verified = true
+        //    });
+        //}
     }
 }

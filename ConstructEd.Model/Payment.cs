@@ -13,6 +13,28 @@ namespace ConstructEd.Models
     //[Index(nameof(TransactionId), IsUnique = true)]
     public class Payment
     {
+        
+        [Key]
+        public int PaymentId { get; set; } // Primary Key
+
+        [Required]
+        public string CardHolderName { get; set; }
+
+        [Required]
+        public string MaskedCardNumber { get; set; } // Store only the last 4 digits for security
+
+        [Required]
+        public string ExpiryDate { get; set; } // MM/YY format
+
+        [Required]
+        public decimal Amount { get; set; }
+
+        [Required]
+        public PaymentStatus Status { get; set; } // e.g., "Success", "Failed", "Pending"
+
+        public DateTime PaymentDate { get; set; } = DateTime.Now; // Auto-generated timestamp
+
+        #region old code
         //[Key]
         //public int Id { get; set; }
 
@@ -40,25 +62,7 @@ namespace ConstructEd.Models
         //[ForeignKey("Course")]
         //public int CourseId { get; set; }
         //public Course? Course { get; set; }
-        [Key]
-        public int PaymentId { get; set; } // Primary Key
 
-        [Required]
-        public string CardHolderName { get; set; }
-
-        [Required]
-        public string MaskedCardNumber { get; set; } // Store only the last 4 digits for security
-
-        [Required]
-        public string ExpiryDate { get; set; } // MM/YY format
-
-        [Required]
-        public decimal Amount { get; set; }
-
-        [Required]
-        public PaymentStatus Status { get; set; } // e.g., "Success", "Failed", "Pending"
-
-        public DateTime PaymentDate { get; set; } = DateTime.Now; // Auto-generated timestamp
-
+        #endregion
     }
 }
