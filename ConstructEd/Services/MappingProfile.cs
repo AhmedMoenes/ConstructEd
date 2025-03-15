@@ -24,35 +24,27 @@ public class MappingProfile : Profile
         #endregion
 
         #region ApplicationUser
-        // **** ReCheck **** //
-        // Mappings for ApplicationUser and RegisterViewModel
+
         CreateMap<RegisterViewModel, ApplicationUser>()
-            .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.Email)) 
+            .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.Email))
             .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email))
             .ForMember(dest => dest.PhoneNumber, opt => opt.MapFrom(src => src.PhoneNumber))
             .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => src.FullName))
-            .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(_ => DateTime.UtcNow)) 
-            .ForSourceMember(src => src.Password, opt => opt.DoNotValidate()) 
-            .ForSourceMember(src => src.ConfirmedPassword, opt => opt.DoNotValidate());
-
-
-        CreateMap<Plugin, PluginViewModel>();
-        CreateMap<PluginViewModel, Plugin>()
-            .ForMember(dest => dest.CreatedAt, opt => opt.Ignore()) // Managed by the system
-            .ForMember(dest => dest.UpdatedAt, opt => opt.Ignore());
-
-
-
-
-
-
-
-
             .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(_ => DateTime.UtcNow))
             .ForSourceMember(src => src.Password, opt => opt.DoNotValidate())
             .ForSourceMember(src => src.ConfirmedPassword, opt => opt.DoNotValidate());
+
         #endregion
 
+        #region Plugin
+
+        CreateMap<Plugin, PluginViewModel>();
+
+        CreateMap<PluginViewModel, Plugin>()
+            .ForMember(dest => dest.CreatedAt, opt => opt.Ignore())   // System-managed
+            .ForMember(dest => dest.UpdatedAt, opt => opt.Ignore());  // System-managed
+
+        #endregion
         #region Course
         // Map from CourseViewModel to Course
         CreateMap<CourseViewModel, Course>()
