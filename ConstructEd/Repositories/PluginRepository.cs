@@ -49,9 +49,5 @@ namespace ConstructEd.Repositories
             await Task.CompletedTask;
         }
 
-        Task<int> IRepository<Plugin>.SaveAsync()
-        {
-            throw new NotImplementedException();
-        }
     }
 }
