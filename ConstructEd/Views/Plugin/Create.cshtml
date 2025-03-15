@@ -22,6 +22,9 @@
         <input asp-for="Price" class="form-control" />
         <span asp-validation-for="Price" class="text-danger"></span>
     </div>
+    <select asp-for="Category" asp-items="@ViewBag.Categories">
+        <option value="">-- Select Category --</option>
+    </select>
 
     <div class="form-group mt-3">
         <button type="submit" class="btn btn-success">Create</button>
