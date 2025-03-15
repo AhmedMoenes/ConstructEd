@@ -25,5 +25,6 @@ namespace ConstructEd.Models
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
         public ICollection<Enrollment>Enrollments { get; set; } = new HashSet<Enrollment>();
         public ICollection<CourseContent> CourseContents { get; set; }=new HashSet<CourseContent>(); 
+        public ICollection<ShoppingCart> ShoppingCarts { get; set; }=new HashSet<ShoppingCart>(); 
     }
 }

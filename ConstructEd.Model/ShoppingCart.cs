@@ -1,15 +1,17 @@
-﻿  using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace ConstructEd.Models
 {
-    public class Enrollment
+    public class ShoppingCart
     {
         [Key]
         public int Id { get; set; }
-        public DateTime EnrollmentDate { get; set; } = DateTime.UtcNow;
-        public double? Progress { get; set; } = 0.00;
-       //removing wish list from from enrollment...
         // Navigation Properties
         [ForeignKey("User")]
         public string UserId { get; set; }
