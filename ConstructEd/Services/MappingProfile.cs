@@ -9,11 +9,13 @@ public class MappingProfile : Profile
     public MappingProfile()
     {
         // Payment to PaymentViewModel mapping (For displaying payments) // Fix?
+        #region Payment
         CreateMap<Payment, PaymentViewModel>()
-            .ForMember(dest => dest.TransactionID, opt => opt.MapFrom(src => src.TransactionID))
-            .ForMember(dest => dest.CardNumber, opt => opt.Ignore()) // Don't expose full card number
-            .ForMember(dest => dest.ExpiryDate, opt => opt.MapFrom(src => src.ExpiryDate))
-            .ForMember(dest => dest.Amount, opt => opt.MapFrom(src => src.Amount));
+        .ForMember(dest => dest.TransactionID, opt => opt.MapFrom(src => src.TransactionID))
+        .ForMember(dest => dest.CardNumber, opt => opt.Ignore()) // Don't expose full card number
+        .ForMember(dest => dest.ExpiryDate, opt => opt.MapFrom(src => src.ExpiryDate))
+        .ForMember(dest => dest.Amount, opt => opt.MapFrom(src => src.Amount));
+        #endregion
 
         // PaymentViewModel to Payment mapping (For processing payments)
         CreateMap<PaymentViewModel, Payment>()
@@ -45,8 +47,20 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => src.FullName))
             .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(_ => DateTime.UtcNow)) 
             .ForSourceMember(src => src.Password, opt => opt.DoNotValidate()) 
-            .ForSourceMember(src => src.ConfirmedPassword, opt => opt.DoNotValidate()); 
+            .ForSourceMember(src => src.ConfirmedPassword, opt => opt.DoNotValidate());
 
-        
+
+        CreateMap<Plugin, PluginViewModel>();
+        CreateMap<PluginViewModel, Plugin>()
+            .ForMember(dest => dest.CreatedAt, opt => opt.Ignore()) // Managed by the system
+            .ForMember(dest => dest.UpdatedAt, opt => opt.Ignore());
+
+
+
+
+
+
+
+
     }
 }
