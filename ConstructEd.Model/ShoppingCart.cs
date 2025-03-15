@@ -20,5 +20,9 @@ namespace ConstructEd.Models
         [ForeignKey("Course")]
         public int CourseId { get; set; }
         public Course? Course { get; set; }
+        [ForeignKey("Plugin")]
+        public int PluginId { get; set; }
+        public Plugin? Plugin { get; set; }
+
     }
 }
