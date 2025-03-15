@@ -4,7 +4,6 @@ namespace ConstructEd.ViewModels
 {
     public class PaymentViewModel
     {
-        public int Id { get; set; }
 
         [Required]
         [StringLength(50)]

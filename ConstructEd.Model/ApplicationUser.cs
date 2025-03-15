@@ -8,6 +8,8 @@ namespace ConstructEd.Models
         // Extended Properties
         public string FullName { get; set; }
         public DateTime CreatedAt { get; set; }
+
+        // HashSet: ------
         public virtual ICollection<Enrollment> Enrollments { get; set; } = new HashSet<Enrollment>();
         public virtual IEnumerable<Payment> Payments { get; set; } = new HashSet<Payment>();
     }

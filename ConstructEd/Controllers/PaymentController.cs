@@ -65,7 +65,6 @@ namespace ConstructEd.Controllers
                     Amount = paymentViewModel.Amount,
                     PaymentDate = DateTime.Parse(paymentViewModel.PaymentDate),
                     TransactionId = paymentViewModel.TransactionId,
-                    Status = Enum.Parse<PaymentStatus>(paymentViewModel.Status),
                     UserId = User.FindFirstValue(ClaimTypes.NameIdentifier),
                     CourseId = int.Parse(paymentViewModel.CourseTitle) // Assuming CourseTitle is used to pass CourseId
                 };

@@ -7,5 +7,6 @@ namespace ConstructEd.Repositories
     {
         Task<Enrollment?> GetByUserAndCourseAsync(string userId, int courseId);
         Task<List<Enrollment>> GetByUserIdAsync(string userId);
+        Task<List<Enrollment>> GetByCourseIdAsync(string courseId);
     }
 }
