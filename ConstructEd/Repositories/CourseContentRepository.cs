@@ -18,7 +18,8 @@ namespace ConstructEd.Repositories
             var entity = await GetByIdAsync(id);
             if (entity != null)
             {
-                _dataContext.Remove(entity);
+                _dataContext.CourseContents.Remove(entity);
+                await SaveAsync(); 
             }
         }
 
@@ -38,18 +39,19 @@ namespace ConstructEd.Repositories
 
         public async Task InsertAsync(CourseContent obj)
         {
-            await _dataContext.AddAsync(obj);
+            await _dataContext.CourseContents.AddAsync(obj);
+            await SaveAsync(); 
         }
 
         public async Task SaveAsync()
         {
-             await _dataContext.SaveChangesAsync();
+            await _dataContext.SaveChangesAsync();
         }
 
         public async Task UpdateAsync(CourseContent obj)
         {
-            _dataContext.Update(obj); 
-            await Task.CompletedTask;
+            _dataContext.CourseContents.Update(obj);
+            await SaveAsync(); 
         }
     }
 }

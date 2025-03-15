@@ -60,9 +60,16 @@
     <partial name="_ValidationScriptsPartial" />
 
     <script>
-        // Automatically open modal when the page loads (optional)
         $(document).ready(function () {
+            // Automatically open modal when the page loads (optional)
             $('#paymentModal').modal('show');
+
+            // Format card number input
+            $('#CardNumber').on('input', function (e) {
+                let value = $(this).val().replace(/\D/g, ''); // Remove non-numeric characters
+                value = value.replace(/(\d{4})/g, '$1 ').trim(); // Add space every 4 digits
+                $(this).val(value);
+            });
         });
     </script>
 }

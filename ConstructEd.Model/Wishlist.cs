@@ -17,6 +17,9 @@ namespace ConstructEd.Models
         [ForeignKey("Course")]
         public int CourseId { get; set; }
         public Course? Course { get; set; }
+        [ForeignKey("Plugin")]
+        public int PluginId { get; set; }
+        public Plugin? Plugin { get; set; }
 
         public DateTime AddedOn { get; set; } // Optional: To track when the product was added to the wishlist
     }
