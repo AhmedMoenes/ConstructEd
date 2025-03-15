@@ -6,21 +6,25 @@ public class MappingProfile : Profile
 {
     public MappingProfile()
     {
-        #region Payment
         // Payment to PaymentViewModel mapping (For displaying payments) // Fix?
         #region Payment
-        CreateMap<Payment, PaymentViewModel>()
-        .ForMember(dest => dest.TransactionID, opt => opt.MapFrom(src => src.TransactionID))
-        .ForMember(dest => dest.CardNumber, opt => opt.Ignore()) // Don't expose full card number
-        .ForMember(dest => dest.ExpiryDate, opt => opt.MapFrom(src => src.ExpiryDate))
-        .ForMember(dest => dest.Amount, opt => opt.MapFrom(src => src.Amount));
-        #endregion
 
-        // PaymentViewModel to Payment mapping (For processing payments)
+        CreateMap<Payment, PaymentViewModel>()
+             .ForMember(dest => dest.TransactionID, opt => opt.MapFrom(src => src.TransactionID))
+             .ForMember(dest => dest.MaskedCardNumber, opt => opt.MapFrom(src => src.MaskedCardNumber)) // Ensure display of masked number
+             .ForMember(dest => dest.ExpiryDate, opt => opt.MapFrom(src => src.ExpiryDate))
+             .ForMember(dest => dest.Amount, opt => opt.MapFrom(src => src.Amount))
+             .ForMember(dest => dest.CardNumber, opt => opt.Ignore()); // Prevent exposing raw card number
+
         CreateMap<PaymentViewModel, Payment>()
-            .ForMember(dest => dest.MaskedCardNumber, opt => opt.MapFrom(src => "**** **** **** " + src.CardNumber.Substring(src.CardNumber.Length - 4))) // Masking card number
-            .ForMember(dest => dest.Status, opt => opt.MapFrom(src => PaymentStatus.Pending)) // Default status before processing
+            .ForMember(dest => dest.MaskedCardNumber, opt => opt.MapFrom(src =>
+                !string.IsNullOrEmpty(src.CardNumber) && src.CardNumber.Length >= 4
+                ? "**** **** **** " + src.CardNumber.Substring(src.CardNumber.Length - 4)
+                : "**** **** **** ****")) // Ensure masking
+            .ForMember(dest => dest.Status, opt => opt.MapFrom(_ => PaymentStatus.Pending)) // Default status before processing
             .ForMember(dest => dest.PaymentDate, opt => opt.MapFrom(_ => DateTime.UtcNow));
+
+
         #endregion
 
         #region ApplicationUser
@@ -56,7 +60,7 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.InstructorId, opt => opt.MapFrom(src => src.InstructorId))
             .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(src => src.CreatedAt))
             .ForMember(dest => dest.UpdatedAt, opt => opt.MapFrom(src => src.UpdatedAt));
-        
+
         // Map from Course to CourseViewModel
         CreateMap<Course, CourseViewModel>()
             .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
