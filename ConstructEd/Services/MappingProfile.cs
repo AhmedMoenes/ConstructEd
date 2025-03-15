@@ -36,17 +36,66 @@ public class MappingProfile : Profile
         //    .ForMember(dest => dest.ModifiedAt, opt => opt.MapFrom(src => src.ModifiedAt != null ? src.ModifiedAt.Value.ToString("yyyy-MM-dd HH:mm:ss") : null));
         #endregion
 
+        #region ApplicationUser
+        // **** ReCheck **** //
         // Mappings for ApplicationUser and RegisterViewModel
-        // Source --> Destination
         CreateMap<RegisterViewModel, ApplicationUser>()
-            .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.Email)) // Fix?
+            .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.Email)) 
             .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email))
             .ForMember(dest => dest.PhoneNumber, opt => opt.MapFrom(src => src.PhoneNumber))
             .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => src.FullName))
-            .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(_ => DateTime.UtcNow)) 
-            .ForSourceMember(src => src.Password, opt => opt.DoNotValidate()) 
-            .ForSourceMember(src => src.ConfirmedPassword, opt => opt.DoNotValidate()); 
+            .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(_ => DateTime.UtcNow))
+            .ForSourceMember(src => src.Password, opt => opt.DoNotValidate())
+            .ForSourceMember(src => src.ConfirmedPassword, opt => opt.DoNotValidate());
+        #endregion
 
+        #region Course
+        // Map from CourseViewModel to Course
+        CreateMap<CourseViewModel, Course>()
+            .ForMember(dest => dest.Title, opt => opt.MapFrom(src => src.Title))
+            .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Description))
+            .ForMember(dest => dest.Price, opt => opt.MapFrom(src => src.Price))
+            .ForMember(dest => dest.Duration, opt => opt.MapFrom(src => src.Duration))
+            .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Category))
+            .ForMember(dest => dest.InstructorId, opt => opt.MapFrom(src => src.InstructorId))
+            .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(src => src.CreatedAt))
+            .ForMember(dest => dest.UpdatedAt, opt => opt.MapFrom(src => src.UpdatedAt));
         
+        // Map from Course to CourseViewModel
+        CreateMap<Course, CourseViewModel>()
+            .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+            .ForMember(dest => dest.Title, opt => opt.MapFrom(src => src.Title))
+            .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Description))
+            .ForMember(dest => dest.Price, opt => opt.MapFrom(src => src.Price))
+            .ForMember(dest => dest.Duration, opt => opt.MapFrom(src => src.Duration))
+            .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Category))
+            .ForMember(dest => dest.InstructorId, opt => opt.MapFrom(src => src.InstructorId))
+            .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(src => src.CreatedAt))
+            .ForMember(dest => dest.UpdatedAt, opt => opt.MapFrom(src => src.UpdatedAt));
+        #endregion
+
+        #region Instructor
+        // Map from Instructor to InstructorViewModel
+        CreateMap<Instructor, InstructorViewModel>()
+            .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+            .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
+            .ForMember(dest => dest.Bio, opt => opt.MapFrom(src => src.Bio))
+            .ForMember(dest => dest.ProfilePicture, opt => opt.MapFrom(src => src.ProfilePicture))
+            .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(src => src.CreatedAt))
+            .ForMember(dest => dest.UpdatedAt, opt => opt.MapFrom(src => src.UpdatedAt));
+
+        // Map from InstructorViewModel to Instructor
+        CreateMap<InstructorViewModel, Instructor>()
+            .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+            .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
+            .ForMember(dest => dest.Bio, opt => opt.MapFrom(src => src.Bio))
+            .ForMember(dest => dest.ProfilePicture, opt => opt.MapFrom(src => src.ProfilePicture))
+            .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(src => src.CreatedAt))
+            .ForMember(dest => dest.UpdatedAt, opt => opt.MapFrom(src => src.UpdatedAt));
+        #endregion
+
+        #region CourseContent
+
+        #endregion
     }
 }
