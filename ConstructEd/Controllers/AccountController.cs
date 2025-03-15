@@ -1,36 +1,59 @@
-﻿using ConstructEd.ViewModels;
+﻿using AutoMapper;
+using ConstructEd.Repositories;
+using ConstructEd.Services;
+using ConstructEd.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ConstructEd.Controllers
 {
     public class AccountController : Controller
     {
-        public IActionResult Index()
+        private readonly IAuthService _authService;
+        private readonly IMapper _mapper;
+
+        public AccountController(IAuthService authService, IMapper mapper)
         {
-            return View();
+            _authService = authService;
+            _mapper = mapper;
         }
 
         [HttpGet]
         public IActionResult Register()
         {
-            return View("Register"); 
+            return View("Register");
         }
 
         [HttpPost]
-        public async Task<IActionResult> Register(RegisterViewModel registerModel)
+        public async Task<IActionResult> Register(RegisterViewModel model)
         {
             if (ModelState.IsValid)
             {
-                // Create user logic
-                return RedirectToAction("Login"); // Redirects to the Login action
+                var result = await _authService.RegisterUserAsync(model);
+
+                if (result.Succeeded)
+                {
+                    // Automatically login after registration
+                    await _authService.LoginUserAsync(new LoginViewModel
+                    {
+                        Email = model.Email,
+                        Password = model.Password
+                    });
+
+                    return RedirectToAction("Index", "Home");
+                }
+
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description);
+                }
             }
-            return View(registerModel);
+            return View(model);
         }
 
         [HttpGet]
         public IActionResult Login()
         {
-            return View(); // Returns Views/Account/Login.cshtml
+            return View("Login");
         }
 
         [HttpPost]
@@ -38,14 +61,22 @@ namespace ConstructEd.Controllers
         {
             if (ModelState.IsValid)
             {
-                // Login logic
-                return RedirectToAction("Index", "Home"); // Redirects to the Home/Index action
+                var result = await _authService.LoginUserAsync(model);
+
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+
+                ModelState.AddModelError(string.Empty, "Invalid login attempt");
             }
-            return View(model); // Returns Views/Account/Login.cshtml with validation errors
+            return View(model);
         }
 
-        public async Task<IActionResult> Logout(LoginViewModel loginModel)
+        [HttpPost]
+        public async Task<IActionResult> Logout()
         {
+            await _authService.LogoutAsync();
             return RedirectToAction("Index", "Home");
         }
 

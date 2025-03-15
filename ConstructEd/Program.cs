@@ -19,11 +19,15 @@ namespace ConstructEd
             builder.Services.AddScoped<ICourseRepository, CourseRepository>();
             builder.Services.AddScoped<IEnrollmentRepository, EnrollmentRepository>();
             builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
+            builder.Services.AddScoped<IAuthService, AuthService>();
 
             builder.Services.AddDbContext<DataContext>(options =>
                      options.UseSqlServer(builder.Configuration.GetConnectionString("CS")));
 
-            builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+            builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+            {
+                options.User.RequireUniqueEmail = true;
+            })
             .AddEntityFrameworkStores<DataContext>()
             .AddDefaultTokenProviders();
 

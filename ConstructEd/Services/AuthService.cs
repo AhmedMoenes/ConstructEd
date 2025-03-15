@@ -9,24 +9,38 @@ public class AuthService : IAuthService
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly SignInManager<ApplicationUser> _signInManager;
     private readonly IMapper _mapper;
+    private readonly RoleManager<IdentityRole> _roleManager;
 
     public AuthService(
         UserManager<ApplicationUser> userManager,
         SignInManager<ApplicationUser> signInManager,
+        RoleManager<IdentityRole> roleManager,
         IMapper mapper)
     {
         _userManager = userManager;
         _signInManager = signInManager;
+        _roleManager = roleManager;
         _mapper = mapper;
     }
 
     public async Task<IdentityResult> RegisterUserAsync(RegisterViewModel model)
     {
         var user = _mapper.Map<ApplicationUser>(model);
-        user.UserName = model.Email; 
         user.CreatedAt = DateTime.UtcNow;
 
         var result = await _userManager.CreateAsync(user, model.Password);
+
+        if (result.Succeeded)
+        {
+            const string defaultRole = "User";
+            var roleExists = await _roleManager.RoleExistsAsync(defaultRole);
+            if (!roleExists)
+            {
+                await _roleManager.CreateAsync(new IdentityRole(defaultRole));
+            }
+
+            await _userManager.AddToRoleAsync(user, defaultRole);
+        }
 
         return result;
     }
