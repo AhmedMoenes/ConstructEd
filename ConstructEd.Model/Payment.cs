@@ -15,7 +15,7 @@ namespace ConstructEd.Models
     {
         
         [Key]
-        public int PaymentId { get; set; } // Primary Key
+        public int Id { get; set; } // Primary Key
 
         [Required]
         public string CardHolderName { get; set; }
@@ -30,9 +30,19 @@ namespace ConstructEd.Models
         public decimal Amount { get; set; }
 
         [Required]
+        public Guid TransactionID { get; set; } = Guid.NewGuid(); 
+
+        [Required]
         public PaymentStatus Status { get; set; } // e.g., "Success", "Failed", "Pending"
 
         public DateTime PaymentDate { get; set; } = DateTime.Now; // Auto-generated timestamp
+
+        // Foreign Key to User
+        [Required]
+        public string UserId { get; set; } // User who made the payment
+
+        [ForeignKey("UserId")]
+        public virtual ApplicationUser? User { get; set; } // Navigation Property
 
         #region old code
         //[Key]

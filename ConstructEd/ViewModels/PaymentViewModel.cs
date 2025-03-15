@@ -14,6 +14,9 @@ namespace ConstructEd.ViewModels
         [Display(Name = "Card Holder Name")]
         public string CardHolderName { get; set; }
 
+        [Display(Name = "Transaction ID")]
+        public int? TransactionID { get; set; }
+
         [Required]
         [RegularExpression(@"^(0[1-9]|1[0-2])\/?([0-9]{2})$", ErrorMessage = "Expiry date must be in MM/YY format.")]
         [Display(Name = "Expiry Date (MM/YY)")]

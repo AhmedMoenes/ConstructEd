@@ -1,0 +1,15 @@
+﻿using ConstructEd.ViewModels;
+
+namespace ConstructEd.Services
+{
+    public class FakePaymentService
+    {
+        private static readonly Random _random = new();
+
+        public bool ProcessPayment(PaymentViewModel payment)
+        {
+            // Simulate failure in 30% of cases
+            return _random.Next(1, 101) > 30;
+        }
+    }
+}

@@ -10,13 +10,13 @@ public class MappingProfile : Profile
     {
         // Payment to PaymentViewModel mapping (For displaying payments)
         CreateMap<Payment, PaymentViewModel>()
+            .ForMember(dest => dest.TransactionID, opt => opt.MapFrom(src => src.TransactionID))
             .ForMember(dest => dest.CardNumber, opt => opt.Ignore()) // Don't expose full card number
             .ForMember(dest => dest.ExpiryDate, opt => opt.MapFrom(src => src.ExpiryDate))
             .ForMember(dest => dest.Amount, opt => opt.MapFrom(src => src.Amount));
 
         // PaymentViewModel to Payment mapping (For processing payments)
         CreateMap<PaymentViewModel, Payment>()
-            .ForMember(dest => dest.PaymentId, opt => opt.Ignore()) // Auto-generated
             .ForMember(dest => dest.MaskedCardNumber, opt => opt.MapFrom(src => "**** **** **** " + src.CardNumber.Substring(src.CardNumber.Length - 4))) // Masking card number
             .ForMember(dest => dest.Status, opt => opt.MapFrom(src => PaymentStatus.Pending)) // Default status before processing
             .ForMember(dest => dest.PaymentDate, opt => opt.MapFrom(_ => DateTime.UtcNow));

@@ -1,51 +1,68 @@
-﻿@model ConstructEd.ViewModels.PaymentViewModel
+﻿@model PaymentViewModel
+
 @{
-    ViewData["Title"] = "Create Payment";
+    ViewData["Title"] = "Make a Payment";
 }
 
-<h1>Create New Payment</h1>
+<!-- Button to Open the Modal -->
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#paymentModal">
+    Make a Payment
+</button>
 
-<form asp-controller="Payment" asp-action="Create" method="post">
-    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<!-- Payment Modal -->
+<div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="paymentModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="paymentModalLabel">Payment Form</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form asp-action="ProcessPayment" method="post" id="paymentForm">
+                    <div class="mb-3">
+                        <label asp-for="CardNumber" class="form-label"></label>
+                        <input asp-for="CardNumber" class="form-control" />
+                        <span asp-validation-for="CardNumber" class="text-danger"></span>
+                    </div>
 
-    <div class="form-group">
-        <label asp-for="TransactionId">Transaction ID</label>
-        <input asp-for="TransactionId" class="form-control" />
-        <span asp-validation-for="TransactionId" class="text-danger"></span>
+                    <div class="mb-3">
+                        <label asp-for="CardHolderName" class="form-label"></label>
+                        <input asp-for="CardHolderName" class="form-control" />
+                        <span asp-validation-for="CardHolderName" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="ExpiryDate" class="form-label"></label>
+                        <input asp-for="ExpiryDate" class="form-control" placeholder="MM/YY" />
+                        <span asp-validation-for="ExpiryDate" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="CVV" class="form-label"></label>
+                        <input asp-for="CVV" class="form-control" />
+                        <span asp-validation-for="CVV" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Amount" class="form-label"></label>
+                        <input asp-for="Amount" class="form-control" />
+                        <span asp-validation-for="Amount" class="text-danger"></span>
+                    </div>
+
+                    <button type="submit" class="btn btn-success">Submit Payment</button>
+                </form>
+            </div>
+        </div>
     </div>
-
-    <div class="form-group">
-        <label asp-for="Amount">Amount</label>
-        <input asp-for="Amount" class="form-control" type="number" step="0.01" />
-        <span asp-validation-for="Amount" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="PaymentDate">Payment Date</label>
-        <input asp-for="PaymentDate" class="form-control" value="@DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")" />
-        <span asp-validation-for="PaymentDate" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="Status">Status</label>
-        <select asp-for="Status" class="form-control">
-            <option value="Pending">Pending</option>
-            <option value="Completed">Completed</option>
-            <option value="Failed">Failed</option>
-        </select>
-        <span asp-validation-for="Status" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="CourseId">Course ID</label>
-        <input asp-for="CourseId" class="form-control" type="number" />
-        <span asp-validation-for="CourseId" class="text-danger"></span>
-    </div>
-
-    <button type="submit" class="btn btn-primary">Create Payment</button>
-    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
-</form>
+</div>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        // Automatically open modal when the page loads (optional)
+        $(document).ready(function () {
+            $('#paymentModal').modal('show');
+        });
+    </script>
 }
