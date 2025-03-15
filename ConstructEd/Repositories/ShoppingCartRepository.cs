@@ -65,5 +65,13 @@ namespace ConstructEd.Repositories
             await _context.SaveChangesAsync();
         }
 
+        Task IRepository<ShoppingCart>.SaveAsync()
+        {
+            return SaveAsync();
+        }
+        Task IRepository<ShoppingCart>.SaveAsync()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
