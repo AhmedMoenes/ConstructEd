@@ -2,21 +2,24 @@
 
 namespace ConstructEd.Models
 {
-    public enum Category:byte
+    public enum Category : byte
     {
-       Programming_Basics,
-       Desktop_Development,
-       Web_Development,
-       BIM_Modelling,
-       BIM_Management,
-       GIS,
-       AI
+        Programming_Basics,
+        Desktop_Development,
+        Web_Development,
+        BIM_Modelling,
+        BIM_Management,
+        GIS,
+        AI
     }
     public class Course
     {
         [Key]
         public int Id { get; set; }
+        [Required]
         public string Title { get; set; }
+        [Required]
+
         public string Description { get; set; }
         [Required]
         [DataType(DataType.Currency)]
@@ -25,10 +28,10 @@ namespace ConstructEd.Models
         public Category Category { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
-        public ICollection<Enrollment>Enrollments { get; set; } = new HashSet<Enrollment>();
-        public ICollection<CourseContent> CourseContents { get; set; }=new HashSet<CourseContent>(); 
-        public ICollection<ShoppingCart> ShoppingCarts { get; set; }=new HashSet<ShoppingCart>();
-        public ICollection<Wishlist> Wishlists { get; set; }
+        public ICollection<Enrollment>? Enrollments { get; set; } = new HashSet<Enrollment>();
+        public ICollection<CourseContent>? CourseContents { get; set; } = new HashSet<CourseContent>();
+        public ICollection<ShoppingCart>? ShoppingCarts { get; set; } = new HashSet<ShoppingCart>();
+        public ICollection<Wishlist>? Wishlists { get; set; }
 
     }
 }
