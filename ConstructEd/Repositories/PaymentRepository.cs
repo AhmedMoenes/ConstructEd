@@ -50,9 +50,34 @@ namespace ConstructEd.Repositories
             }
         }
 
-        public async Task<int> SaveAsync()
+        public async Task SaveAsync()
         {
-            return await _dataContext.SaveChangesAsync();
+             _dataContext.SaveChangesAsync();
+        }
+
+        public Task<int> GetTotalCountAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ICollection<Payment>> GetPaginatedAsync(int pageNumber, int pageSize)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ICollection<Payment>> GetByCourseIdAsync(int courseId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ICollection<Payment>> GetByUserIdAsync(string userId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Payment> GetByTransactionIdAsync(string transactionId)
+        {
+            throw new NotImplementedException();
         }
     }
 

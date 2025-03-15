@@ -18,6 +18,8 @@ namespace ConstructEd.Models
         public int Id { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
+        [Required]
+        [DataType(DataType.Currency)]
         public decimal Price { get; set; }
         public decimal Duration { get; set; }
         public Category Category { get; set; }

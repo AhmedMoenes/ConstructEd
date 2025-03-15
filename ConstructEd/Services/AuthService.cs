@@ -8,8 +8,8 @@ public class AuthService : IAuthService
 {
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly SignInManager<ApplicationUser> _signInManager;
-    private readonly IMapper _mapper;
     private readonly RoleManager<IdentityRole> _roleManager;
+    private readonly IMapper _mapper;
 
     public AuthService(
         UserManager<ApplicationUser> userManager,
@@ -44,7 +44,13 @@ public class AuthService : IAuthService
 
         return result;
     }
-
+    public async Task<IdentityResult> AddRoleAsync(RoleViewModel model)
+    {
+        IdentityRole role = new IdentityRole();
+        role.Name = model.RoleName;
+        IdentityResult result = await _roleManager.CreateAsync(role);
+        return result;
+    }
     public async Task<SignInResult> LoginUserAsync(LoginViewModel model)
     {
         return await _signInManager.PasswordSignInAsync(

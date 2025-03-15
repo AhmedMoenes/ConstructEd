@@ -6,25 +6,25 @@ namespace ConstructEd.Repositories
 {
     public class EnrollmentRepository : IEnrollmentRepository
     {
-        private readonly DataContext dataContext;
+        private readonly DataContext _dataContext;
 
         public EnrollmentRepository(DataContext dataContext)
         {
-            this.dataContext = dataContext;
+            _dataContext = dataContext;
         }
 
         public async Task DeleteAsync(int id)
         {
-            var emp = await GetByIdAsync(id);
-            if (emp != null)
+            var entity = await GetByIdAsync(id);
+            if (entity != null)
             {
-                dataContext.Remove(emp);
+                _dataContext.Remove(entity);
             }
         }
 
         public async Task<ICollection<Enrollment>> GetAllAsync()
         {
-            return await dataContext.Enrollments
+            return await _dataContext.Enrollments
                 .Include(n => n.Course)
                 .Include(b => b.User)
                 .ToListAsync();
@@ -37,7 +37,7 @@ namespace ConstructEd.Repositories
 
         public async Task<Enrollment> GetByIdAsync(int id)
         {
-            return await dataContext.Enrollments
+            return await _dataContext.Enrollments
                 .Include(n => n.Course)
                 .Include(b => b.User)
                 .FirstOrDefaultAsync(e => e.Id == id);
@@ -45,13 +45,13 @@ namespace ConstructEd.Repositories
 
         public async Task<Enrollment?> GetByUserAndCourseAsync(string userId, int courseId)
         {
-            return await dataContext.Enrollments
+            return await _dataContext.Enrollments
                          .FirstOrDefaultAsync(e => e.UserId == userId && e.CourseId == courseId);
         }
 
         public async Task<List<Enrollment>> GetByUserIdAsync(string userId)
         {
-            return await dataContext.Enrollments
+            return await _dataContext.Enrollments
                         .Include(e => e.Course)
                         .Where(e => e.UserId == userId)
                         .ToListAsync();
@@ -59,17 +59,17 @@ namespace ConstructEd.Repositories
 
         public async Task InsertAsync(Enrollment obj)
         {
-            await dataContext.AddAsync(obj);
+            await _dataContext.AddAsync(obj);
         }
 
-        public async Task<int> SaveAsync()
+        public async Task SaveAsync()
         {
-            return await dataContext.SaveChangesAsync();
+            await _dataContext.SaveChangesAsync();
         }
 
         public async Task UpdateAsync(Enrollment obj)
         {
-            dataContext.Update(obj); 
+            _dataContext.Update(obj); 
             await Task.CompletedTask;
         }
     }

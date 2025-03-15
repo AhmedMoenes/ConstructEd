@@ -12,6 +12,6 @@
 
         Task DeleteAsync(int id);
 
-        Task<int> SaveAsync();
+        Task SaveAsync();
     }
 }
