@@ -66,6 +66,9 @@ namespace ConstructEd.Repositories
             return await _context.SaveChangesAsync();
         }
 
-       
+        Task IRepository<ShoppingCart>.SaveAsync()
+        {
+            return SaveAsync();
+        }
     }
 }

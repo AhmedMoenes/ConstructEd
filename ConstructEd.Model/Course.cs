@@ -16,16 +16,20 @@ namespace ConstructEd.Models
     {
         [Key]
         public int Id { get; set; }
+
         [Required]
         public string Title { get; set; }
-        [Required]
 
+        [Required]
         public string Description { get; set; }
+
         [Required]
         [DataType(DataType.Currency)]
         public decimal Price { get; set; }
         public decimal Duration { get; set; }
         public Category Category { get; set; }
+        public int InstructorId { get; set; }
+        public Instructor Instructor { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
         public ICollection<Enrollment>? Enrollments { get; set; } = new HashSet<Enrollment>();
