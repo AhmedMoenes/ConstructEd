@@ -11,6 +11,7 @@ namespace ConstructEd.Data
         public DbSet<CourseContent> CourseContents { get; set; }
         public DbSet<Enrollment> Enrollments { get; set; }
         public DbSet<Payment> Payments { get; set; }
+        public DbSet<ShoppingCart> ShoppingCarts { get; set; }
         public DbSet<Wishlist> Wishlists { get; set; }
 
     }
