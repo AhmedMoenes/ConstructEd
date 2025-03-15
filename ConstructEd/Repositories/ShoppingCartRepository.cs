@@ -70,5 +70,9 @@ namespace ConstructEd.Repositories
         {
             return SaveAsync();
         }
+        Task IRepository<ShoppingCart>.SaveAsync()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

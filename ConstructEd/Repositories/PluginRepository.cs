@@ -48,5 +48,10 @@ namespace ConstructEd.Repositories
             _dataContext.Update(obj);
             await Task.CompletedTask;
         }
+
+        Task<int> IRepository<Plugin>.SaveAsync()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
