@@ -1,0 +1,18 @@
+﻿@model ConstructEd.ViewModels.CourseContentViewModel
+
+@{
+    ViewData["Title"] = "Create";
+    SelectList coursesList = new SelectList(ViewBag.CoursList, "CourseId", "Title");
+}
+
+
+
+						<div class="form-group mb-3">
+							<label asp-for="CourseId" class="form-label">Course</label>
+							<select asp-for="CourseId" class="form-control" asp-items="coursesList">
+								<option value="0">--Select Course --</option>
+							 </select>
+							<span asp-validation-for="CourseId" class="text-danger"></span>
+						</div>
+<h1>Create</h1>
+

@@ -30,7 +30,9 @@ namespace ConstructEd.Repositories
 
         public async Task<Course> GetByIdAsync(int id)
         {
-            return await _dataContext.Courses.FirstOrDefaultAsync(e => e.Id == id);
+            return await _dataContext.Courses
+                             .Include(c => c.Instructor) // Include the Instructor
+                             .FirstOrDefaultAsync(c => c.Id == id);
         }
 
         public async Task InsertAsync(Course obj)
@@ -49,5 +51,12 @@ namespace ConstructEd.Repositories
             _dataContext.Courses.Update(obj);
             await SaveAsync(); 
         }
+
+        public ICollection<string> GetCategories()
+        {
+            var categories = Enum.GetNames(typeof(Category));
+            return categories;
+        }
+
     }
 }

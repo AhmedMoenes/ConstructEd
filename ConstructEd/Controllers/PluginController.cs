@@ -9,26 +9,28 @@ namespace ConstructEd.Controllers
 {
     public class PluginController : Controller
     {
-        private readonly IPluginRepository _repository;
+        private readonly IPluginRepository _pluginRepository;
         private readonly IMapper _mapper;
 
         public PluginController(IPluginRepository repository, IMapper mapper)
         {
-            _repository = repository;
+            _pluginRepository = repository;
             _mapper = mapper;
         }
 
         public async Task<IActionResult> Index()
         {
-            var plugins = await _repository.GetAllAsync();
+            var plugins = await _pluginRepository.GetAllAsync();
             var viewModels = _mapper.Map<List<PluginViewModel>>(plugins);
             return View(viewModels);
         }
+
         [HttpGet]
         public IActionResult Create()
         {
             return View();
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(PluginViewModel viewModel)
@@ -48,15 +50,28 @@ namespace ConstructEd.Controllers
                 Text = e.ToString().Replace("_", " "), // Directly format here
                 Value = e.ToString()
             }));
-                await _repository.InsertAsync(plugin);
-                await _repository.SaveAsync();
+                await _pluginRepository.InsertAsync(plugin);
+                await _pluginRepository.SaveAsync();
                 return RedirectToAction("Index");
             }
             return View(viewModel);
         }
+        
+        [HttpGet]
+        public async Task<IActionResult> Details(int id)
+        {
+            var plugin = await _pluginRepository.GetByIdAsync(id);
+            if (plugin == null)
+            {
+                return NotFound();
+            }
+            var viewModel = _mapper.Map<PluginViewModel>(plugin);
+            return View(nameof(Details), plugin);
+        }
+
         public async Task<IActionResult> Edit(int id)
         {
-            var plugin = await _repository.GetByIdAsync(id);
+            var plugin = await _pluginRepository.GetByIdAsync(id);
             if (plugin == null)
             {
                 return NotFound();
@@ -64,6 +79,7 @@ namespace ConstructEd.Controllers
             var viewModel = _mapper.Map<PluginViewModel>(plugin);
             return View(viewModel);
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, PluginViewModel viewModel)
@@ -75,7 +91,7 @@ namespace ConstructEd.Controllers
 
             if (ModelState.IsValid)
             {
-                var existingPlugin = await _repository.GetByIdAsync(id);
+                var existingPlugin = await _pluginRepository.GetByIdAsync(id);
                 if (existingPlugin == null)
                 {
                     return NotFound();
@@ -85,15 +101,15 @@ namespace ConstructEd.Controllers
                 _mapper.Map(viewModel, existingPlugin);
                 existingPlugin.UpdatedAt = DateTime.UtcNow; // Update timestamp
 
-                _repository.UpdateAsync(existingPlugin);
-                await _repository.SaveAsync();
+                _pluginRepository.UpdateAsync(existingPlugin);
+                await _pluginRepository.SaveAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(viewModel);
         }
         public async Task<IActionResult> Delete(int id)
         {
-            var plugin = await _repository.GetByIdAsync(id);
+            var plugin = await _pluginRepository.GetByIdAsync(id);
             if (plugin == null)
             {
                 return NotFound();
@@ -101,12 +117,13 @@ namespace ConstructEd.Controllers
             var viewModel = _mapper.Map<PluginViewModel>(plugin);
             return View(viewModel);
         }
-        [HttpPost, ActionName("Delete")]
+
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            await _repository.DeleteAsync(id);
-            await _repository.SaveAsync();
+            await _pluginRepository.DeleteAsync(id);
+            await _pluginRepository.SaveAsync();
             return RedirectToAction(nameof(Index));
         }
 

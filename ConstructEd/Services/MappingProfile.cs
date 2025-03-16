@@ -115,5 +115,29 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.Order, opt => opt.MapFrom(src => src.Order))
             .ForMember(dest => dest.CourseId, opt => opt.MapFrom(src => src.CourseId));
         #endregion
+
+        #region CourseDetails
+        // Map from CourseDetailsViewModel to Course
+        CreateMap<CourseDetailsViewModel, Course>()
+            .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+            .ForMember(dest => dest.Title, opt => opt.MapFrom(src => src.Title))
+            .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Description))
+            .ForMember(dest => dest.Price, opt => opt.MapFrom(src => src.Price))
+            .ForMember(dest => dest.Duration, opt => opt.MapFrom(src => src.Duration))
+            .ForMember(dest => dest.Category, opt => opt.MapFrom(src => Enum.Parse<Category>(src.Category)))
+            .ForMember(dest => dest.InstructorId, opt => opt.MapFrom(src => src.Instructor.Id))
+            .ForMember(dest => dest.CourseContents, opt => opt.MapFrom(src => src.CourseContents));
+
+        // Map from Course to CourseDetailsViewModel
+        CreateMap<Course, CourseDetailsViewModel>()
+            .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+            .ForMember(dest => dest.Title, opt => opt.MapFrom(src => src.Title))
+            .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Description))
+            .ForMember(dest => dest.Price, opt => opt.MapFrom(src => src.Price))
+            .ForMember(dest => dest.Duration, opt => opt.MapFrom(src => src.Duration))
+            .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Category.ToString()))
+            .ForMember(dest => dest.Instructor, opt => opt.MapFrom(src => src.Instructor))
+            .ForMember(dest => dest.CourseContents, opt => opt.MapFrom(src => src.CourseContents));
+        #endregion
     }
 }

@@ -43,22 +43,13 @@ namespace ConstructEd.Controllers
             return View(viewModel);
         }
 
-        // GET: CourseContent/Create
         public async Task<IActionResult> Create()
         {
-            var courses = await _courseRepository.GetAllAsync();
-            var viewModel = new CourseContentViewModel
-            {
-                Courses = courses.Select(c => new SelectListItem
-                {
-                    Value = c.Id.ToString(),
-                    Text = c.Title
-                })
-            };
-            return View(viewModel);
+            var viewModel = new CourseContentViewModel();
+            ViewBag.Courses = await _courseRepository.GetAllAsync();
+            return View((nameof(Create), viewModel));
         }
 
-        // POST: CourseContent/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CourseContentViewModel viewModel)
@@ -70,17 +61,10 @@ namespace ConstructEd.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            // If the model state is invalid, repopulate the courses dropdown and return the view
-            var courses = await _courseRepository.GetAllAsync();
-            viewModel.Courses = courses.Select(c => new SelectListItem
-            {
-                Value = c.Id.ToString(),
-                Text = c.Title
-            });
-            return View(viewModel);
+            ViewBag.Courses = await _courseRepository.GetAllAsync();
+            return View(nameof(Create), viewModel);
         }
 
-        // GET: CourseContent/Edit/5
         public async Task<IActionResult> Edit(int id)
         {
             var courseContent = await _courseContentRepository.GetByIdAsync(id);
