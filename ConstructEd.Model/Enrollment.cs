@@ -18,7 +18,6 @@ namespace ConstructEd.Models
         [ForeignKey("Course")]
         public int CourseId { get; set; }
         public Course? Course { get; set; }
-        public ICollection<PaymentCourse> PaymentCourses { get; set; } = new HashSet<PaymentCourse>();
 
     }
 }
