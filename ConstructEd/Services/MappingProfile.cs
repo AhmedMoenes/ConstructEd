@@ -9,20 +9,13 @@ public class MappingProfile : Profile
         // Payment to PaymentViewModel mapping (For displaying payments) // Fix?
         #region Payment
 
-        CreateMap<Payment, PaymentViewModel>()
-          .ForMember(dest => dest.TransactionID, opt => opt.MapFrom(src => src.TransactionID))
-          .ForMember(dest => dest.MaskedCardNumber, opt => opt.MapFrom(src => src.MaskedCardNumber)) // Ensure display of masked number
-          .ForMember(dest => dest.ExpiryDate, opt => opt.MapFrom(src => src.ExpiryDate))
-          .ForMember(dest => dest.Amount, opt => opt.MapFrom(src => src.Amount))
-          .ForMember(dest => dest.CardNumber, opt => opt.Ignore()); // Prevent exposing raw card number
-
         CreateMap<PaymentViewModel, Payment>()
-          .ForMember(dest => dest.MaskedCardNumber, opt => opt.MapFrom(src => 
-        !string.IsNullOrEmpty(src.CardNumber) && src.CardNumber.Length >= 4 
-        ? "**** **** **** " + src.CardNumber.Substring(src.CardNumber.Length - 4) 
-        : "**** **** **** ****")) // Ensure masking
-         .ForMember(dest => dest.Status, opt => opt.MapFrom(_ => PaymentStatus.Pending)) // Default status before processing
-         .ForMember(dest => dest.PaymentDate, opt => opt.MapFrom(_ => DateTime.UtcNow));
+      .ForMember(dest => dest.MaskedCardNumber, opt => opt.MapFrom(src =>
+            !string.IsNullOrEmpty(src.CardNumber) && src.CardNumber.Length >= 4
+            ? "**** **** **** " + src.CardNumber.Substring(src.CardNumber.Length - 4)
+            : "**** **** **** ****")) // Ensure masking
+             .ForMember(dest => dest.Status, opt => opt.MapFrom(_ => PaymentStatus.Pending))
+            .ForMember(dest => dest.PaymentDate, opt => opt.MapFrom(_ => DateTime.UtcNow));
 
 
         #endregion

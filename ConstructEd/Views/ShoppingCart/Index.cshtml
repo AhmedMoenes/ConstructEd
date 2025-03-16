@@ -53,7 +53,7 @@
     </table>
 
     <div class="mt-4 text-right">
-        <h3 class="text-xl font-semibold">Total: $@Model.TotalPrice</h3>
+        <h3 class="text-xl font-semibold">Total: $<span id="totalPrice">@Model.TotalPrice</span></h3>
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#paymentModal">
             Proceed to Checkout
         </button>
@@ -64,27 +64,79 @@ else
     <p class="text-gray-600">Your shopping cart is empty.</p>
 }
 
+<!-- Include the Payment Modal Partial View -->
+@{
+    var paymentViewModel = new PaymentViewModel { Amount = Model.TotalPrice };
+}
+<partial name="_PaymentModal" model="paymentViewModel" />
 
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-    $(document).ready(function () {
-        $(".add-to-cart").click(function () {
-            var button = $(this);
-            var id = button.data("id");
-            var type = button.data("type");
+    <!-- Include jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-            $.ajax({
-                url: "/ShoppingCart/AddToCart",
-                type: "POST",
-                data: { id: id, type: type },
-                success: function () {
-                    console.log("Item added to cart successfully.");
-                },
-                error: function () {
-                    console.log("Error adding item to cart.");
+    <!-- Include Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $(".add-to-cart").click(function () {
+                var button = $(this);
+                var id = button.data("id");
+                var type = button.data("type");
+
+                $.ajax({
+                    url: "/ShoppingCart/AddToCart",
+                    type: "POST",
+                    data: { id: id, type: type },
+                    success: function () {
+                        console.log("Item added to cart successfully.");
+                    },
+                    error: function () {
+                        console.log("Error adding item to cart.");
+                    }
+                });
+            });
+       
+
+            // Set total amount in payment form when modal opens
+            $('#paymentModal').on('show.bs.modal', function () {
+                let totalPrice = $('#totalPrice').text().trim(); // Get total price from cart
+                $('#paymentAmount').val(totalPrice); // Set value in payment form
+            });
+
+            // Format Card Number input
+            $('#CardNumber').on('input', function () {
+                let value = $(this).val().replace(/\D/g, ''); // Remove non-numeric characters
+                value = value.replace(/(\d{4})/g, '$1 ').trim(); // Format into groups of 4
+                $(this).val(value);
+            });
+
+            // Enforce MM/YY format in Expiry Date
+            $('#ExpiryDate').on('input', function () {
+                let value = $(this).val().replace(/\D/g, ''); // Remove non-numeric characters
+                if (value.length >= 2) value = value.replace(/(\d{2})(\d{0,2})/, '$1/$2'); // Add '/' after 2 digits
+                $(this).val(value);
+            });
+
+            // Expiry Date must be in the future
+            $('#paymentForm').on('submit', function (event) {
+                let expiry = $('#ExpiryDate').val();
+                let currentYear = new Date().getFullYear() % 100; // Get last 2 digits of current year
+                let currentMonth = new Date().getMonth() + 1; // JS months are 0-based
+
+                if (expiry.length === 5) {
+                    let [month, year] = expiry.split('/').map(Number);
+                    if (year < currentYear || (year === currentYear && month < currentMonth)) {
+                        alert("Expiry date must be in the future.");
+                        event.preventDefault(); // Prevent form submission
+                    }
+                } else {
+                    alert("Invalid expiry date format.");
+                    event.preventDefault();
                 }
             });
         });
-    });
-</script>
+    </script>
+}

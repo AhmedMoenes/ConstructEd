@@ -166,57 +166,46 @@ namespace ConstructEd.Controllers
         }
 
 
-		[HttpPost]
-		public async Task<IActionResult> ProcessPayment(PaymentViewModel model)
-		{
-			string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-			if (userId == null)
-			{
-				return RedirectToAction("Login", "Account");
-			}
+        [HttpPost]
+        public async Task<IActionResult> ProcessPayment(PaymentViewModel model)
+        {
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (userId == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
 
-			var cartItems = await _shoppingCartRepository.GetByUserIdAsync(userId);
-			if (!cartItems.Any())
-			{
-				return RedirectToAction("Cart", "ShoppingCart");
-			}
+            var cartItems = await _shoppingCartRepository.GetByUserIdAsync(userId);
+            if (!cartItems.Any())
+            {
+                return RedirectToAction("Cart", "ShoppingCart");
+            }
 
-			decimal expectedAmount = cartItems.Sum(item =>
-				(item.Course?.Price ?? 0) + (item.Plugin?.Price ?? 0));
+            var payment = mapper.Map<Payment>(model);
+            payment.TransactionID = Guid.NewGuid();
+            payment.UserId = userId;
 
-			if (model.Amount != expectedAmount)
-			{
-				ModelState.AddModelError("", "Invalid total amount.");
-				return View("Index", model);
-			}
+            bool isSuccessful = _paymentService.ProcessPayment(model);
 
-			var payment = mapper.Map<Payment>(model);
-			payment.TransactionID = Guid.NewGuid();
-			payment.Status = PaymentStatus.Pending;
-			payment.PaymentDate = DateTime.UtcNow;
+            if (!isSuccessful)
+            {
+                payment.Status = PaymentStatus.Failed;
+                await _paymentRepository.InsertAsync(payment);
+                await _paymentRepository.SaveAsync();
 
-			bool isSuccessful = _paymentService.ProcessPayment(model);
+                return RedirectToAction("Failure", new { transactionId = payment.TransactionID });
+            }
 
-			if (!isSuccessful)
-			{
-				payment.Status = PaymentStatus.Failed;
-				await _paymentRepository.InsertAsync(payment);
-				await _paymentRepository.SaveAsync();
+            // Clear cart after successful payment
+            await _shoppingCartRepository.ClearCartAsync(userId);
 
-				return RedirectToAction("Failure", new { transactionId = payment.TransactionID });
-			}
+            payment.Status = PaymentStatus.Success;
+            await _paymentRepository.InsertAsync(payment);
+            await _paymentRepository.SaveAsync();
 
-			payment.Status = PaymentStatus.Success;
-			await _paymentRepository.InsertAsync(payment);
-			await _paymentRepository.SaveAsync();
-
-			// Clear cart after successful payment
-			await _shoppingCartRepository.ClearCartAsync(userId);
-
-			return RedirectToAction("Success", new { transactionId = payment.TransactionID });
-		}
-
-		public IActionResult Success(Guid transactionId)
+            return RedirectToAction("Success", new { transactionId = payment.TransactionID });
+        }
+        public IActionResult Success(Guid transactionId)
 		{
 			ViewBag.TransactionID = transactionId;
 			return View();
