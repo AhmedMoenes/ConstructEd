@@ -23,15 +23,17 @@ namespace ConstructEd.Controllers
             _mapper = mapper;
         }
 
-        // GET: CourseContent
         public async Task<IActionResult> Index()
         {
             var courseContents = await _courseContentRepository.GetAllAsync();
             var viewModels = _mapper.Map<List<CourseContentViewModel>>(courseContents);
+
+            var courseNames = await _courseContentRepository.GetCourseNamesAsync();
+            ViewBag.CourseNames = courseNames;
+
             return View(viewModels);
         }
 
-        // GET: CourseContent/Details/5
         public async Task<IActionResult> Details(int id)
         {
             var courseContent = await _courseContentRepository.GetByIdAsync(id);
@@ -39,15 +41,27 @@ namespace ConstructEd.Controllers
             {
                 return NotFound();
             }
+
             var viewModel = _mapper.Map<CourseContentViewModel>(courseContent);
+
+            var courseName = await _courseContentRepository.GetCourseNameByIdAsync(courseContent.CourseId);
+            ViewBag.CourseName = courseName;
+
             return View(viewModel);
         }
 
+        [HttpGet]
         public async Task<IActionResult> Create()
         {
-            var viewModel = new CourseContentViewModel();
-            ViewBag.Courses = await _courseRepository.GetAllAsync();
-            return View((nameof(Create), viewModel));
+            var viewModel = new CourseContentViewModel
+            {
+                ContentTypes = _courseContentRepository.GetContentTypesAsSelectList()
+            };
+
+            var courses = await _courseRepository.GetAllAsync();
+            ViewBag.Courses = new SelectList(courses, "Id", "Title");
+
+            return View(viewModel);
         }
 
         [HttpPost]
@@ -61,10 +75,15 @@ namespace ConstructEd.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            ViewBag.Courses = await _courseRepository.GetAllAsync();
-            return View(nameof(Create), viewModel);
+            viewModel.ContentTypes = _courseContentRepository.GetContentTypesAsSelectList();
+
+            var courses = await _courseRepository.GetAllAsync();
+            ViewBag.Courses = new SelectList(courses, "Id", "Title"); 
+
+            return View(viewModel);
         }
 
+        [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
             var courseContent = await _courseContentRepository.GetByIdAsync(id);
@@ -73,14 +92,12 @@ namespace ConstructEd.Controllers
                 return NotFound();
             }
 
-            var courses = await _courseRepository.GetAllAsync();
             var viewModel = _mapper.Map<CourseContentViewModel>(courseContent);
-            viewModel.Courses = courses.Select(c => new SelectListItem
-            {
-                Value = c.Id.ToString(),
-                Text = c.Title,
-                Selected = c.Id == courseContent.CourseId
-            });
+
+            viewModel.ContentTypes = _courseContentRepository.GetContentTypesAsSelectList();
+            var courses = await _courseRepository.GetAllAsync();
+            ViewBag.Courses = new SelectList(courses, "Id", "Title", courseContent.CourseId); // Preselect the current course
+
             return View(viewModel);
         }
 
@@ -100,17 +117,14 @@ namespace ConstructEd.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            // If the model state is invalid, repopulate the courses dropdown and return the view
+            viewModel.ContentTypes = _courseContentRepository.GetContentTypesAsSelectList();
             var courses = await _courseRepository.GetAllAsync();
-            viewModel.Courses = courses.Select(c => new SelectListItem
-            {
-                Value = c.Id.ToString(),
-                Text = c.Title,
-                Selected = c.Id == viewModel.CourseId
-            });
+            ViewBag.Courses = new SelectList(courses, "Id", "Title", viewModel.CourseId); // Preselect the current course
+
             return View(viewModel);
         }
 
+        [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {
             var courseContent = await _courseContentRepository.GetByIdAsync(id);
@@ -118,16 +132,17 @@ namespace ConstructEd.Controllers
             {
                 return NotFound();
             }
+
             var viewModel = _mapper.Map<CourseContentViewModel>(courseContent);
             return View(viewModel);
         }
 
-        [HttpPost, ActionName("Delete")]
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             await _courseContentRepository.DeleteAsync(id);
-            return RedirectToAction(nameof(Index));
+            return Json(new { success = true });
         }
     }
 }
