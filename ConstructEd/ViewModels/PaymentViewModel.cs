@@ -12,7 +12,7 @@ namespace ConstructEd.ViewModels
         [Required]
         [StringLength(100, MinimumLength = 3)]
         [Display(Name = "Card Holder Name")]
-        public string CardHolderName { get; set; }
+        public string CardHolderName { get; set; } // Input only (not stored)
         public string MaskedCardNumber { get; set; } // For display (masked)
 
         [Display(Name = "Transaction ID")]
@@ -33,6 +33,9 @@ namespace ConstructEd.ViewModels
         [Range(1, 100000, ErrorMessage = "Amount must be greater than zero.")]
         [Display(Name = "Amount")]
         public decimal Amount { get; set; }
-        public List<int> CourseIds { get; set; }
+
+        [Required]
+        [Display(Name = "Courses")]
+        public List<int> CourseIds { get; set; } = new List<int>();
     }
 }

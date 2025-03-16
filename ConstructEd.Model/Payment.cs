@@ -37,7 +37,9 @@ namespace ConstructEd.Models
         [Required]
         [ForeignKey(nameof(User))]
         public string UserId { get; set; } 
-        public ApplicationUser User { get; set; } 
+        public ApplicationUser User { get; set; }
+
+        public ICollection<PaymentCourse> PaymentCourses { get; set; } = new HashSet<PaymentCourse>();
 
     }
 }
