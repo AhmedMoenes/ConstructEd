@@ -465,43 +465,40 @@
             <!-- Sign In Button -->
             <div class="sign-in-container">
                 <!-- From Uiverse.io by Wendell47 -->
-                <button class="button">
-                    Sign In
-                    <div class="hoverEffect">
-                        <div></div>
-                    </div>
-                </button>
-
+                <a asp-controller="Account" asp-action="Login" class="button">
+                     Sign In
+                    <div class="hoverEffect"></div>
+                </a>
             </div>
         </div>
     </nav>
 
     <!-- Navbar Menu -->
     <nav class="navbar navbar-expand-lg navbar-dark sub-nav">
-        <div class="container">
-            <ul class="navbar-nav">
-                <li class="nav-item"><a class="nav-link" href="#">Individuals</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Business</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Public Sector</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Courses</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Resources</a></li>
-            </ul>
-            <!-- Right Side Buttons -->
-            <div class="d-flex">
-                <!-- From Uiverse.io by SteveBloX -->
-                <button class="btn">Contact Sales</button>
+     <div class="container">
+         <ul class="navbar-nav">
+             <li class="nav-item"><a class="nav-link" asp-controller="Home" asp-action="Index">Home</a></li>
+             <li class="nav-item"><a class="nav-link" asp-controller="Course" asp-action="Index">Courses</a></li>
+             <li class="nav-item"><a class="nav-link" asp-controller="Plugin" asp-action="Index">Plugins</a></li>
+             <li class="nav-item"><a class="nav-link" asp-controller="Account" asp-action="Manage">Manage</a></li>
+             @* <li class="nav-item"><a class="nav-link" asp-controller="About" asp-action="Index">Resources</a></li> *@
+         </ul>
+         <!-- Right Side Buttons -->
+         <div class="d-flex">
+             <!-- Contact Sales Button -->
+             <a asp-controller="Sales" asp-action="Contact" class="btn">Contact Sales</a>
 
-                <!-- From Uiverse.io by satyamchaudharydev -->
-                <button class="buttonView">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 24">
-                        <path d="m18 0 8 12 10-8-4 20H4L0 4l10 8 8-12z"></path>
-                    </svg>
-                    View Plan
-                </button>
+             <!-- View Plan Button -->
+             <a asp-controller="Plans" asp-action="Index" class="buttonView">
+                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 24">
+                     <path d="m18 0 8 12 10-8-4 20H4L0 4l10 8 8-12z"></path>
+                 </svg>
+                 View Plan
+             </a>
+         </div>
+     </div>
+ </nav>
 
-            </div>
-        </div>
-    </nav>
 
     <!-- Main Content with Extra Space -->
     <main role="main" class="pb-3">
