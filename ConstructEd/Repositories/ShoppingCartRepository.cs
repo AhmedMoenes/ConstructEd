@@ -95,5 +95,23 @@ namespace ConstructEd.Repositories
                 await _context.SaveChangesAsync();
             }
         }
-    }
+		public async Task ClearCartAsync(string userId)
+
+		{
+
+			var cartItems = _context.ShoppingCarts.Where(ci => ci.UserId == userId);
+
+			if (cartItems.Any())
+
+			{
+
+				_context.ShoppingCarts.RemoveRange(cartItems);
+
+				await _context.SaveChangesAsync();
+
+			}
+
+		}
+
+	}
 }

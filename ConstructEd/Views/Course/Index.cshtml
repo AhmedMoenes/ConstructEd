@@ -15,7 +15,7 @@
 				<p class="card-text">Instructor = @course.InstructorId</p>
 					@* Handle This *@
 				<a asp-controller="Course" asp-action="Details" asp-route-id="@course.Id" class="btn btn-success">View Details</a>
-					<form asp-action="Index" asp-controller="ShoppingCart" method="post">
+			<form asp-action="AddToCart" asp-controller="ShoppingCart" method="post">
 						<input type="hidden" name="id" value="@course.Id" />
 					<input type="hidden" name="type" value="Course" />
 					<button type="submit" class="btn btn-danger">Add To Cart</button>

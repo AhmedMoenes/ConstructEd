@@ -9,8 +9,10 @@ namespace ConstructEd.Repositories
         Task<IEnumerable<ShoppingCart>> GetByUserIdAsync(string userId);
         Task RemoveCourseFromCartAsync(string userId, int courseId);
         Task RemovePluginFromCartAsync(string userId, int pluginId);
+        Task ClearCartAsync(string userId);
 
 
 
-    }
+
+	}
 }

@@ -54,13 +54,37 @@
 
     <div class="mt-4 text-right">
         <h3 class="text-xl font-semibold">Total: $@Model.TotalPrice</h3>
-        <form asp-action="ProcessPayment" asp-controller="Payment" method="post">
-            <input type="hidden" name="Amount" value="@Model.TotalPrice" />
-            <button type="submit" class="btn btn-primary">Proceed to Checkout</button>
-        </form>
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#paymentModal">
+            Proceed to Checkout
+        </button>
     </div>
 }
 else
 {
     <p class="text-gray-600">Your shopping cart is empty.</p>
 }
+
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $(".add-to-cart").click(function () {
+            var button = $(this);
+            var id = button.data("id");
+            var type = button.data("type");
+
+            $.ajax({
+                url: "/ShoppingCart/AddToCart",
+                type: "POST",
+                data: { id: id, type: type },
+                success: function () {
+                    console.log("Item added to cart successfully.");
+                },
+                error: function () {
+                    console.log("Error adding item to cart.");
+                }
+            });
+        });
+    });
+</script>
