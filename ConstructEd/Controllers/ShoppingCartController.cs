@@ -29,39 +29,8 @@ namespace ConstructEd.Controllers
 		}
 
 
-		[HttpPost]
-        //public async Task<IActionResult> AddToCart(int id, string type)
-        //{
-        //    // Get the logged-in user ID
-        //    string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        //    if (string.IsNullOrEmpty(userId))
-        //    {
-        //        return RedirectToAction("Login", "Account");
-        //    }
-
-        //    // Check if the item is already in the shopping cart
-        //    var existingItem = await _shoppingCartRepository.GetByUserIdAsync(userId);
-        //    bool isAlreadyInCart = existingItem.Any(sc =>
-        //        (type == "Course" && sc.CourseId == id) ||
-        //        (type == "Plugin" && sc.PluginId == id));
-
-        //    if (isAlreadyInCart)
-        //    {
-        //        return RedirectToAction(nameof(Index)); // Item already exists, no need to add again
-        //    }
-
-        //    var cartItem = new ShoppingCart
-        //    {
-        //        UserId = userId,
-        //        CourseId = type == "Course" ? id : (int?)null,
-        //        PluginId = type == "Plugin" ? id : (int?)null
-        //    };
-
-        //    await _shoppingCartRepository.InsertAsync(cartItem);
-        //    await _shoppingCartRepository.SaveAsync();
-
-        //    return RedirectToAction(nameof(Index));
-        //}
+		
+       
         [HttpPost]
         public async Task<IActionResult> AddToCart(int id, string type)
         {

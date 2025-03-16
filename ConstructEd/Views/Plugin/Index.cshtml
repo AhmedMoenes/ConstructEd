@@ -18,6 +18,12 @@
 						<input type="hidden" name="type" value="Plugin" />
 						<button type="submit" class="btn btn-danger">Add To Cart</button>
 						</form>
+			@* تعديل الكود باي صاصا *@
+			<form asp-action="AddToWish" asp-controller="WishList" method="post">
+				<input type="hidden" name="id" value="@plugin.Id" />
+				<input type="hidden" name="type" value="Plugin" />
+				<button type="submit" class="btn btn-danger">Add To Wish List</button>
+			</form>
 			</div>
 		</div>
 }
