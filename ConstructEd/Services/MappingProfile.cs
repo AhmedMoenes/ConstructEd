@@ -95,7 +95,23 @@ public class MappingProfile : Profile
         #endregion
 
         #region CourseContent
+        // Map from CourseContent to CourseContentViewModel
+        CreateMap<CourseContent, CourseContentViewModel>()
+            .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+            .ForMember(dest => dest.Title, opt => opt.MapFrom(src => src.Title))
+            .ForMember(dest => dest.Type, opt => opt.MapFrom(src => src.Type))
+            .ForMember(dest => dest.FileUrl, opt => opt.MapFrom(src => src.FileUrl))
+            .ForMember(dest => dest.Order, opt => opt.MapFrom(src => src.Order))
+            .ForMember(dest => dest.CourseId, opt => opt.MapFrom(src => src.CourseId));
 
+        // Map from CourseContentViewModel to CourseContent
+        CreateMap<CourseContentViewModel, CourseContent>()
+            .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+            .ForMember(dest => dest.Title, opt => opt.MapFrom(src => src.Title))
+            .ForMember(dest => dest.Type, opt => opt.MapFrom(src => src.Type))
+            .ForMember(dest => dest.FileUrl, opt => opt.MapFrom(src => src.FileUrl))
+            .ForMember(dest => dest.Order, opt => opt.MapFrom(src => src.Order))
+            .ForMember(dest => dest.CourseId, opt => opt.MapFrom(src => src.CourseId));
         #endregion
     }
 }
