@@ -4,6 +4,12 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-4">Welcome to ConstructEd</h1>
+    <p>Learn AEC courses and Revit plugins.</p>
+
+    <!-- Button to redirect to Plugins -->
+    <a asp-controller="Plugin" asp-action="Index" class="btn btn-primary">View Plugins</a>
+
+    <!-- Button to redirect to Courses -->
+    <a asp-controller="Course" asp-action="Index" class="btn btn-success">View Courses</a>
 </div>

@@ -49,6 +49,7 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.UpdatedAt, opt => opt.Ignore());  // System-managed
 
         #endregion
+
         #region Course
         // Map from CourseViewModel to Course
         CreateMap<CourseViewModel, Course>()

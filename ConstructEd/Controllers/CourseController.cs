@@ -11,14 +11,17 @@ namespace ConstructEd.Controllers
     {
         private readonly ICourseRepository _courseRepository;
         private readonly IInstructorRepository _instructorRepository;
+        private readonly ICourseContentRepository _courseContentRepository;
         private readonly IMapper _mapper;
 
         public CourseController(ICourseRepository courseRepository,
                                 IInstructorRepository instructorRepository,
+                                ICourseContentRepository courseContentRepository,
                                 IMapper mapper)
         {
             _courseRepository = courseRepository;
             _instructorRepository = instructorRepository;
+            _courseContentRepository = courseContentRepository;
             _mapper = mapper;
         }
 
@@ -29,6 +32,33 @@ namespace ConstructEd.Controllers
             var courseViewModels = _mapper.Map<List<CourseViewModel>>(courses);
             return View(nameof(Index), courseViewModels);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Details(int id)
+        {
+            var course = await _courseRepository.GetByIdAsync(id);
+            if (course == null)
+            {
+                return NotFound();
+            }
+
+            var viewModel = _mapper.Map<CourseViewModel>(course);
+            return View(nameof(Details), viewModel);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ManageContent(int id)
+        {
+            var course = await _courseRepository.GetByIdAsync(id);
+            if (course == null)
+            {
+                return NotFound();
+            }
+
+            var viewModel = _mapper.Map<CourseViewModel>(course);
+            return View(nameof(ManageContent), viewModel);
+        }
+
 
         [HttpGet]
         public async Task<IActionResult> Create()

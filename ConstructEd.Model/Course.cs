@@ -30,6 +30,7 @@ namespace ConstructEd.Models
         public Category Category { get; set; }
         public int InstructorId { get; set; }
         public Instructor Instructor { get; set; }
+
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
         public ICollection<Enrollment> Enrollments { get; set; } = new HashSet<Enrollment>();
