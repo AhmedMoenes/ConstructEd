@@ -5,42 +5,595 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - ConstructEd</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="icon" type="image/x-icon" href="~/lib/logo.png">
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/ConstructEd.styles.css" asp-append-version="true" />
+    <style>
+     
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+
+      
+        main {
+            flex: 1;
+            margin-bottom: 800px; 
+        }
+
+      
+        .custom-nav {
+            background-color: #322D5B;
+            padding: 10px 0;
+        }
+
+
+        
+        .search-container {
+            flex-grow: 1;
+            max-width: 400px;
+        }
+
+        
+        .button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 15px 30px;
+            border: 0;
+            position: relative;
+            overflow: hidden;
+            border-radius: 10rem;
+            transition: all 0.02s;
+            font-weight: bold;
+            cursor: pointer;
+            color: rgb(37, 37, 37);
+            z-index: 0;
+            box-shadow: 0 0px 7px -5px rgba(0, 0, 0, 0.5);
+        }
+
+            .button:hover {
+                background: rgb(193, 228, 248);
+                color: rgb(33, 0, 85);
+            }
+
+            .button:active {
+                transform: scale(0.97);
+            }
+
+        .hoverEffect {
+            position: absolute;
+            bottom: 0;
+            top: 0;
+            left: 0;
+            right: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1;
+        }
+
+            .hoverEffect div {
+                background: rgb(222, 0, 75);
+                background: linear-gradient( 60deg, rgba(222, 0, 75, 1) 50%, rgb(33, 0, 85), rgba(255, 119, 0, 1) 50% );
+                border-radius: 40rem;
+                width: 10rem;
+                height: 10rem;
+                transition: 0.4s;
+                filter: blur(20px);
+                animation: effect infinite 3s linear;
+                opacity: 0.5;
+            }
+
+        .button:hover .hoverEffect div {
+            width: 8rem;
+            height: 8rem;
+        }
+
+        @@keyframes effect {
+            0%
+
+        {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+
+        }
+
+
+
+        .search-input {
+            width: 100%;
+            padding-left: 40px;
+        }
+
+
+        .pencil {
+            display: block;
+            width: 2em;
+            height: 2em;
+        }
+
+        .pencil__body1,
+        .pencil__body2,
+        .pencil__body3,
+        .pencil__eraser,
+        .pencil__eraser-skew,
+        .pencil__point,
+        .pencil__rotate,
+        .pencil__stroke {
+            animation-duration: 3s;
+            animation-timing-function: linear;
+            animation-iteration-count: infinite;
+        }
+
+        .pencil__body1,
+        .pencil__body2,
+        .pencil__body3 {
+            transform: rotate(-90deg);
+        }
+
+        .pencil__body1 {
+            animation-name: pencilBody1;
+        }
+
+        .pencil__body2 {
+            animation-name: pencilBody2;
+        }
+
+        .pencil__body3 {
+            animation-name: pencilBody3;
+        }
+
+        .pencil__eraser {
+            animation-name: pencilEraser;
+            transform: rotate(-90deg) translate(49px,0);
+        }
+
+        .pencil__eraser-skew {
+            animation-name: pencilEraserSkew;
+            animation-timing-function: ease-in-out;
+        }
+
+        .pencil__point {
+            animation-name: pencilPoint;
+            transform: rotate(-90deg) translate(49px,-30px);
+        }
+
+        .pencil__rotate {
+            animation-name: pencilRotate;
+        }
+
+        .pencil__stroke {
+            animation-name: pencilStroke;
+            transform: translate(100px,100px) rotate(-113deg);
+        }
+
+        /* Animations */
+        @@keyframes pencilBody1 {
+            from, to
+
+        {
+            stroke-dashoffset: 351.86;
+            transform: rotate(-90deg);
+        }
+
+        50% {
+            stroke-dashoffset: 150.8;
+            /* 3/8 of diameter */
+            transform: rotate(-225deg);
+        }
+
+        }
+
+        @@keyframes pencilBody2 {
+            from, to
+
+        {
+            stroke-dashoffset: 406.84;
+            transform: rotate(-90deg);
+        }
+
+        50% {
+            stroke-dashoffset: 174.36;
+            transform: rotate(-225deg);
+        }
+
+        }
+
+        @@keyframes pencilBody3 {
+            from, to
+
+        {
+            stroke-dashoffset: 296.88;
+            transform: rotate(-90deg);
+        }
+
+        50% {
+            stroke-dashoffset: 127.23;
+            transform: rotate(-225deg);
+        }
+
+        }
+
+        @@keyframes pencilEraser {
+            from, to
+
+        {
+            transform: rotate(-45deg) translate(49px,0);
+        }
+
+        50% {
+            transform: rotate(0deg) translate(49px,0);
+        }
+
+        }
+
+        @@keyframes pencilEraserSkew {
+            from, 32.5%, 67.5%, to
+
+        {
+            transform: skewX(0);
+        }
+
+        35%,
+        65% {
+            transform: skewX(-4deg);
+        }
+
+        37.5%,
+        62.5% {
+            transform: skewX(8deg);
+        }
+
+        40%,
+        45%,
+        50%,
+        55%,
+        60% {
+            transform: skewX(-15deg);
+        }
+
+        42.5%,
+        47.5%,
+        52.5%,
+        57.5% {
+            transform: skewX(15deg);
+        }
+
+        }
+
+        @@keyframes pencilPoint {
+            from, to
+
+        {
+            transform: rotate(-90deg) translate(49px,-30px);
+        }
+
+        50% {
+            transform: rotate(-225deg) translate(49px,-30px);
+        }
+
+        }
+
+        @@keyframes pencilRotate {
+            from
+
+        {
+            transform: translate(100px,100px) rotate(0);
+        }
+
+        to {
+            transform: translate(100px,100px) rotate(720deg);
+        }
+
+        }
+
+        @@keyframes pencilStroke {
+            from
+
+        {
+            stroke-dashoffset: 439.82;
+            transform: translate(100px,100px) rotate(-113deg);
+        }
+
+        50% {
+            stroke-dashoffset: 164.93;
+            transform: translate(100px,100px) rotate(-113deg);
+        }
+
+        75%,
+        to {
+            stroke-dashoffset: 439.82;
+            transform: translate(100px,100px) rotate(112deg);
+        }
+
+        }
+
+          .pencil-wrapper {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 30px;
+            height: 30px;
+        }
+
+        .sub-nav {
+            background-color: #211C40;
+        }
+
+        .navbar-dark .navbar-nav .nav-link {
+            color: white;
+            font-size: 16px;
+            padding: 10px 15px;
+        }
+
+
+        .buttonView {
+            width: fit-content;
+            display: flex;
+            padding: 0.8em 1.1em;
+            gap: 0.4rem;
+            border: none;
+            font-weight: bold;
+            border-radius: 30px;
+            cursor: pointer;
+            text-shadow: 2px 2px 3px rgb(136 0 136 / 50%);
+            background: linear-gradient( 15deg, #880088, #aa2068, #cc3f47, #de6f3d, #f09f33, #de6f3d, #cc3f47, #aa2068, #880088 ) no-repeat;
+            background-size: 300%;
+            background-position: left center;
+            transition: background 0.3s ease;
+            color: #fff;
+            position: center;
+        }
+
+            .buttonView:hover {
+                background-size: 320%;
+                background-position: right center;
+            }
+
+                .buttonView:hover svg {
+                    fill: #fff;
+                }
+
+            .buttonView svg {
+                width: 23px;
+                fill: #f09f33;
+                transition: 0.3s ease;
+                position: center;
+            }
+
+        .btn {
+            width: 150px;
+            height: 60px;
+            border: 3px solid  rgb(222, 0, 75);
+            border-radius: 45px;
+            transition: all 0.3s;
+            cursor: pointer;
+            background: white;
+            font-size: 1.2em;
+            font-weight: 550;
+            margin-right: 5px;
+        }
+
+            .btn:hover {
+                background: rgb(222, 0, 75);
+                color: white;
+                font-size: 1em;
+                margin-right: 10px;
+            }
+     
+
+        /* Footer Styling */
+        .footer {
+            background-color: #211C40;
+            color: white;
+            width: 100%;
+            padding: 20px 0;
+            margin-top: auto;
+        }
+
+            .footer a {
+                color: white !important; 
+                text-decoration: none;
+            }
+
+            .footer a:hover {
+                text-decoration: underline; 
+            }
+
+    </style>
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">ConstructEd</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
+
+    <!-- Header (Navigation Bar) -->
+    <nav class="navbar navbar-expand-lg navbar-dark custom-nav">
+        <div class="container">
+            <!-- Logo -->
+            <a class="navbar-brand" href="#">
+                <img src="~/logo.png" alt="Logo" height="30">
+            </a>
+            <a class="navbar-brand" href="#">
+                <img src="~/final web.png" alt="Logo" height="30">
+            </a>
+
+            <!-- Search Bar -->
+            <form class="d-flex mx-auto search-container" role="search">
+                <input class="form-control search-input" type="search"  placeholder="What do you want to learn?"  aria-label="Search">
+
+                <!-- Pencil Animation -->
+                <div class="pencil-wrapper">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 200 200" class="pencil">
+                        <defs>
+                            <clipPath id="pencil-eraser">
+                                <rect height="30" width="30" ry="5" rx="5"></rect>
+                            </clipPath>
+                        </defs>
+                        <circle transform="rotate(-113,100,100)" stroke-linecap="round" stroke-dashoffset="439.82" stroke-dasharray="439.82 439.82" stroke-width="2" stroke="currentColor" fill="none" r="70" class="pencil__stroke"></circle>
+                        <g transform="translate(100,100)" class="pencil__rotate">
+                            <g fill="none">
+                                <circle transform="rotate(-90)" stroke-dashoffset="402" stroke-dasharray="402.12 402.12" stroke-width="30" stroke="hsl(223,90%,50%)" r="64" class="pencil__body1"></circle>
+                                <circle transform="rotate(-90)" stroke-dashoffset="465" stroke-dasharray="464.96 464.96" stroke-width="10" stroke="hsl(223,90%,60%)" r="74" class="pencil__body2"></circle>
+                                <circle transform="rotate(-90)" stroke-dashoffset="339" stroke-dasharray="339.29 339.29" stroke-width="10" stroke="hsl(223,90%,40%)" r="54" class="pencil__body3"></circle>
+                            </g>
+                            <g transform="rotate(-90) translate(49,0)" class="pencil__eraser">
+                                <g class="pencil__eraser-skew">
+                                    <rect height="30" width="30" ry="5" rx="5" fill="hsl(223,90%,70%)"></rect>
+                                    <rect clip-path="url(#pencil-eraser)" height="30" width="5" fill="hsl(223,90%,60%)"></rect>
+                                    <rect height="20" width="30" fill="hsl(223,10%,90%)"></rect>
+                                    <rect height="20" width="15" fill="hsl(223,10%,70%)"></rect>
+                                    <rect height="20" width="5" fill="hsl(223,10%,80%)"></rect>
+                                    <rect height="2" width="30" y="6" fill="hsla(223,10%,10%,0.2)"></rect>
+                                    <rect height="2" width="30" y="13" fill="hsla(223,10%,10%,0.2)"></rect>
+                                </g>
+                            </g>
+                            <g transform="rotate(-90) translate(49,-30)" class="pencil__point">
+                                <polygon points="15 0,30 30,0 30" fill="hsl(33,90%,70%)"></polygon>
+                                <polygon points="15 0,6 30,0 30" fill="hsl(33,90%,50%)"></polygon>
+                                <polygon points="15 0,20 10,10 10" fill="hsl(223,10%,10%)"></polygon>
+                            </g>
+                        </g>
+                    </svg>
+                </div>
+            </form>
+
+            <!-- Sign In Button -->
+            <div class="sign-in-container">
+                <!-- From Uiverse.io by Wendell47 -->
+                <button class="button">
+                    Sign In
+                    <div class="hoverEffect">
+                        <div></div>
+                    </div>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
+
+            </div>
+        </div>
+    </nav>
+
+    <!-- Navbar Menu -->
+    <nav class="navbar navbar-expand-lg navbar-dark sub-nav">
+        <div class="container">
+            <ul class="navbar-nav">
+                <li class="nav-item"><a class="nav-link" href="#">Individuals</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Business</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Public Sector</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Courses</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Resources</a></li>
+            </ul>
+            <!-- Right Side Buttons -->
+            <div class="d-flex">
+                <!-- From Uiverse.io by SteveBloX -->
+                <button class="btn">Contact Sales</button>
+
+                <!-- From Uiverse.io by satyamchaudharydev -->
+                <button class="buttonView">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 24">
+                        <path d="m18 0 8 12 10-8-4 20H4L0 4l10 8 8-12z"></path>
+                    </svg>
+                    View Plan
+                </button>
+
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content with Extra Space -->
+    <main role="main" class="pb-3">
+        @RenderBody()
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-2">
+                    <h5>Support</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#">Contact</a></li>
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">IP Allowlist</a></li>
+                        <li><a href="#">Sitemap</a></li>
+                        <li><a href="#">View Plans</a></li>
+                        <li><a href="#">Flow Plans</a></li>
+                        <li><a href="#">Professional Services</a></li>
                     </ul>
                 </div>
-            </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2025 - ConstructEd - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                <div class="col-md-2">
+                    <h5>Community</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#">Guides</a></li>
+                        <li><a href="#">Teach</a></li>
+                        <li><a href="#">Authors</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-md-2">
+                    <h5>Company</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Newsroom</a></li>
+                        <li><a href="#">Resources</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-md-2">
+                    <h5>Industries</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#">Education</a></li>
+                        <li><a href="#">Financial Services</a></li>
+                        <li><a href="#">Healthcare</a></li>
+                        <li><a href="#">Insurance</a></li>
+                        <li><a href="#">Non-Profit</a></li>
+                        <li><a href="#">Public Sector</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-md-4">
+                    <h5>Newsletter</h5>
+                    <p>Sign up with your email to join our mailing list.</p>
+                    <form>
+                        <div class="mb-2">
+                            <input type="email" class="form-control newsletter-input" placeholder="Email Address">
+                        </div>
+                        <div class="mb-2">
+                            <input type="checkbox" id="newsletter-check">
+                            <label for="newsletter-check">I would like to receive emails from ConstructEd</label>
+                        </div>
+                        <button type="submit" class="btn btn-pink">Submit</button>
+                    </form>
+                </div>
+            </div>
+
+            <hr>
+
+            <div class="d-flex justify-content-between align-items-center">
+                <img src="~/logo.png" alt="Logo" height="30">
+
+                <div>
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                </div>
+
+                <div>
+                    <a href="#">Terms of Use</a> |
+                    <a href="#">Privacy Policy</a> |
+                    <a href="#">Code of Conduct</a>
+                </div>
+            </div>
         </div>
     </footer>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
