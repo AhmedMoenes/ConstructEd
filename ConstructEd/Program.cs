@@ -25,6 +25,8 @@ namespace ConstructEd
             builder.Services.AddScoped<IEnrollmentRepository, EnrollmentRepository>();
             builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
             builder.Services.AddScoped<IShoppingCartRepository, ShoppingCartRepository>();
+            builder.Services.AddScoped<IWishListRepository,WishListRepository>();
+
 
             builder.Services.AddDbContext<DataContext>(options =>
                      options.UseSqlServer(builder.Configuration.GetConnectionString("CS")));
