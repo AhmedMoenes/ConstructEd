@@ -1,76 +1,85 @@
-﻿@model ConstructEd.ViewModels.CourseViewModel
+﻿@model ConstructEd.ViewModels.CourseDetailsViewModel
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Course Details";
 }
-<style>
-    main{
-        margin : 10px;  
-    }
-</style>
-<h1>Details</h1>
 
-<div>
-    <h4>CourseViewModel</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Id)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Id)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Title)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Title)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Price)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Price)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Duration)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Duration)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Category)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Category)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.InstructorId)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.InstructorId)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CreatedAt)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CreatedAt)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.UpdatedAt)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.UpdatedAt)
-        </dd>
-    </dl>
+<div class="container mt-5">
+    <div class="row">
+        <!-- Main Content -->
+        <div class="col-md-8">
+            <!-- Course Title -->
+            <h1 class="display-4 mb-4">@Model.Title</h1>
+
+            <!-- Overview -->
+            <div class="card mb-4 shadow">
+                <div class="card-body">
+                    <h2 class="card-title text-primary mb-3">Overview</h2>
+                    <p class="card-text lead">@Model.Description</p>
+                </div>
+            </div>
+
+            <!-- Course Content -->
+            <div class="card mb-4 shadow">
+                <div class="card-body">
+                    <h2 class="card-title text-primary mb-4">Course Content</h2>
+                    @foreach (var content in Model.CourseContents)
+                    {
+                            <div class="mb-4">
+                                <h5 class="text-secondary">@content.Title</h5>
+                                <p class="text-muted"><strong>Type:</strong> @content.Type</p>
+                            @if (!string.IsNullOrEmpty(content.FileUrl))
+                            {
+                                        <a href="@content.FileUrl" class="btn btn-outline-primary btn-sm">
+                                            <i class="fas fa-eye"></i> View Content
+                                        </a>
+                            }
+                            </div>
+                            <hr class="my-3" />
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="col-md-4">
+            <div class="card shadow-lg">
+                <div class="card-body">
+                    <h5 class="card-title text-primary mb-4">Course Details</h5>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <strong>Price:</strong>
+                            <span class="badge bg-primary rounded-pill">@Model.Price.ToString("C")</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <strong>Duration:</strong>
+                            <span class="badge bg-primary rounded-pill">@Model.Duration hours</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <strong>Category:</strong>
+                            <span class="badge bg-primary rounded-pill">@Model.Category</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <strong>Instructor:</strong>
+                            <span class="badge bg-primary rounded-pill">@Model.Instructor.Name</span>
+                        </li>
+                    </ul>
+                    <div class="d-grid mt-4">
+                        <a asp-controller="" asp-action="" asp-route-courseId="@Model.Id" class="btn btn-success btn-lg">
+                            <i class="fas fa-check-circle"></i> Buy Now
+                        </a>
+                        <form asp-action="AddToCart" asp-controller="ShoppingCart" method="post">
+                            <input type="hidden" name="id" value="@Model.Id" />
+                            <input type="hidden" name="type" value="Course" />
+                            <button type="submit" class="btn btn-danger">Add To Cart</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-<div>
-    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
-    <a asp-action="Index">Back to List</a>
-</div>
+
+@section Scripts {
+        <partial name="_ValidationScriptsPartial" />
+}
+

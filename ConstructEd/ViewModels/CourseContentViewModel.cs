@@ -22,6 +22,6 @@ namespace ConstructEd.ViewModels
         public int CourseId { get; set; }
 
         // Additional properties for the view
-        public IEnumerable<SelectListItem>? Courses { get; set; } 
+        public IEnumerable<SelectListItem>? Courses { get; set; }
     }
 }

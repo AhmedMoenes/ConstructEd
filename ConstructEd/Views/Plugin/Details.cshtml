@@ -1,0 +1,63 @@
+﻿@model ConstructEd.ViewModels.PluginViewModel
+
+@{
+	ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div class="container mt-5">
+	<div class="row">
+		<!-- Main Content -->
+		<div class="col-md-8">
+			<!-- Course Title -->
+			<h1 class="display-4 mb-4">@Model.Title</h1>
+
+			<!-- Overview -->
+			<div class="card mb-4 shadow">
+				<div class="card-body">
+					<h2 class="card-title text-primary mb-3">Overview</h2>
+					<p class="card-text lead">@Model.Description</p>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- Sidebar -->
+        <div class="col-md-4">
+            <div class="card shadow-lg">
+                <div class="card-body">
+                    <h5 class="card-title text-primary mb-4">Course Details</h5>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <strong>Title:</strong>
+                            <span class="badge bg-primary rounded-pill">@Model.Title</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <strong>Description:</strong>
+                            <span class="badge bg-primary rounded-pill">@Model.Description</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <strong>Price:</strong>
+                            <span class="badge bg-primary rounded-pill">@Model.Price.ToString("C")</span>
+                        </li>
+                    </ul>
+                    <div class="d-grid mt-4">
+                        <a asp-controller="" asp-action="" asp-route-courseId="@Model.Id" class="btn btn-success btn-lg">
+                            <i class="fas fa-check-circle"></i> Buy Now
+                        </a>
+                        <form asp-action="AddToCart" asp-controller="ShoppingCart" method="post">
+                        <input type="hidden" name="id" value="@Model.Id" />
+                        <input type="hidden" name="type" value="Course" />
+                        <button type="submit" class="btn btn-danger">Add To Cart</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+            <partial name="_ValidationScriptsPartial" />
+}

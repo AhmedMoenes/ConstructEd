@@ -41,8 +41,7 @@ namespace ConstructEd.Controllers
             {
                 return NotFound();
             }
-
-            var viewModel = _mapper.Map<CourseViewModel>(course);
+            var viewModel = _mapper.Map<CourseDetailsViewModel>(course);
             return View(nameof(Details), viewModel);
         }
 
@@ -63,8 +62,9 @@ namespace ConstructEd.Controllers
         [HttpGet]
         public async Task<IActionResult> Create()
         {
-            var instructors = await _instructorRepository.GetAllAsync();
             var viewModel = new CourseViewModel();
+            ViewBag.instructorList = await _instructorRepository.GetAllAsync();
+            ViewBag.categoryList = _courseRepository.GetCategories();
             return View(nameof(Create), viewModel);
         }
 
@@ -85,8 +85,8 @@ namespace ConstructEd.Controllers
                     ModelState.AddModelError(string.Empty, ex.InnerException.Message);
                 }
             }
-
-            var instructors = await _instructorRepository.GetAllAsync();
+            ViewBag.instructorList = await _instructorRepository.GetAllAsync();
+            ViewBag.categoryList = _courseRepository.GetCategories();
             return View(nameof(Create), viewModel);
         }
 

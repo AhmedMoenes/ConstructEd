@@ -102,7 +102,7 @@ namespace ConstructEd.Controllers
 
         public async Task<IActionResult> Edit(int id)
         {
-            var plugin = await _repository.GetByIdAsync(id);
+            var plugin = await _pluginRepository.GetByIdAsync(id);
             if (plugin == null)
                 return NotFound();
 
@@ -196,7 +196,7 @@ namespace ConstructEd.Controllers
 
         public async Task<IActionResult> Delete(int id)
         {
-            var plugin = await _repository.GetByIdAsync(id);
+            var plugin = await _pluginRepository.GetByIdAsync(id);
             if (plugin == null)
                 return NotFound();
 
@@ -220,8 +220,8 @@ namespace ConstructEd.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            await _repository.DeleteAsync(id);
-            await _repository.SaveAsync();
+            await _pluginRepository.DeleteAsync(id);
+            await _pluginRepository.SaveAsync();
             return RedirectToAction(nameof(Index));
         }
     }

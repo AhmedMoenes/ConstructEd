@@ -1,73 +1,78 @@
 ﻿@model ConstructEd.ViewModels.CourseViewModel
 
 @{
-    ViewData["Title"] = "Create";
+	ViewData["Title"] = "Add Course";
+	SelectList instructors = new SelectList(ViewBag.instructorList, "Id", "Name");
+	SelectList categories = new SelectList(ViewBag.categoryList);
 }
 
-<h1>Create</h1>
+<div class="container mt-5">
+	<div class="row justify-content-center">
+		<div class="col-md-8">
+			<div class="card shadow">
+				<div class="card-header bg-primary text-white text-center">
+					<h1 class="card-title">Create Course</h1>
+					<h4 class="card-subtitle">Add a new course</h4>
+				</div>
+				<div class="card-body">
+					<form asp-action="Create">
+						<div asp-validation-summary="All" class="alert alert-danger"></div>
 
-<h4>CourseViewModel</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="All" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Id" class="control-label"></label>
-                <input asp-for="Id" class="form-control" />
-                <span asp-validation-for="Id" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Title" class="control-label"></label>
-                <input asp-for="Title" class="form-control" />
-                <span asp-validation-for="Title" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Price" class="control-label"></label>
-                <input asp-for="Price" class="form-control" />
-                <span asp-validation-for="Price" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Duration" class="control-label"></label>
-                <input asp-for="Duration" class="form-control" />
-                <span asp-validation-for="Duration" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Category" class="control-label"></label>
-                <input asp-for="Category" class="form-control" />
-                <span asp-validation-for="Category" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="InstructorId" class="control-label"></label>
-                <input asp-for="InstructorId" class="form-control" />
-                <span asp-validation-for="InstructorId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CreatedAt" class="control-label"></label>
-                <input asp-for="CreatedAt" class="form-control" />
-                <span asp-validation-for="CreatedAt" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="UpdatedAt" class="control-label"></label>
-                <input asp-for="UpdatedAt" class="form-control" />
-                <span asp-validation-for="UpdatedAt" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-</div>
+						<div class="form-group mb-3">
+							<label asp-for="Title" class="form-label">Title</label>
+							<input asp-for="Title" class="form-control" placeholder="Enter course title" />
+							<span asp-validation-for="Title" class="text-danger"></span>
+						</div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
+						<div class="form-group mb-3">
+							<label asp-for="Description" class="form-label">Description</label>
+							<input asp-for="Description" class="form-control" placeholder="Enter course description" />
+							<span asp-validation-for="Description" class="text-danger"></span>
+						</div>
+
+						<div class="form-group mb-3">
+							<label asp-for="Price" class="form-label">Price</label>
+							<input asp-for="Price" class="form-control" placeholder="Enter course price" />
+							<span asp-validation-for="Price" class="text-danger"></span>
+						</div>
+
+						<div class="form-group mb-3">
+							<label asp-for="Duration" class="form-label">Duration</label>
+							<input asp-for="Duration" class="form-control" placeholder="Enter course duration" />
+							<span asp-validation-for="Duration" class="text-danger"></span>
+						</div>
+
+						<div class="form-group mb-3">
+							<label asp-for="Category" class="form-label">Category</label>
+							<select asp-for="Category" class="form-control" asp-items="categories">
+								<<option value="0">--Select Category --</option>
+							</select>
+							<span asp-validation-for="Category" class="text-danger"></span>
+						</div>
+
+						<div class="form-group mb-3">
+							<label asp-for="InstructorId" class="form-label">Instructor</label>
+							<select asp-for="InstructorId" class="form-control" asp-items="instructors">
+								<option value="0">--Select Department --</option>
+							 </select>
+							<span asp-validation-for="InstructorId" class="text-danger"></span>
+						</div>
+
+						<div class="form-group d-grid">
+							<button type="submit" class="btn btn-primary btn-lg">Create</button>
+						</div>
+					</form>
+				</div>
+				<div class="card-footer text-center">
+					<a asp-action="Index" class="btn btn-secondary">Back to List</a>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+	@{
+		await Html.RenderPartialAsync("_ValidationScriptsPartial");
+	}
 }

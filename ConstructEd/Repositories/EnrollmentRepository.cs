@@ -30,31 +30,12 @@ namespace ConstructEd.Repositories
                 .ToListAsync();
         }
 
-        public Task<List<Enrollment>> GetByCourseIdAsync(string courseId)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<Enrollment> GetByIdAsync(int id)
         {
             return await _dataContext.Enrollments
                 .Include(n => n.Course)
                 .Include(b => b.User)
                 .FirstOrDefaultAsync(e => e.Id == id);
-        }
-
-        public async Task<Enrollment?> GetByUserAndCourseAsync(string userId, int courseId)
-        {
-            return await _dataContext.Enrollments
-                         .FirstOrDefaultAsync(e => e.UserId == userId && e.CourseId == courseId);
-        }
-
-        public async Task<List<Enrollment>> GetByUserIdAsync(string userId)
-        {
-            return await _dataContext.Enrollments
-                        .Include(e => e.Course)
-                        .Where(e => e.UserId == userId)
-                        .ToListAsync();
         }
 
         public async Task InsertAsync(Enrollment obj)
@@ -71,6 +52,55 @@ namespace ConstructEd.Repositories
         {
             _dataContext.Update(obj); 
             await Task.CompletedTask;
+        }
+
+        public async Task InsertRangeAsync(IEnumerable<Enrollment> enrollments)
+        {
+            await _dataContext.Enrollments.AddRangeAsync(enrollments);
+        }
+
+        public async Task<bool> IsUserEnrolledAsync(string userId, int? courseId, int? pluginId)
+        {
+            return await _dataContext.Enrollments
+                .AnyAsync(e => e.UserId == userId &&
+                              ((courseId != null && e.CourseId == courseId) ||
+                                (pluginId != null && e.PluginId == pluginId)));
+        }
+
+        public async Task<bool> IsUserEnrolledInCourseAsync(string userId, int courseId)
+        {
+            return await _dataContext.Enrollments
+                .AnyAsync(e => e.UserId == userId && e.CourseId == courseId);
+        }
+
+        public async Task<bool> IsUserEnrolledInPluginAsync(string userId, int pluginId)
+        {
+            return await _dataContext.Enrollments
+                .AnyAsync(e => e.UserId == userId && e.PluginId == pluginId);
+        }
+        public async Task<List<Enrollment>> GetAllEnrollmentsByUserIdAsync(string userId)
+        {
+            return await _dataContext.Enrollments
+                .Include(e => e.Course)  // Include Course details if available
+                .Include(e => e.Plugin)  // Include Plugin details if available
+                .Where(e => e.UserId == userId)
+                .ToListAsync();
+        }
+
+        public async Task<List<Course>> GetUserEnrolledCoursesAsync(string userId)
+        {
+            return await _dataContext.Enrollments
+                .Where(e => e.UserId == userId && e.CourseId != null) // Ensure it's a course enrollment
+                .Select(e => e.Course) // Select the course object
+                .ToListAsync();
+        }
+
+        public async Task<List<Plugin>> GetUserEnrolledPluginsAsync(string userId)
+        {
+            return await _dataContext.Enrollments
+                .Where(e => e.UserId == userId && e.PluginId != null) // Ensure it's a plugin enrollment
+                .Select(e => e.Plugin) // Select the plugin object
+                .ToListAsync();
         }
     }
 }
