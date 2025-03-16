@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ConstructEd.Models
@@ -40,6 +39,7 @@ namespace ConstructEd.Models
         public ApplicationUser User { get; set; }
 
         public ICollection<PaymentCourse> PaymentCourses { get; set; } = new HashSet<PaymentCourse>();
+        public ICollection<PaymentPlugin> PaymentPlugin { get; set; } = new HashSet<PaymentPlugin>();
 
     }
 }
