@@ -19,33 +19,38 @@
             </div>
             <div class="modal-body">
                 <form asp-action="ProcessPayment" method="post" id="paymentForm">
+                    @Html.AntiForgeryToken()
+
                     <div class="mb-3">
                         <label asp-for="CardNumber" class="form-label"></label>
-                        <input asp-for="CardNumber" class="form-control" />
+                        <input asp-for="CardNumber" class="form-control" type="tel" maxlength="19" placeholder="#### #### #### ####"
+                               autocomplete="off" pattern="\d{4} \d{4} \d{4} \d{4}" required />
                         <span asp-validation-for="CardNumber" class="text-danger"></span>
                     </div>
 
                     <div class="mb-3">
                         <label asp-for="CardHolderName" class="form-label"></label>
-                        <input asp-for="CardHolderName" class="form-control" />
+                        <input asp-for="CardHolderName" class="form-control" type="text" autocomplete="name" required />
                         <span asp-validation-for="CardHolderName" class="text-danger"></span>
                     </div>
 
                     <div class="mb-3">
                         <label asp-for="ExpiryDate" class="form-label"></label>
-                        <input asp-for="ExpiryDate" class="form-control" placeholder="MM/YY" />
+                        <input asp-for="ExpiryDate" class="form-control" type="text" placeholder="MM/YY" maxlength="5"
+                               autocomplete="off" pattern="\d{2}/\d{2}" required />
                         <span asp-validation-for="ExpiryDate" class="text-danger"></span>
                     </div>
 
                     <div class="mb-3">
                         <label asp-for="CVV" class="form-label"></label>
-                        <input asp-for="CVV" class="form-control" />
+                        <input asp-for="CVV" class="form-control" type="password" maxlength="4"
+                               autocomplete="off" pattern="\d{3,4}" required />
                         <span asp-validation-for="CVV" class="text-danger"></span>
                     </div>
 
                     <div class="mb-3">
                         <label asp-for="Amount" class="form-label"></label>
-                        <input asp-for="Amount" class="form-control" />
+                        <input asp-for="Amount" class="form-control" type="number" min="1" step="0.01" required />
                         <span asp-validation-for="Amount" class="text-danger"></span>
                     </div>
 
@@ -61,14 +66,23 @@
 
     <script>
         $(document).ready(function () {
-            // Automatically open modal when the page loads (optional)
-            $('#paymentModal').modal('show');
-
-            // Format card number input
-            $('#CardNumber').on('input', function (e) {
+            // Format Card Number input
+            $('#CardNumber').on('input', function () {
                 let value = $(this).val().replace(/\D/g, ''); // Remove non-numeric characters
-                value = value.replace(/(\d{4})/g, '$1 ').trim(); // Add space every 4 digits
+                value = value.replace(/(\d{4})/g, '$1 ').trim(); // Format into groups of 4
                 $(this).val(value);
+            });
+
+            // Enforce MM/YY format in Expiry Date
+            $('#ExpiryDate').on('input', function () {
+                let value = $(this).val().replace(/\D/g, ''); // Remove non-numeric characters
+                if (value.length >= 2) value = value.replace(/(\d{2})(\d{0,2})/, '$1/$2'); // Add '/' after 2 digits
+                $(this).val(value);
+            });
+
+            // Limit CVV input to 3 or 4 digits
+            $('#CVV').on('input', function () {
+                $(this).val($(this).val().replace(/\D/g, '').slice(0, 4)); // Only allow numbers, max 4 digits
             });
         });
     </script>

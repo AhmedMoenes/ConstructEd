@@ -18,7 +18,7 @@ namespace ConstructEd.Repositories
             var entity = await GetByIdAsync(id);
             if (entity != null)
             {
-                _dataContext.Remove(entity);
+                _dataContext.Plugins.Remove(entity);
             }
         }
         public async Task<ICollection<Plugin>> GetAllAsync()
@@ -30,14 +30,11 @@ namespace ConstructEd.Repositories
         {
             return await _dataContext.Plugins.FirstOrDefaultAsync(e => e.Id == id);
         }
-        public async Task InsertAsync(Course obj)
+        public async Task InsertAsync(Plugin obj)
         {
             await _dataContext.AddAsync(obj);
         }
-        public Task InsertAsync(Plugin obj)
-        {
-            throw new NotImplementedException();
-        }
+       
 
         public async Task SaveAsync()
         {
@@ -45,9 +42,10 @@ namespace ConstructEd.Repositories
         }
         public async Task UpdateAsync(Plugin obj)
         {
-            _dataContext.Update(obj);
-            await Task.CompletedTask;
+            _dataContext.Plugins.Update(obj);
+            await _dataContext.SaveChangesAsync();
         }
 
+       
     }
 }

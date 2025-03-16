@@ -36,6 +36,7 @@ namespace ConstructEd.Models
         public ICollection<CourseContent> CourseContents { get; set; } = new HashSet<CourseContent>();
         public ICollection<ShoppingCart> ShoppingCarts { get; set; } = new HashSet<ShoppingCart>();
         public ICollection<Wishlist> Wishlists { get; set; } = new HashSet<Wishlist>();
+        public ICollection<PaymentCourse> PaymentCourses { get; set; } = new HashSet<PaymentCourse>();
 
     }
 }

@@ -27,7 +27,16 @@ namespace ConstructEd.Controllers
             _mapper = mapper;
             _paymentService = paymentService;
         }
+        public IActionResult Checkout(List<int> courseIds, decimal totalAmount)
+        {
+            var model = new PaymentViewModel
+            {
+                CourseIds = courseIds,
+                Amount = totalAmount
+            };
 
+            return View("PaymentForm", model); // Open the Payment Form with prefilled data
+        }
         public IActionResult Create()
         {
             return View(new PaymentViewModel());
@@ -38,10 +47,9 @@ namespace ConstructEd.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return View("Create", model); // Show validation errors
+                return View("PaymentForm", model); // Show validation errors
             }
 
-            // Simulate payment processing (fake project)
             var payment = _mapper.Map<Payment>(model);
             payment.TransactionID = Guid.NewGuid(); // Generate transaction ID
 
