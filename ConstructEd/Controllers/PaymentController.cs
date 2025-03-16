@@ -35,40 +35,32 @@ namespace ConstructEd.Controllers
 
         public async Task<IActionResult> Checkout()
         {
-            // Get the logged-in user's ID
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (userId == null)
             {
-                return RedirectToAction("Login", "Account"); // Redirect if not logged in
+                return RedirectToAction("Login", "Account");
             }
 
-            // Retrieve shopping cart items for the user
             var cartItems = await _shoppingCartRepository.GetByUserIdAsync(userId);
-
             if (!cartItems.Any())
             {
-                return RedirectToAction("Cart", "ShoppingCart"); // Redirect if cart is empty
+                return RedirectToAction("Cart", "ShoppingCart");
             }
 
-            // Calculate the total price (Sum of Course & Plugin prices)
             decimal totalAmount = cartItems.Sum(item =>
-                (item.Course != null ? item.Course.Price : 0) +
-                (item.Plugin != null ? item.Plugin.Price : 0));
-
-            // Get course & plugin IDs for reference
-            var courseIds = cartItems.Where(c => c.CourseId.HasValue).Select(c => c.CourseId.Value).ToList();
-            var pluginIds = cartItems.Where(p => p.PluginId.HasValue).Select(p => p.PluginId.Value).ToList();
+                (item.Course?.Price ?? 0) + (item.Plugin?.Price ?? 0));
 
             var model = new PaymentViewModel
             {
                 UserId = userId,
-                CourseIds = courseIds,
-                PluginIds = pluginIds,
-                Amount = totalAmount // 💰 Set total amount dynamically
+                CourseIds = cartItems.Where(c => c.CourseId.HasValue).Select(c => c.CourseId.Value).ToList(),
+                PluginIds = cartItems.Where(p => p.PluginId.HasValue).Select(p => p.PluginId.Value).ToList(),
+                Amount = totalAmount
             };
 
-            return View("PaymentForm", model); // Load the payment form with the correct total
+            return await ProcessPayment(model); // 🚀 Call ProcessPayment directly!
         }
+
 
         public IActionResult Create()
         {
@@ -80,7 +72,7 @@ namespace ConstructEd.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return View("PaymentForm", model); // Show validation errors
+                return View("Create", model); // Show validation errors
             }
 
             // Get the logged-in user's ID
@@ -105,7 +97,7 @@ namespace ConstructEd.Controllers
             if (model.Amount != expectedAmount)
             {
                 ModelState.AddModelError("", "Invalid total amount.");
-                return View("PaymentForm", model);
+                return View("Create", model);
             }
 
             var payment = _mapper.Map<Payment>(model);

@@ -54,7 +54,10 @@
 
     <div class="mt-4 text-right">
         <h3 class="text-xl font-semibold">Total: $@Model.TotalPrice</h3>
-        <a asp-action="Checkout" asp-controller="ShoppingCart" class="btn btn-primary">Proceed to Checkout</a>
+        <form asp-action="ProcessPayment" asp-controller="Payment" method="post">
+            <input type="hidden" name="Amount" value="@Model.TotalPrice" />
+            <button type="submit" class="btn btn-primary">Proceed to Checkout</button>
+        </form>
     </div>
 }
 else
