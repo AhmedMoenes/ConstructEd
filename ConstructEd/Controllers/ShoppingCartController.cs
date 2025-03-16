@@ -1,4 +1,5 @@
-﻿using ConstructEd.Repositories;
+﻿using AutoMapper;
+using ConstructEd.Repositories;
 using ConstructEd.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -6,14 +7,16 @@ using System.Security.Claims;
 
 namespace ConstructEd.Controllers
 {
-    [Authorize] // 🔹 Ensures only logged-in users can access this controller
+   // [Authorize] // 🔹 Ensures only logged-in users can access this controller
     public class ShoppingCartController : Controller
     {
         private readonly IShoppingCartRepository _shoppingCartRepository;
+        private readonly IMapper mapper;
 
-        public ShoppingCartController(IShoppingCartRepository shoppingCartRepository)
+        public ShoppingCartController(IShoppingCartRepository shoppingCartRepository ,IMapper mapper)
         {
             _shoppingCartRepository = shoppingCartRepository;
+            this.mapper = mapper;
         }
 
         // 🔹 Display the shopping cart
@@ -33,7 +36,7 @@ namespace ConstructEd.Controllers
                 UserEmail = User.FindFirstValue(ClaimTypes.Email),
                 Courses = cartItems
                     .Where(sc => sc.Course != null)
-                    .Select(sc => new CourseItemViewModel
+                    .Select(sc => new CourseViewModel
                     {
                         Id = sc.Course.Id,
                         Title = sc.Course.Title,
@@ -44,7 +47,7 @@ namespace ConstructEd.Controllers
                     }).ToList(),
                 Plugins = cartItems
                     .Where(sc => sc.Plugin != null)
-                    .Select(sc => new PluginItemViewModel
+                    .Select(sc => new PluginViewModel
                     {
                         Id = sc.Plugin.Id,
                         Title = sc.Plugin.Title,
@@ -58,23 +61,38 @@ namespace ConstructEd.Controllers
 
         // 🔹 Remove an item from the cart
         [HttpPost]
-        public async Task<IActionResult> RemoveFromCart(int id)
+        public async Task<IActionResult> RemoveFromCart(int id, string type)
         {
-            var cartItem = await _shoppingCartRepository.GetByIdAsync(id);
-            if (cartItem == null) return NotFound();
+            // Get the logged-in user ID
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(userId))
+            {
+                return RedirectToAction("Login", "Account");
+            }
 
-            await _shoppingCartRepository.DeleteAsync(id);
-            await _shoppingCartRepository.SaveAsync();
+            if (type == "course")
+            {
+                await _shoppingCartRepository.RemoveCourseFromCartAsync(userId, id);
+            }
+            else if (type == "plugin")
+            {
+                await _shoppingCartRepository.RemovePluginFromCartAsync(userId, id);
+            }
+            else
+            {
+                return BadRequest("Invalid item type.");
+            }
 
             return RedirectToAction(nameof(Index));
         }
 
+
         // 🔹 Proceed to checkout
-        public IActionResult Checkout()
-        {
-            // This would typically redirect to a payment page or process the order
-            return RedirectToAction("Payment", "Order");
-        }
+        //public IActionResult Checkout()
+        //{
+
+        //    return RedirectToAction("Payment", "Order");
+        //}
     }
 }
 

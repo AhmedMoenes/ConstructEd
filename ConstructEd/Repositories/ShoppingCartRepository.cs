@@ -18,7 +18,7 @@ namespace ConstructEd.Repositories
         public async Task<ICollection<ShoppingCart>> GetAllAsync()
         {
             return await _context.ShoppingCarts
-                .Include(sc => sc.Course)
+                .Include(sc => sc.Course).Include(sc =>sc.Plugin)
                 .Include(sc => sc.User)
                 .ToListAsync();
         }
@@ -26,7 +26,7 @@ namespace ConstructEd.Repositories
         public async Task<ShoppingCart> GetByIdAsync(int id)
         {
             return await _context.ShoppingCarts
-                .Include(sc => sc.Course)
+                .Include(sc => sc.Course).Include(sc => sc.Plugin)
                 .Include(sc => sc.User)
                 .FirstOrDefaultAsync(sc => sc.Id == id);
         }
@@ -34,7 +34,7 @@ namespace ConstructEd.Repositories
         public async Task<IEnumerable<ShoppingCart>> GetByUserIdAsync(string userId)
         {
             return await _context.ShoppingCarts
-                .Where(sc => sc.UserId == userId)
+                .Where(sc => sc.UserId == userId).Include(sc => sc.Plugin)
                 .Include(sc => sc.Course)
                 .ToListAsync();
         }
@@ -65,6 +65,35 @@ namespace ConstructEd.Repositories
             await _context.SaveChangesAsync();
         }
 
-       
+        
+        
+        public async Task RemoveCourseFromCartAsync(string userId, int courseId)
+        {
+           
+            var cartItem = await _context.ShoppingCarts
+                .FirstOrDefaultAsync(sc => sc.UserId == userId && sc.CourseId == courseId);
+
+            if (cartItem != null)
+            {
+                
+                _context.ShoppingCarts.Remove(cartItem);
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        
+        public async Task RemovePluginFromCartAsync(string userId, int pluginId)
+        {
+            
+            var cartItem = await _context.ShoppingCarts
+                .FirstOrDefaultAsync(sc => sc.UserId == userId && sc.PluginId == pluginId);
+
+            if (cartItem != null)
+            {
+                
+                _context.ShoppingCarts.Remove(cartItem);
+                await _context.SaveChangesAsync();
+            }
+        }
     }
 }

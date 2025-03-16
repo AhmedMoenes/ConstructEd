@@ -1,5 +1,4 @@
-﻿using ConstructEd.Data;
-using ConstructEd.Models;
+﻿using ConstructEd.Models;
 
 namespace ConstructEd.Repositories
 
@@ -7,6 +6,11 @@ namespace ConstructEd.Repositories
     public interface IShoppingCartRepository : IRepository<ShoppingCart>
     {
 
-         Task<IEnumerable<ShoppingCart>> GetByUserIdAsync(string userId);
+        Task<IEnumerable<ShoppingCart>> GetByUserIdAsync(string userId);
+        Task RemoveCourseFromCartAsync(string userId, int courseId);
+        Task RemovePluginFromCartAsync(string userId, int pluginId);
+
+
+
     }
 }
