@@ -17,6 +17,11 @@ namespace ConstructEd.Controllers
             _mapper = mapper;
         }
 
+        public IActionResult Manage()
+        {
+            return View(nameof(Manage));
+        }
+
         [HttpGet]
         public IActionResult Register()
         {

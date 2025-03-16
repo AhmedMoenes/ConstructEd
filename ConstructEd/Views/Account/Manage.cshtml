@@ -1,0 +1,30 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome to ConstructEd</h1>
+    <p>Learn AEC courses and Revit plugins.</p>
+
+    <!-- Buttons for Courses -->
+    <div class="mb-4">
+        <h3>Courses</h3>
+        <a asp-controller="Course" asp-action="Index" class="btn btn-primary">View Courses</a>
+        <a asp-controller="Course" asp-action="Create" class="btn btn-success">Create Course</a>
+    </div>
+
+    <!-- Buttons for Plugins -->
+    <div class="mb-4">
+        <h3>Plugins</h3>
+        <a asp-controller="Plugin" asp-action="Index" class="btn btn-primary">View Plugins</a>
+        <a asp-controller="Plugin" asp-action="Create" class="btn btn-success">Create Plugin</a>
+    </div>
+
+    <!-- Buttons for Instructors -->
+    <div class="mb-4">
+        <h3>Instructors</h3>
+        <a asp-controller="Instructor" asp-action="Index" class="btn btn-primary">View Instructors</a>
+        <a asp-controller="Instructor" asp-action="Create" class="btn btn-success">Add Instructor</a>
+    </div>
+</div>

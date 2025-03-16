@@ -11,14 +11,17 @@ namespace ConstructEd.Controllers
     {
         private readonly ICourseRepository _courseRepository;
         private readonly IInstructorRepository _instructorRepository;
+        private readonly ICourseContentRepository _courseContentRepository;
         private readonly IMapper _mapper;
 
         public CourseController(ICourseRepository courseRepository,
                                 IInstructorRepository instructorRepository,
+                                ICourseContentRepository courseContentRepository,
                                 IMapper mapper)
         {
             _courseRepository = courseRepository;
             _instructorRepository = instructorRepository;
+            _courseContentRepository = courseContentRepository;
             _mapper = mapper;
         }
 
@@ -31,13 +34,37 @@ namespace ConstructEd.Controllers
         }
 
         [HttpGet]
+        public async Task<IActionResult> Details(int id)
+        {
+            var course = await _courseRepository.GetByIdAsync(id);
+            if (course == null)
+            {
+                return NotFound();
+            }
+
+            var viewModel = _mapper.Map<CourseViewModel>(course);
+            return View(nameof(Details), viewModel);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ManageContent(int id)
+        {
+            var course = await _courseRepository.GetByIdAsync(id);
+            if (course == null)
+            {
+                return NotFound();
+            }
+
+            var viewModel = _mapper.Map<CourseViewModel>(course);
+            return View(nameof(ManageContent), viewModel);
+        }
+
+
+        [HttpGet]
         public async Task<IActionResult> Create()
         {
             var instructors = await _instructorRepository.GetAllAsync();
-            var viewModel = new CourseViewModel
-            {
-                Instructors = _mapper.Map<List<SelectListItem>>(instructors)
-            };
+            var viewModel = new CourseViewModel();
             return View(nameof(Create), viewModel);
         }
 
@@ -60,8 +87,6 @@ namespace ConstructEd.Controllers
             }
 
             var instructors = await _instructorRepository.GetAllAsync();
-            viewModel.Instructors = _mapper.Map<List<SelectListItem>>(instructors);
-
             return View(nameof(Create), viewModel);
         }
 
@@ -77,7 +102,6 @@ namespace ConstructEd.Controllers
             var viewModel = _mapper.Map<CourseViewModel>(course);
 
             var instructors = await _instructorRepository.GetAllAsync();
-            viewModel.Instructors = _mapper.Map<List<SelectListItem>>(instructors);
 
             return View(nameof(Edit), viewModel);
         }
@@ -106,7 +130,6 @@ namespace ConstructEd.Controllers
             }
 
             var instructors = await _instructorRepository.GetAllAsync();
-            viewModel.Instructors = _mapper.Map<List<SelectListItem>>(instructors);
 
             return View(nameof(Edit), viewModel);
         }

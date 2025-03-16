@@ -1,7 +1,25 @@
 ﻿@model List<CourseViewModel>
 @{
-    ViewData["Title"] = "Index";
+	ViewData["Title"] = "Index";
 }
+<h2>Courses</h2>
 
-<h1>Index</h1>
-
+@foreach (var course in Model)
+{
+	<div class="card" style="width:300px">
+	@* <img class="card-img-top" src="/Images/@Model.ImageURL" alt="Card image"> *@
+		<div class="card-body">
+			<h4 class="card-title">@course.Title</h4>
+			<p class="card-text">Duration = @course.Duration</p>
+				<p class="card-text">Price = @course.Price</p>
+				<p class="card-text">Instructor = @course.InstructorId</p>
+					@* Handle This *@
+				<a asp-controller="Course" asp-action="Details" asp-route-id="@course.Id" class="btn btn-success">View Details</a>
+			<form asp-action="AddToCart" asp-controller="ShoppingCart" method="post">
+						<input type="hidden" name="id" value="@course.Id" />
+					<input type="hidden" name="type" value="Course" />
+					<button type="submit" class="btn btn-danger">Add To Cart</button>
+					</form>
+		</div>
+	</div>
+}

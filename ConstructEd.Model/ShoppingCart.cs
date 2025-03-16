@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ConstructEd.Models
 {
@@ -12,17 +7,25 @@ namespace ConstructEd.Models
     {
         [Key]
         public int Id { get; set; }
-        // Navigation Properties
-        [ForeignKey("User")]
+
+        // 🔹 User Foreign Key (Every cart entry belongs to a user)
+        [Required]
+        [ForeignKey(nameof(User))]
         public string UserId { get; set; }
         public ApplicationUser? User { get; set; }
 
-        [ForeignKey("Course")]
-        public int CourseId { get; set; }
+        // 🔹 Course Foreign Key (Nullable)
+        [ForeignKey(nameof(Course))]
+        public int? CourseId { get; set; }
         public Course? Course { get; set; }
-        [ForeignKey("Plugin")]
-        public int PluginId { get; set; }
+
+        // 🔹 Plugin Foreign Key (Nullable) 
+        [ForeignKey(nameof(Plugin))]
+        public int? PluginId { get; set; }
         public Plugin? Plugin { get; set; }
 
+        // 🔹 Ensure Only One of Course or Plugin is Chosen
+        [NotMapped]
+        public bool IsValid => (CourseId.HasValue && !PluginId.HasValue) || (!CourseId.HasValue && PluginId.HasValue);
     }
 }

@@ -1,0 +1,142 @@
+﻿@model ShoppingCartViewModel
+
+@{
+    ViewData["Title"] = "Shopping Cart";
+}
+
+<h2 class="text-2xl font-bold mb-4">Shopping Cart</h2>
+
+@if (Model.Courses.Any() || Model.Plugins.Any())
+{
+    <table class="table-auto w-full border-collapse border border-gray-300">
+        <thead>
+            <tr class="bg-gray-200">
+                <th class="border p-2 text-left">Item</th>
+                <th class="border p-2 text-left">Description</th>
+                <th class="border p-2 text-left">Price</th>
+                <th class="border p-2 text-left">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var course in Model.Courses)
+            {
+                <tr class="border">
+                    <td class="border p-2">@course.Title (Course)</td>
+                    <td class="border p-2">@course.Description</td>
+                    <td class="border p-2">$@course.Price</td>
+                    <td class="border p-2">
+                        <form asp-action="RemoveFromCart" asp-controller="ShoppingCart" method="post">
+                            <input type="hidden" name="id" value="@course.Id" />
+                            <input type="hidden" name="type" value="course" />
+                            <button type="submit" class="btn btn-danger">Remove</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+
+            @foreach (var plugin in Model.Plugins)
+            {
+                <tr class="border">
+                    <td class="border p-2">@plugin.Title (Plugin)</td>
+                    <td class="border p-2">@plugin.Description</td>
+                    <td class="border p-2">$@plugin.Price</td>
+                    <td class="border p-2">
+                        <form asp-action="RemoveFromCart" asp-controller="ShoppingCart" method="post">
+                            <input type="hidden" name="id" value="@plugin.Id" />
+                            <input type="hidden" name="type" value="plugin" />
+                            <button type="submit" class="btn btn-danger">Remove</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div class="mt-4 text-right">
+        <h3 class="text-xl font-semibold">Total: $<span id="totalPrice">@Model.TotalPrice</span></h3>
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#paymentModal">
+            Proceed to Checkout
+        </button>
+    </div>
+}
+else
+{
+    <p class="text-gray-600">Your shopping cart is empty.</p>
+}
+
+<!-- Include the Payment Modal Partial View -->
+@{
+    var paymentViewModel = new PaymentViewModel { Amount = Model.TotalPrice };
+}
+<partial name="_PaymentModal" model="paymentViewModel" />
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <!-- Include jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Include Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $(".add-to-cart").click(function () {
+                var button = $(this);
+                var id = button.data("id");
+                var type = button.data("type");
+
+                $.ajax({
+                    url: "/ShoppingCart/AddToCart",
+                    type: "POST",
+                    data: { id: id, type: type },
+                    success: function () {
+                        console.log("Item added to cart successfully.");
+                    },
+                    error: function () {
+                        console.log("Error adding item to cart.");
+                    }
+                });
+            });
+       
+
+            // Set total amount in payment form when modal opens
+            $('#paymentModal').on('show.bs.modal', function () {
+                let totalPrice = $('#totalPrice').text().trim(); // Get total price from cart
+                $('#paymentAmount').val(totalPrice); // Set value in payment form
+            });
+
+            // Format Card Number input
+            $('#CardNumber').on('input', function () {
+                let value = $(this).val().replace(/\D/g, ''); // Remove non-numeric characters
+                value = value.replace(/(\d{4})/g, '$1 ').trim(); // Format into groups of 4
+                $(this).val(value);
+            });
+
+            // Enforce MM/YY format in Expiry Date
+            $('#ExpiryDate').on('input', function () {
+                let value = $(this).val().replace(/\D/g, ''); // Remove non-numeric characters
+                if (value.length >= 2) value = value.replace(/(\d{2})(\d{0,2})/, '$1/$2'); // Add '/' after 2 digits
+                $(this).val(value);
+            });
+
+            // Expiry Date must be in the future
+            $('#paymentForm').on('submit', function (event) {
+                let expiry = $('#ExpiryDate').val();
+                let currentYear = new Date().getFullYear() % 100; // Get last 2 digits of current year
+                let currentMonth = new Date().getMonth() + 1; // JS months are 0-based
+
+                if (expiry.length === 5) {
+                    let [month, year] = expiry.split('/').map(Number);
+                    if (year < currentYear || (year === currentYear && month < currentMonth)) {
+                        alert("Expiry date must be in the future.");
+                        event.preventDefault(); // Prevent form submission
+                    }
+                } else {
+                    alert("Invalid expiry date format.");
+                    event.preventDefault();
+                }
+            });
+        });
+    </script>
+}

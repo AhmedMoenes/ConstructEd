@@ -1,4 +1,7 @@
-﻿using ConstructEd.Repositories;
+﻿using AutoMapper;
+using ConstructEd.Models;
+using ConstructEd.Repositories;
+using ConstructEd.Services;
 using ConstructEd.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -6,15 +9,94 @@ using System.Security.Claims;
 
 namespace ConstructEd.Controllers
 {
-    [Authorize] // 🔹 Ensures only logged-in users can access this controller
+   // [Authorize] // 🔹 Ensures only logged-in users can access this controller
     public class ShoppingCartController : Controller
     {
-        private readonly IShoppingCartRepository _shoppingCartRepository;
+		private readonly IShoppingCartRepository _shoppingCartRepository;
+		private readonly IMapper mapper;
+		private readonly IPaymentRepository _paymentRepository;
+		private readonly FakePaymentService _paymentService;
 
-        public ShoppingCartController(IShoppingCartRepository shoppingCartRepository)
+		public ShoppingCartController(IShoppingCartRepository shoppingCartRepository,
+									   IPaymentRepository paymentRepository,
+									   FakePaymentService paymentService,
+									   IMapper mapper)
+		{
+			_shoppingCartRepository = shoppingCartRepository;
+			_paymentRepository = paymentRepository;
+			_paymentService = paymentService;
+			this.mapper = mapper;
+		}
+
+
+		[HttpPost]
+        //public async Task<IActionResult> AddToCart(int id, string type)
+        //{
+        //    // Get the logged-in user ID
+        //    string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        //    if (string.IsNullOrEmpty(userId))
+        //    {
+        //        return RedirectToAction("Login", "Account");
+        //    }
+
+        //    // Check if the item is already in the shopping cart
+        //    var existingItem = await _shoppingCartRepository.GetByUserIdAsync(userId);
+        //    bool isAlreadyInCart = existingItem.Any(sc =>
+        //        (type == "Course" && sc.CourseId == id) ||
+        //        (type == "Plugin" && sc.PluginId == id));
+
+        //    if (isAlreadyInCart)
+        //    {
+        //        return RedirectToAction(nameof(Index)); // Item already exists, no need to add again
+        //    }
+
+        //    var cartItem = new ShoppingCart
+        //    {
+        //        UserId = userId,
+        //        CourseId = type == "Course" ? id : (int?)null,
+        //        PluginId = type == "Plugin" ? id : (int?)null
+        //    };
+
+        //    await _shoppingCartRepository.InsertAsync(cartItem);
+        //    await _shoppingCartRepository.SaveAsync();
+
+        //    return RedirectToAction(nameof(Index));
+        //}
+        [HttpPost]
+        public async Task<IActionResult> AddToCart(int id, string type)
         {
-            _shoppingCartRepository = shoppingCartRepository;
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(userId))
+            {
+                return NoContent(); // No action if user is not logged in
+            }
+
+            var existingItem = await _shoppingCartRepository.GetByUserIdAsync(userId);
+            bool isAlreadyInCart = existingItem.Any(sc =>
+                (type == "Course" && sc.CourseId == id) ||
+                (type == "Plugin" && sc.PluginId == id));
+
+            if (!isAlreadyInCart)
+            {
+                var cartItem = new ShoppingCart
+                {
+                    UserId = userId,
+                    CourseId = type == "Course" ? id : (int?)null,
+                    PluginId = type == "Plugin" ? id : (int?)null
+                };
+
+                await _shoppingCartRepository.InsertAsync(cartItem);
+                await _shoppingCartRepository.SaveAsync();
+            }
+
+            return NoContent(); // Return nothing, just process the request
         }
+
+
+
+
+
+
 
         // 🔹 Display the shopping cart
         public async Task<IActionResult> Index()
@@ -33,7 +115,7 @@ namespace ConstructEd.Controllers
                 UserEmail = User.FindFirstValue(ClaimTypes.Email),
                 Courses = cartItems
                     .Where(sc => sc.Course != null)
-                    .Select(sc => new CourseItemViewModel
+                    .Select(sc => new CourseViewModel
                     {
                         Id = sc.Course.Id,
                         Title = sc.Course.Title,
@@ -44,7 +126,7 @@ namespace ConstructEd.Controllers
                     }).ToList(),
                 Plugins = cartItems
                     .Where(sc => sc.Plugin != null)
-                    .Select(sc => new PluginItemViewModel
+                    .Select(sc => new PluginViewModel
                     {
                         Id = sc.Plugin.Id,
                         Title = sc.Plugin.Title,
@@ -58,23 +140,81 @@ namespace ConstructEd.Controllers
 
         // 🔹 Remove an item from the cart
         [HttpPost]
-        public async Task<IActionResult> RemoveFromCart(int id)
+        public async Task<IActionResult> RemoveFromCart(int id, string type)
         {
-            var cartItem = await _shoppingCartRepository.GetByIdAsync(id);
-            if (cartItem == null) return NotFound();
+            // Get the logged-in user ID
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(userId))
+            {
+                return RedirectToAction("Login", "Account");
+            }
 
-            await _shoppingCartRepository.DeleteAsync(id);
-            await _shoppingCartRepository.SaveAsync();
+            if (type == "course")
+            {
+                await _shoppingCartRepository.RemoveCourseFromCartAsync(userId, id);
+            }
+            else if (type == "plugin")
+            {
+                await _shoppingCartRepository.RemovePluginFromCartAsync(userId, id);
+            }
+            else
+            {
+                return BadRequest("Invalid item type.");
+            }
 
             return RedirectToAction(nameof(Index));
         }
 
-        // 🔹 Proceed to checkout
-        public IActionResult Checkout()
+
+        [HttpPost]
+        public async Task<IActionResult> ProcessPayment(PaymentViewModel model)
         {
-            // This would typically redirect to a payment page or process the order
-            return RedirectToAction("Payment", "Order");
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (userId == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            var cartItems = await _shoppingCartRepository.GetByUserIdAsync(userId);
+            if (!cartItems.Any())
+            {
+                return RedirectToAction("Cart", "ShoppingCart");
+            }
+
+            var payment = mapper.Map<Payment>(model);
+            payment.TransactionID = Guid.NewGuid();
+            payment.UserId = userId;
+
+            bool isSuccessful = _paymentService.ProcessPayment(model);
+
+            if (!isSuccessful)
+            {
+                payment.Status = PaymentStatus.Failed;
+                await _paymentRepository.InsertAsync(payment);
+                await _paymentRepository.SaveAsync();
+
+                return RedirectToAction("Failure", new { transactionId = payment.TransactionID });
+            }
+
+            // Clear cart after successful payment
+            await _shoppingCartRepository.ClearCartAsync(userId);
+
+            payment.Status = PaymentStatus.Success;
+            await _paymentRepository.InsertAsync(payment);
+            await _paymentRepository.SaveAsync();
+
+            return RedirectToAction("Success", new { transactionId = payment.TransactionID });
         }
-    }
+        public IActionResult Success(Guid transactionId)
+		{
+			ViewBag.TransactionID = transactionId;
+			return View();
+		}
+
+		public IActionResult Failure()
+		{
+			return View();
+		}
+	}
 }
 

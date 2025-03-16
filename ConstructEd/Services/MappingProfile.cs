@@ -9,19 +9,12 @@ public class MappingProfile : Profile
         // Payment to PaymentViewModel mapping (For displaying payments) // Fix?
         #region Payment
 
-        CreateMap<Payment, PaymentViewModel>()
-             .ForMember(dest => dest.TransactionID, opt => opt.MapFrom(src => src.TransactionID))
-             .ForMember(dest => dest.MaskedCardNumber, opt => opt.MapFrom(src => src.MaskedCardNumber)) // Ensure display of masked number
-             .ForMember(dest => dest.ExpiryDate, opt => opt.MapFrom(src => src.ExpiryDate))
-             .ForMember(dest => dest.Amount, opt => opt.MapFrom(src => src.Amount))
-             .ForMember(dest => dest.CardNumber, opt => opt.Ignore()); // Prevent exposing raw card number
-
         CreateMap<PaymentViewModel, Payment>()
-            .ForMember(dest => dest.MaskedCardNumber, opt => opt.MapFrom(src =>
-                !string.IsNullOrEmpty(src.CardNumber) && src.CardNumber.Length >= 4
-                ? "**** **** **** " + src.CardNumber.Substring(src.CardNumber.Length - 4)
-                : "**** **** **** ****")) // Ensure masking
-            .ForMember(dest => dest.Status, opt => opt.MapFrom(_ => PaymentStatus.Pending)) // Default status before processing
+      .ForMember(dest => dest.MaskedCardNumber, opt => opt.MapFrom(src =>
+            !string.IsNullOrEmpty(src.CardNumber) && src.CardNumber.Length >= 4
+            ? "**** **** **** " + src.CardNumber.Substring(src.CardNumber.Length - 4)
+            : "**** **** **** ****")) // Ensure masking
+             .ForMember(dest => dest.Status, opt => opt.MapFrom(_ => PaymentStatus.Pending))
             .ForMember(dest => dest.PaymentDate, opt => opt.MapFrom(_ => DateTime.UtcNow));
 
 
@@ -49,17 +42,18 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.UpdatedAt, opt => opt.Ignore());  // System-managed
 
         #endregion
+
         #region Course
-        // Map from CourseViewModel to Course
         CreateMap<CourseViewModel, Course>()
-            .ForMember(dest => dest.Title, opt => opt.MapFrom(src => src.Title))
-            .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Description))
-            .ForMember(dest => dest.Price, opt => opt.MapFrom(src => src.Price))
-            .ForMember(dest => dest.Duration, opt => opt.MapFrom(src => src.Duration))
-            .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Category))
-            .ForMember(dest => dest.InstructorId, opt => opt.MapFrom(src => src.InstructorId))
-            .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(src => src.CreatedAt))
-            .ForMember(dest => dest.UpdatedAt, opt => opt.MapFrom(src => src.UpdatedAt));
+               .ForMember(dest => dest.Title, opt => opt.MapFrom(src => src.Title))
+               .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Description))
+               .ForMember(dest => dest.Price, opt => opt.MapFrom(src => src.Price))
+               .ForMember(dest => dest.Duration, opt => opt.MapFrom(src => src.Duration))
+               .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Category))
+               .ForMember(dest => dest.InstructorId, opt => opt.MapFrom(src => src.InstructorId))
+               .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(src => src.CreatedAt))
+               .ForMember(dest => dest.UpdatedAt, opt => opt.MapFrom(src => src.UpdatedAt))
+               .ForMember(dest => dest.CourseContents, opt => opt.MapFrom(src => src.CourseContents));
 
         // Map from Course to CourseViewModel
         CreateMap<Course, CourseViewModel>()
@@ -71,7 +65,8 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Category))
             .ForMember(dest => dest.InstructorId, opt => opt.MapFrom(src => src.InstructorId))
             .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(src => src.CreatedAt))
-            .ForMember(dest => dest.UpdatedAt, opt => opt.MapFrom(src => src.UpdatedAt));
+            .ForMember(dest => dest.UpdatedAt, opt => opt.MapFrom(src => src.UpdatedAt))
+            .ForMember(dest => dest.CourseContents, opt => opt.MapFrom(src => src.CourseContents));
         #endregion
 
         #region Instructor
@@ -95,7 +90,23 @@ public class MappingProfile : Profile
         #endregion
 
         #region CourseContent
+        // Map from CourseContent to CourseContentViewModel
+        CreateMap<CourseContent, CourseContentViewModel>()
+            .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+            .ForMember(dest => dest.Title, opt => opt.MapFrom(src => src.Title))
+            .ForMember(dest => dest.Type, opt => opt.MapFrom(src => src.Type))
+            .ForMember(dest => dest.FileUrl, opt => opt.MapFrom(src => src.FileUrl))
+            .ForMember(dest => dest.Order, opt => opt.MapFrom(src => src.Order))
+            .ForMember(dest => dest.CourseId, opt => opt.MapFrom(src => src.CourseId));
 
+        // Map from CourseContentViewModel to CourseContent
+        CreateMap<CourseContentViewModel, CourseContent>()
+            .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+            .ForMember(dest => dest.Title, opt => opt.MapFrom(src => src.Title))
+            .ForMember(dest => dest.Type, opt => opt.MapFrom(src => src.Type))
+            .ForMember(dest => dest.FileUrl, opt => opt.MapFrom(src => src.FileUrl))
+            .ForMember(dest => dest.Order, opt => opt.MapFrom(src => src.Order))
+            .ForMember(dest => dest.CourseId, opt => opt.MapFrom(src => src.CourseId));
         #endregion
     }
 }

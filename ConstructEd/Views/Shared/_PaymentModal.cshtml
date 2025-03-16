@@ -1,14 +1,5 @@
 ﻿@model PaymentViewModel
 
-@{
-    ViewData["Title"] = "Make a Payment";
-}
-
-<!-- Button to Open the Modal -->
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#paymentModal">
-    Make a Payment
-</button>
-
 <!-- Payment Modal -->
 <div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="paymentModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
@@ -18,7 +9,8 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form asp-action="ProcessPayment" method="post" id="paymentForm">
+                <form asp-action="ProcessPayment" asp-controller="ShoppingCart" method="post" id="paymentForm">
+
                     @Html.AntiForgeryToken()
 
                     <div class="mb-3">
@@ -50,7 +42,7 @@
 
                     <div class="mb-3">
                         <label asp-for="Amount" class="form-label"></label>
-                        <input asp-for="Amount" class="form-control" type="number" min="1" step="0.01" required />
+                        <input asp-for="Amount" class="form-control" type="number" min="1" step="0.01" id="paymentAmount" name="Amount" readonly />
                         <span asp-validation-for="Amount" class="text-danger"></span>
                     </div>
 
@@ -60,30 +52,3 @@
         </div>
     </div>
 </div>
-
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-
-    <script>
-        $(document).ready(function () {
-            // Format Card Number input
-            $('#CardNumber').on('input', function () {
-                let value = $(this).val().replace(/\D/g, ''); // Remove non-numeric characters
-                value = value.replace(/(\d{4})/g, '$1 ').trim(); // Format into groups of 4
-                $(this).val(value);
-            });
-
-            // Enforce MM/YY format in Expiry Date
-            $('#ExpiryDate').on('input', function () {
-                let value = $(this).val().replace(/\D/g, ''); // Remove non-numeric characters
-                if (value.length >= 2) value = value.replace(/(\d{2})(\d{0,2})/, '$1/$2'); // Add '/' after 2 digits
-                $(this).val(value);
-            });
-
-            // Limit CVV input to 3 or 4 digits
-            $('#CVV').on('input', function () {
-                $(this).val($(this).val().replace(/\D/g, '').slice(0, 4)); // Only allow numbers, max 4 digits
-            });
-        });
-    </script>
-}

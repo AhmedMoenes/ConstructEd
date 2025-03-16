@@ -1,30 +1,23 @@
-﻿@model IEnumerable<ConstructEd.ViewModels.PluginViewModel>
+﻿@model List<PluginViewModel>
+@{
+	ViewData["Title"] = "Index";
+}
+<h2>Plugins</h2>
 
-<h1>Plugins</h1>
-
-<table class="table">
-    <thead>
-        <tr>
-            <th>Title</th>
-            <th>Description</th>
-            <th>Price</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>@item.Title</td>
-                <td>@item.Description</td>
-                <td>@item.Price.ToString("C")</td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
-
-<a asp-action="Create" class="btn btn-primary">Create New</a>
+@foreach (var plugin in Model)
+{
+		<div class="card" style="width:300px">
+		@* <img class="card-img-top" src="/Images/@Model.ImageURL" alt="Card image"> *@
+			<div class="card-body">
+					<h4 class="card-title">@plugin.Title</h4>
+						<p class="card-text">Price = @plugin.Price</p>
+			@* Handle This *@
+						<a asp-controller="Plugin" asp-action="Details" asp-route-id="@plugin.Id" class="btn btn-success">View Details</a>
+			<form asp-action="AddToCart" asp-controller="ShoppingCart" method="post">
+							<input type="hidden" name="id" value="@plugin.Id" />
+						<input type="hidden" name="type" value="Plugin" />
+						<button type="submit" class="btn btn-danger">Add To Cart</button>
+						</form>
+			</div>
+		</div>
+}

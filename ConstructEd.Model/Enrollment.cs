@@ -16,9 +16,16 @@ namespace ConstructEd.Models
         public ApplicationUser? User { get; set; }
 
         [ForeignKey("Course")]
-        public int CourseId { get; set; }
+        public int? CourseId { get; set; }
         public Course? Course { get; set; }
-        public ICollection<PaymentCourse> PaymentCourses { get; set; } = new HashSet<PaymentCourse>();
+
+        [ForeignKey("Plugin")]
+        public int? PluginId { get; set; }
+        public Plugin? Plugin { get; set; }
+
+        // 🔹 Ensure Only One of Course or Plugin is Chosen
+        [NotMapped]
+        public bool IsValid => (CourseId.HasValue && !PluginId.HasValue) || (!CourseId.HasValue && PluginId.HasValue);
 
     }
 }
