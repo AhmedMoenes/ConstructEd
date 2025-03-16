@@ -39,7 +39,7 @@ namespace ConstructEd.ViewModels
         [Required]
         [Display(Name = "Courses")]
         public List<int> CourseIds { get; set; } = new List<int>();
-        public List<int> PluginIds { get; set; } = new List<int>(); 
+        public List<int> PluginIds { get; set; } = new List<int>();
 
     }
 }
