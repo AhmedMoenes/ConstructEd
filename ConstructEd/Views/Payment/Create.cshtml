@@ -50,7 +50,7 @@
 
                     <div class="mb-3">
                         <label asp-for="Amount" class="form-label"></label>
-                        <input asp-for="Amount" class="form-control" type="number" min="1" step="0.01" required />
+                        <input asp-for="Amount" class="form-control" type="number" min="1" step="0.01" readonly /> <!-- Readonly to prevent manual input -->
                         <span asp-validation-for="Amount" class="text-danger"></span>
                     </div>
 
@@ -80,9 +80,22 @@
                 $(this).val(value);
             });
 
-            // Limit CVV input to 3 or 4 digits
-            $('#CVV').on('input', function () {
-                $(this).val($(this).val().replace(/\D/g, '').slice(0, 4)); // Only allow numbers, max 4 digits
+            // Expiry Date must be in the future
+            $('#paymentForm').on('submit', function (event) {
+                let expiry = $('#ExpiryDate').val();
+                let currentYear = new Date().getFullYear() % 100; // Get last 2 digits of current year
+                let currentMonth = new Date().getMonth() + 1; // JS months are 0-based
+
+                if (expiry.length === 5) {
+                    let [month, year] = expiry.split('/').map(Number);
+                    if (year < currentYear || (year === currentYear && month < currentMonth)) {
+                        alert("Expiry date must be in the future.");
+                        event.preventDefault(); // Prevent form submission
+                    }
+                } else {
+                    alert("Invalid expiry date format.");
+                    event.preventDefault();
+                }
             });
         });
     </script>

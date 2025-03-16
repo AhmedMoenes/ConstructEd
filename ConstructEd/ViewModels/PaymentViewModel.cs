@@ -18,6 +18,8 @@ namespace ConstructEd.ViewModels
         [Display(Name = "Transaction ID")]
         public Guid TransactionID { get; set; }
 
+        public string UserId { get; set; }
+
         [Required]
         [RegularExpression(@"^(0[1-9]|1[0-2])\/?([0-9]{2})$", ErrorMessage = "Expiry date must be in MM/YY format.")]
         [Display(Name = "Expiry Date (MM/YY)")]
@@ -37,5 +39,7 @@ namespace ConstructEd.ViewModels
         [Required]
         [Display(Name = "Courses")]
         public List<int> CourseIds { get; set; } = new List<int>();
+        public List<int> PluginIds { get; set; } = new List<int>(); 
+
     }
 }
