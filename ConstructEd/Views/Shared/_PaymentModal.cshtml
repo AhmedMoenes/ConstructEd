@@ -1,11 +1,5 @@
 ﻿@model PaymentViewModel
 
-@{
-
-    ViewData["Title"] = "Checkout";
-
-}
-
 <!-- Payment Modal -->
 <div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="paymentModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
@@ -15,7 +9,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form asp-action="Checkout" asp-controller="ShoppingCart" method="post" id="paymentForm">
+                <form asp-action="ProcessPayment" asp-controller="ShoppingCart" method="post" id="paymentForm">
 
                     @Html.AntiForgeryToken()
 
@@ -41,7 +35,7 @@
 
                     <div class="mb-3">
                         <label asp-for="CVV" class="form-label"></label>
-                        <input asp-for="CVV" class="form-control" type="password" maxlength="4"
+                        <input asp-for="CVV" class="form-control" type="password" maxlength="3"
                                autocomplete="off" pattern="\d{3,4}" required />
                         <span asp-validation-for="CVV" class="text-danger"></span>
                     </div>
@@ -58,82 +52,3 @@
         </div>
     </div>
 </div>
-
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-
-    <script>
-
-        $(document).ready(function () {
-
-            // Set total amount in payment form when modal opens
-
-            $('#paymentModal').on('show.bs.modal', function () {
-
-                let totalPrice = $('#totalPrice').text().trim(); // Get total price from cart
-
-                $('#paymentAmount').val(totalPrice); // Set value in payment form
-
-            });
-
-            // Format Card Number input
-
-            $('#CardNumber').on('input', function () {
-
-                let value = $(this).val().replace(/\D/g, ''); // Remove non-numeric characters
-
-                value = value.replace(/(\d{4})/g, '$1 ').trim(); // Format into groups of 4
-
-                $(this).val(value);
-
-            });
-
-            // Enforce MM/YY format in Expiry Date
-
-            $('#ExpiryDate').on('input', function () {
-
-                let value = $(this).val().replace(/\D/g, ''); // Remove non-numeric characters
-
-                if (value.length >= 2) value = value.replace(/(\d{2})(\d{0,2})/, '$1/$2'); // Add '/' after 2 digits
-
-                $(this).val(value);
-
-            });
-
-            // Expiry Date must be in the future
-
-            $('#paymentForm').on('submit', function (event) {
-
-                let expiry = $('#ExpiryDate').val();
-
-                let currentYear = new Date().getFullYear() % 100; // Get last 2 digits of current year
-
-                let currentMonth = new Date().getMonth() + 1; // JS months are 0-based
-
-                if (expiry.length === 5) {
-
-                    let [month, year] = expiry.split('/').map(Number);
-
-                    if (year < currentYear || (year === currentYear && month < currentMonth)) {
-
-                        alert("Expiry date must be in the future.");
-
-                        event.preventDefault(); // Prevent form submission
-
-                    }
-
-                } else {
-
-                    alert("Invalid expiry date format.");
-
-                    event.preventDefault();
-
-                }
-
-            });
-
-        });
-    </script>
-
-}
-
