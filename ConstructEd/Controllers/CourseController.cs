@@ -64,10 +64,7 @@ namespace ConstructEd.Controllers
         public async Task<IActionResult> Create()
         {
             var instructors = await _instructorRepository.GetAllAsync();
-            var viewModel = new CourseViewModel
-            {
-                Instructors = _mapper.Map<List<SelectListItem>>(instructors)
-            };
+            var viewModel = new CourseViewModel();
             return View(nameof(Create), viewModel);
         }
 
@@ -90,8 +87,6 @@ namespace ConstructEd.Controllers
             }
 
             var instructors = await _instructorRepository.GetAllAsync();
-            viewModel.Instructors = _mapper.Map<List<SelectListItem>>(instructors);
-
             return View(nameof(Create), viewModel);
         }
 
@@ -107,7 +102,6 @@ namespace ConstructEd.Controllers
             var viewModel = _mapper.Map<CourseViewModel>(course);
 
             var instructors = await _instructorRepository.GetAllAsync();
-            viewModel.Instructors = _mapper.Map<List<SelectListItem>>(instructors);
 
             return View(nameof(Edit), viewModel);
         }
@@ -136,7 +130,6 @@ namespace ConstructEd.Controllers
             }
 
             var instructors = await _instructorRepository.GetAllAsync();
-            viewModel.Instructors = _mapper.Map<List<SelectListItem>>(instructors);
 
             return View(nameof(Edit), viewModel);
         }

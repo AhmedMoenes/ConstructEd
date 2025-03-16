@@ -12,7 +12,12 @@
 					<h4 class="card-title">@plugin.Title</h4>
 						<p class="card-text">Price = @plugin.Price</p>
 			@* Handle This *@
-					<a asp-controller="Plugin" asp-action="Details" asp-route-id="@plugin.Id" class="btn btn-success">View Details</a>
+						<a asp-controller="Plugin" asp-action="Details" asp-route-id="@plugin.Id" class="btn btn-success">View Details</a>
+							<form asp-action="Index" asp-controller="ShoppingCart" method="post">
+							<input type="hidden" name="id" value="@plugin.Id" />
+						<input type="hidden" name="type" value="Plugin" />
+						<button type="submit" class="btn btn-danger">Add To Cart</button>
+						</form>
 			</div>
 		</div>
 }

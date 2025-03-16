@@ -51,16 +51,16 @@ public class MappingProfile : Profile
         #endregion
 
         #region Course
-        // Map from CourseViewModel to Course
         CreateMap<CourseViewModel, Course>()
-            .ForMember(dest => dest.Title, opt => opt.MapFrom(src => src.Title))
-            .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Description))
-            .ForMember(dest => dest.Price, opt => opt.MapFrom(src => src.Price))
-            .ForMember(dest => dest.Duration, opt => opt.MapFrom(src => src.Duration))
-            .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Category))
-            .ForMember(dest => dest.InstructorId, opt => opt.MapFrom(src => src.InstructorId))
-            .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(src => src.CreatedAt))
-            .ForMember(dest => dest.UpdatedAt, opt => opt.MapFrom(src => src.UpdatedAt));
+               .ForMember(dest => dest.Title, opt => opt.MapFrom(src => src.Title))
+               .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Description))
+               .ForMember(dest => dest.Price, opt => opt.MapFrom(src => src.Price))
+               .ForMember(dest => dest.Duration, opt => opt.MapFrom(src => src.Duration))
+               .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Category))
+               .ForMember(dest => dest.InstructorId, opt => opt.MapFrom(src => src.InstructorId))
+               .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(src => src.CreatedAt))
+               .ForMember(dest => dest.UpdatedAt, opt => opt.MapFrom(src => src.UpdatedAt))
+               .ForMember(dest => dest.CourseContents, opt => opt.MapFrom(src => src.CourseContents));
 
         // Map from Course to CourseViewModel
         CreateMap<Course, CourseViewModel>()
@@ -72,7 +72,8 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Category))
             .ForMember(dest => dest.InstructorId, opt => opt.MapFrom(src => src.InstructorId))
             .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(src => src.CreatedAt))
-            .ForMember(dest => dest.UpdatedAt, opt => opt.MapFrom(src => src.UpdatedAt));
+            .ForMember(dest => dest.UpdatedAt, opt => opt.MapFrom(src => src.UpdatedAt))
+            .ForMember(dest => dest.CourseContents, opt => opt.MapFrom(src => src.CourseContents));
         #endregion
 
         #region Instructor
