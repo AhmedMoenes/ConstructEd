@@ -10,17 +10,17 @@ namespace ConstructEd.Models
 
         // 🔹 User Foreign Key (Every cart entry belongs to a user)
         [Required]
-        [ForeignKey("User")]
+        [ForeignKey(nameof(User))]
         public string UserId { get; set; }
         public ApplicationUser? User { get; set; }
 
         // 🔹 Course Foreign Key (Nullable)
-        [ForeignKey("Course")]
+        [ForeignKey(nameof(Course))]
         public int? CourseId { get; set; }
         public Course? Course { get; set; }
 
-        // 🔹 Plugin Foreign Key (Nullable)
-        [ForeignKey("Plugin")]
+        // 🔹 Plugin Foreign Key (Nullable) 
+        [ForeignKey(nameof(Plugin))]
         public int? PluginId { get; set; }
         public Plugin? Plugin { get; set; }
 

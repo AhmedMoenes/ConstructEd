@@ -134,21 +134,6 @@ namespace ConstructEd.Controllers
             return RedirectToAction("Success", new { transactionId = payment.TransactionID });
         }
 
-        private bool IsExpiryDateValid(string expiryDate)
-        {
-            if (expiryDate.Length != 5 || !expiryDate.Contains('/'))
-                return false;
-
-            string[] parts = expiryDate.Split('/');
-            if (!int.TryParse(parts[0], out int month) || !int.TryParse(parts[1], out int year))
-                return false;
-
-            int currentYear = DateTime.UtcNow.Year % 100;
-            int currentMonth = DateTime.UtcNow.Month;
-
-            return year > currentYear || (year == currentYear && month >= currentMonth);
-        }
-
         public IActionResult Success(Guid transactionId)
         {
             ViewBag.TransactionID = transactionId;
