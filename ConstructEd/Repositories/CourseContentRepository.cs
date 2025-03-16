@@ -1,47 +1,57 @@
 ﻿using ConstructEd.Models;
-using ConstructEd.Data;
 using Microsoft.EntityFrameworkCore;
+using ConstructEd.Data;
 
 namespace ConstructEd.Repositories
 {
     public class CourseContentRepository : ICourseContentRepository
     {
-        private readonly DataContext dataContext;
+        private readonly DataContext _dataContext;
 
         public CourseContentRepository(DataContext dataContext)
         {
-            this.dataContext = dataContext;
-        }
-        public void Delete(int id)
-        {
-            CourseContent emp = GetById(id);
-            dataContext.Remove(emp);
+            _dataContext = dataContext;
         }
 
-        public ICollection<CourseContent> GetAll()
+        public async Task DeleteAsync(int id)
         {
-            return dataContext.CourseContents.Include(m => m.Course).ToList();
+            var entity = await GetByIdAsync(id);
+            if (entity != null)
+            {
+                _dataContext.CourseContents.Remove(entity);
+                await SaveAsync(); 
+            }
         }
 
-        public CourseContent GetById(int id)
+        public async Task<ICollection<CourseContent>> GetAllAsync()
         {
-            
-            return dataContext.CourseContents.Include(m=>m.Course).FirstOrDefault(e => e.Id == id);
+            return await _dataContext.CourseContents
+                .Include(m => m.Course)
+                .ToListAsync();
         }
 
-        public void Insert(CourseContent obj)
+        public async Task<CourseContent> GetByIdAsync(int id)
         {
-            dataContext.Add(obj);
+            return await _dataContext.CourseContents
+                .Include(m => m.Course)
+                .FirstOrDefaultAsync(e => e.Id == id);
         }
 
-        public int Save()
+        public async Task InsertAsync(CourseContent obj)
         {
-           return dataContext.SaveChanges();
+            await _dataContext.CourseContents.AddAsync(obj);
+            await SaveAsync(); 
         }
 
-        public void Update(CourseContent obj)
+        public async Task SaveAsync()
         {
-            dataContext.Update(obj);
+            await _dataContext.SaveChangesAsync();
+        }
+
+        public async Task UpdateAsync(CourseContent obj)
+        {
+            _dataContext.CourseContents.Update(obj);
+            await SaveAsync(); 
         }
     }
 }

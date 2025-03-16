@@ -1,55 +1,88 @@
-﻿using ConstructEd.ViewModels;
+﻿using AutoMapper;
+using ConstructEd.Services;
+using ConstructEd.ViewModels;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ConstructEd.Controllers
 {
     public class AccountController : Controller
     {
-        public IActionResult Index()
+        private readonly IAuthService _authService;
+        private readonly IMapper _mapper;
+
+        public AccountController(IAuthService authService, IMapper mapper)
         {
-            return View();
+            _authService = authService;
+            _mapper = mapper;
         }
 
         [HttpGet]
         public IActionResult Register()
         {
-            return View("Register"); 
+            return View(nameof(Register));
         }
 
         [HttpPost]
-        public async Task<IActionResult> Register(RegisterViewModel registerModel)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Register(RegisterViewModel model)
         {
             if (ModelState.IsValid)
             {
-                // Create user logic
-                return RedirectToAction("Login"); // Redirects to the Login action
+                IdentityResult result = await _authService.RegisterUserAsync(model);
+
+                if (result.Succeeded)
+                {
+                    // Automatically login after registration
+                    await _authService.LoginUserAsync(new LoginViewModel
+                    {
+                        Email = model.Email,
+                        Password = model.Password
+                    });
+
+                    return RedirectToAction(nameof(HomeController.Index), nameof(HomeController));
+                }
+
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description);
+                }
             }
-            return View(registerModel);
+            return View(nameof(Register), model);
         }
 
         [HttpGet]
         public IActionResult Login()
         {
-            return View(); // Returns Views/Account/Login.cshtml
+            return View(nameof(Login));
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
             if (ModelState.IsValid)
             {
-                // Login logic
-                return RedirectToAction("Index", "Home"); // Redirects to the Home/Index action
+                var result = await _authService.LoginUserAsync(model);
+
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+
+                ModelState.AddModelError(string.Empty, "Invalid Username or Password");
             }
-            return View(model); // Returns Views/Account/Login.cshtml with validation errors
+            return View(nameof(Login), model);
         }
 
-        public async Task<IActionResult> Logout(LoginViewModel loginModel)
+        [HttpPost]
+        public async Task<IActionResult> Logout()
         {
-            return RedirectToAction("Index", "Home");
+            await _authService.LogoutAsync();
+            return RedirectToAction(nameof(HomeController.Index), nameof(HomeController));
         }
 
-        // To Do : Forget Password, Reset Password  , External Login Via Google, Facebook ## //z
+        // To Do : Forget Password, Reset Password  , External Login Via Google, Facebook ## //
 
     }
 }

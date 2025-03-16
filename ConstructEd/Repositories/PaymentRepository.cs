@@ -6,176 +6,54 @@ namespace ConstructEd.Repositories
 {
     public class PaymentRepository : IPaymentRepository
     {
-        private readonly DataContext dataContext;
+        private readonly DataContext _dataContext;
 
         public PaymentRepository(DataContext dataContext)
         {
-            this.dataContext = dataContext;
-        }
-
-        #region Synchronous Methods
-        public void Delete(int id)
-        {
-            Payment payment = GetById(id);
-            if (payment != null)
-            {
-                dataContext.Remove(payment);
-            }
-        }
-
-        public ICollection<Payment> GetAll()
-        {
-            return dataContext.Payments
-                .Include(p => p.Course)
-                .Include(p => p.User)
-                .ToList();
-        }
-
-        public Payment GetById(int id)
-        {
-            return dataContext.Payments
-                .Include(p => p.Course)
-                .Include(p => p.User)
-                .FirstOrDefault(p => p.Id == id);
-        }
-
-        public void Insert(Payment obj)
-        {
-            dataContext.Add(obj);
-        }
-
-        public int Save()
-        {
-            return dataContext.SaveChanges();
-        }
-
-        public void Update(Payment obj)
-        {
-            obj.ModifiedAt = DateTime.UtcNow;
-            dataContext.Update(obj);
-        }
-
-        #endregion
-
-        #region Asynchronous Methods
-        public async Task DeleteAsync(int id)
-        {
-            var payment = await GetByIdAsync(id);
-            if (payment != null)
-            {
-                dataContext.Payments.Remove(payment);
-            }
+            _dataContext = dataContext;
         }
 
         public async Task<ICollection<Payment>> GetAllAsync()
         {
-            return await dataContext.Payments
-                .Include(p => p.Course)
-                .Include(p => p.User)
-                .ToListAsync();
+            return await _dataContext.Payments.Include(p => p.User).ToListAsync();
+        }
+
+        public async Task<IEnumerable<Payment>> GetPaymentsByUserIdAsync(string userId)
+        {
+            return await _dataContext.Payments.Where(p => p.UserId == userId).ToListAsync();
         }
 
         public async Task<Payment> GetByIdAsync(int id)
         {
-            return await dataContext.Payments
-                .Include(p => p.Course)
-                .Include(p => p.User)
-                .FirstOrDefaultAsync(p => p.Id == id);
-        }
-
-        public async Task<Payment> GetByTransactionIdAsync(string transactionId)
-        {
-            return await dataContext.Payments
-                .Include(p => p.Course)
-                .Include(p => p.User)
-                .FirstOrDefaultAsync(p => p.TransactionId == transactionId);
+            return await _dataContext.Payments.Include(p => p.User).FirstOrDefaultAsync(p => p.Id == id); // Fix: Use PaymentId
         }
 
         public async Task InsertAsync(Payment payment)
         {
-            await dataContext.Payments.AddAsync(payment);
-        }
-
-        public async Task<int> SaveAsync()
-        {
-            return await dataContext.SaveChangesAsync();
+            await _dataContext.Payments.AddAsync(payment);
+            await SaveAsync(); // Ensure changes are saved
         }
 
         public async Task UpdateAsync(Payment payment)
         {
-            payment.ModifiedAt = DateTime.UtcNow;
-            dataContext.Payments.Update(payment);
+            _dataContext.Payments.Update(payment);
+            await SaveAsync(); // Ensure changes are saved
         }
 
-        public async Task<ICollection<Payment>> GetByUserIdAsync(string userId)
+        public async Task DeleteAsync(int id)
         {
-            return await dataContext.Payments
-                .Include(p => p.Course)
-                .Include(p => p.User)
-                .Where(p => p.UserId == userId)
-                .ToListAsync();
-        }
-
-        public async Task<ICollection<Payment>> GetByCourseIdAsync(int courseId)
-        {
-            return await dataContext.Payments
-                .Include(p => p.Course)
-                .Include(p => p.User)
-                .Where(p => p.CourseId == courseId)
-                .ToListAsync();
-        }
-
-        public async Task<ICollection<Payment>> GetByDateRangeAsync(DateTime startDate, DateTime endDate)
-        {
-            return await dataContext.Payments
-                .Include(p => p.Course)
-                .Include(p => p.User)
-                .Where(p => p.PaymentDate >= startDate && p.PaymentDate <= endDate)
-                .ToListAsync();
-        }
-
-        public async Task<ICollection<Payment>> GetByStatusAsync(PaymentStatus status)
-        {
-            return await dataContext.Payments
-                .Include(p => p.Course)
-                .Include(p => p.User)
-                .Where(p => p.Status == status)
-                .ToListAsync();
-        }
-
-        public async Task<ICollection<Payment>> GetPaginatedAsync(int pageNumber, int pageSize)
-        {
-            return await dataContext.Payments
-                .Include(p => p.Course)
-                .Include(p => p.User)
-                .Skip((pageNumber - 1) * pageSize)
-                .Take(pageSize)
-                .ToListAsync();
-        }
-
-        public async Task<int> GetTotalCountAsync()
-        {
-            return await dataContext.Payments.CountAsync();
-        }
-
-        public async Task ProcessRefundAsync(int paymentId, decimal refundAmount, string refundTransactionId, string modifiedBy)
-        {
-            var payment = await GetByIdAsync(paymentId);
-
+            var payment = await _dataContext.Payments.FindAsync(id);
             if (payment != null)
             {
-                payment.RefundedAmount = refundAmount;
-                payment.RefundDate = DateTime.UtcNow;
-                payment.RefundTransactionId = refundTransactionId;
-                payment.Status = refundAmount >= payment.Amount ?
-                    PaymentStatus.Refunded : PaymentStatus.PartiallyRefunded;
-                payment.ModifiedAt = DateTime.UtcNow;
-                payment.ModifiedBy = modifiedBy;
-
-                dataContext.Payments.Update(payment);
-                await SaveAsync();
+                _dataContext.Payments.Remove(payment);
+                await SaveAsync(); // Ensure changes are saved
             }
         }
-        #endregion
+
+        public async Task SaveAsync()
+        {
+             _dataContext.SaveChangesAsync();
+        }
+
     }
 }

@@ -1,47 +1,53 @@
 ﻿using ConstructEd.Data;
 using ConstructEd.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace ConstructEd.Repositories
-
 {
     public class CourseRepository : ICourseRepository
     {
-        private readonly DataContext dataContext;
+        private readonly DataContext _dataContext;
 
         public CourseRepository(DataContext dataContext)
         {
-            this.dataContext = dataContext;
-        }
-        public void Delete(int id)
-        {
-            Course emp = GetById(id);
-            dataContext.Remove(emp);
+            _dataContext = dataContext;
         }
 
-        public ICollection<Course> GetAll()
+        public async Task DeleteAsync(int id)
         {
-            return dataContext.Courses.ToList();
+            var entity = await GetByIdAsync(id);
+            if (entity != null)
+            {
+                _dataContext.Courses.Remove(entity);
+                await SaveAsync(); 
+            }
         }
 
-        public Course GetById(int id)
+        public async Task<ICollection<Course>> GetAllAsync()
         {
-
-            return dataContext.Courses.FirstOrDefault(e => e.Id == id);
+            return await _dataContext.Courses.ToListAsync();
         }
 
-        public void Insert(Course obj)
+        public async Task<Course> GetByIdAsync(int id)
         {
-            dataContext.Add(obj);
+            return await _dataContext.Courses.FirstOrDefaultAsync(e => e.Id == id);
         }
 
-        public int Save()
+        public async Task InsertAsync(Course obj)
         {
-            return dataContext.SaveChanges();
+            await _dataContext.Courses.AddAsync(obj);
+            await SaveAsync(); 
         }
 
-        public void Update(Course obj)
+        public async Task SaveAsync()
         {
-            dataContext.Update(obj);
+            await _dataContext.SaveChangesAsync();
+        }
+
+        public async Task UpdateAsync(Course obj)
+        {
+            _dataContext.Courses.Update(obj);
+            await SaveAsync(); 
         }
     }
 }
