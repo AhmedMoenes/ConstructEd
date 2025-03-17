@@ -71,6 +71,9 @@ namespace ConstructEd.Controllers
             //enrolled
             viewModel.IsEnrolled = await _enrollmentRepository.IsUserEnrolledInCourseAsync(userId, id);
 
+            viewModel.IsInWishlist = await _wishlistRepository.IsCourseInWishlistAsync(userId, course.Id);
+            viewModel.IsInCart = await _shoppingCartRepository.IsCourseInCartAsync(userId, course.Id);
+
 
             return View(nameof(Details), viewModel);
         }
