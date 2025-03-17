@@ -16,10 +16,13 @@
 
             <a asp-controller="Course" asp-action="Details" asp-route-id="@course.Id" class="btn btn-success">View Details</a>
 
-            <form asp-action="AddToCart" asp-controller="ShoppingCart" method="post">
+            <form class="cart-form" data-courseid="@course.Id" data-incart="@(course.IsInCart ? "true" : "false" )">
                 <input type="hidden" name="id" value="@course.Id" />
                 <input type="hidden" name="type" value="Course" />
-                <button type="submit" class="btn btn-danger">Add To Cart</button>
+                <button type="submit" class="cart-button">
+                    <i class="@(course.IsInCart ? "fas fa-shopping-cart" : "fas fa-cart-plus")"></i>
+                </button>
+
             </form>
 
             <form class="wish-form" data-courseid="@course.Id" data-inwishlist="@(course.IsInWishlist ? "true" : "false")">
@@ -36,6 +39,29 @@
 }
 
 <style>
+    .cart-button {
+        font-size: 24px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        transition: color 0.3s ease-in-out;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+        .cart-button i {
+            color: gray;
+            transition: color 0.3s ease-in-out;
+        }
+
+        .cart-button .fas {
+            color: green !important;
+        }
+
+
+
+
     .wish-button {
         font-size: 24px;
         background: none;
@@ -87,4 +113,44 @@
             });
         });
     });
+
+</script>
+
+<script>
+        $(document).ready(function () {
+        $(".cart-form").on("submit", function (event) {
+            event.preventDefault();
+
+            let form = $(this);
+            let icon = form.find("i");
+            let inCart = form.data("incart") === true;
+
+            let actionUrl = inCart
+                ? "/ShoppingCart/RemoveFromCart"
+                : "/ShoppingCart/AddToCart";
+
+            $.post(actionUrl, form.serialize(), function (response) {
+                if (response.success) {
+                    let newStatus = !inCart;
+                    form.data("incart", newStatus);
+
+                    // Toggle shopping cart icon and color
+                    if (newStatus) {
+                        icon.removeClass("fa-cart-plus").addClass("fa-shopping-cart");
+                        icon.css("color", "green");
+                    } else {
+                        icon.removeClass("fa-shopping-cart").addClass("fa-cart-plus");
+                        icon.css("color", "gray");
+                    }
+                } else {
+                    alert(response.message || "Failed to update cart!");
+                }
+            }).fail(function () {
+                alert("An error occurred!");
+            });
+        });
+    });
+
+
+
 </script>

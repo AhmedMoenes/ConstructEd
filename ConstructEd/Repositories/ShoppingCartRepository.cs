@@ -67,34 +67,36 @@ namespace ConstructEd.Repositories
 
 
 
-        public async Task RemoveCourseFromCartAsync(string userId, int courseId)
+        public async Task<bool> RemoveCourseFromCartAsync(string userId, int courseId)
         {
-
             var cartItem = await _context.ShoppingCarts
                 .FirstOrDefaultAsync(sc => sc.UserId == userId && sc.CourseId == courseId);
 
             if (cartItem != null)
             {
-
                 _context.ShoppingCarts.Remove(cartItem);
                 await _context.SaveChangesAsync();
+                return true; // Successfully removed
             }
+
+            return false; // Item not found
         }
 
-
-        public async Task RemovePluginFromCartAsync(string userId, int pluginId)
+        public async Task<bool> RemovePluginFromCartAsync(string userId, int pluginId)
         {
-
             var cartItem = await _context.ShoppingCarts
                 .FirstOrDefaultAsync(sc => sc.UserId == userId && sc.PluginId == pluginId);
 
             if (cartItem != null)
             {
-
                 _context.ShoppingCarts.Remove(cartItem);
                 await _context.SaveChangesAsync();
+                return true; // Successfully removed
             }
+
+            return false; // Item not found
         }
+
         public async Task ClearCartAsync(string userId)
 
         {
@@ -110,6 +112,10 @@ namespace ConstructEd.Repositories
             }
 
         }
-
+        public async Task<bool> IsCourseInCartAsync(string userId, int courseId)
+        {
+            return await _context.ShoppingCarts
+                .AnyAsync(sc => sc.UserId == userId && sc.CourseId == courseId);
+        }
     }
 }

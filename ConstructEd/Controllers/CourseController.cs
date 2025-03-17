@@ -14,18 +14,21 @@ namespace ConstructEd.Controllers
         private readonly IInstructorRepository _instructorRepository;
         private readonly ICourseContentRepository _courseContentRepository;
         private readonly IWishListRepository _wishlistRepository;
+        private readonly IShoppingCartRepository _shoppingCartRepository;
         private readonly IMapper _mapper;
 
         public CourseController(ICourseRepository courseRepository,
                                 IInstructorRepository instructorRepository,
                                 ICourseContentRepository courseContentRepository,
                                 IWishListRepository wishlistRepository,
+                                IShoppingCartRepository shoppingCartRepository,
                                 IMapper mapper)
         {
             _courseRepository = courseRepository;
             _instructorRepository = instructorRepository;
             _courseContentRepository = courseContentRepository;
             _wishlistRepository = wishlistRepository;
+            _shoppingCartRepository= shoppingCartRepository;
             _mapper = mapper;
         }
 
@@ -42,6 +45,7 @@ namespace ConstructEd.Controllers
                 foreach (var course in courseViewModels)
                 {
                     course.IsInWishlist = await _wishlistRepository.IsCourseInWishlistAsync(userId, course.Id);
+                    course.IsInCart = await _shoppingCartRepository.IsCourseInCartAsync(userId, course.Id); // ✅ New check
                 }
             }
 

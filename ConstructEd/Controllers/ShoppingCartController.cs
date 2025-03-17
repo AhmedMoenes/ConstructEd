@@ -32,15 +32,14 @@ namespace ConstructEd.Controllers
 		}
 
 
-		
-       
+
         [HttpPost]
         public async Task<IActionResult> AddToCart(int id, string type)
         {
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (string.IsNullOrEmpty(userId))
             {
-                return NoContent(); // No action if user is not logged in
+                return Json(new { success = false, message = "User not logged in" });
             }
 
             var existingItem = await _shoppingCartRepository.GetByUserIdAsync(userId);
@@ -59,15 +58,43 @@ namespace ConstructEd.Controllers
 
                 await _shoppingCartRepository.InsertAsync(cartItem);
                 await _shoppingCartRepository.SaveAsync();
+
+                return Json(new { success = true });
             }
 
-            return NoContent(); // Return nothing, just process the request
+            return Json(new { success = false, message = "Item is already in cart" });
         }
+        [HttpPost]
+        public async Task<IActionResult> RemoveFromCart(int id, string type)
+        {
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Json(new { success = false, message = "User not logged in" });
+            }
 
+            bool removed = false;
 
+            if (type == "Course")
+            {
+                removed = await _shoppingCartRepository.RemoveCourseFromCartAsync(userId, id);
+            }
+            else if (type == "Plugin")
+            {
+                removed = await _shoppingCartRepository.RemovePluginFromCartAsync(userId, id);
+            }
+            else
+            {
+                return Json(new { success = false, message = "Invalid item type" });
+            }
 
+            if (removed)
+            {
+                return Json(new { success = true });
+            }
 
-
+            return Json(new { success = false, message = "Item not found in cart" });
+        }
 
 
         // 🔹 Display the shopping cart
@@ -108,33 +135,6 @@ namespace ConstructEd.Controllers
             };
 
             return View(viewModel);
-        }
-
-        // 🔹 Remove an item from the cart
-        [HttpPost]
-        public async Task<IActionResult> RemoveFromCart(int id, string type)
-        {
-            // Get the logged-in user ID
-            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (string.IsNullOrEmpty(userId))
-            {
-                return RedirectToAction("Login", "Account");
-            }
-
-            if (type == "course")
-            {
-                await _shoppingCartRepository.RemoveCourseFromCartAsync(userId, id);
-            }
-            else if (type == "plugin")
-            {
-                await _shoppingCartRepository.RemovePluginFromCartAsync(userId, id);
-            }
-            else
-            {
-                return BadRequest("Invalid item type.");
-            }
-
-            return RedirectToAction(nameof(Index));
         }
 
 

@@ -13,6 +13,4 @@ namespace ConstructEd.ViewModels
         public decimal TotalPrice =>
             Courses.Sum(c => c.Price) + Plugins.Sum(p => p.Price);
     }
-
-    
 }
