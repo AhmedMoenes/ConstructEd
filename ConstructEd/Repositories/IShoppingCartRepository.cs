@@ -10,5 +10,7 @@ namespace ConstructEd.Repositories
         Task<bool> IsCourseInCartAsync(string userId, int courseId);
         Task<bool> RemoveCourseFromCartAsync(string userId, int courseId);
         Task<bool> RemovePluginFromCartAsync(string userId, int pluginId);
+        Task<int> GetCartCountAsync(string userId);
+
     }
 }

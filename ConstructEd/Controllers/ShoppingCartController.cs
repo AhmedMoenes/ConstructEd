@@ -207,7 +207,7 @@ namespace ConstructEd.Controllers
 
             return RedirectToAction("Success", new { transactionId = payment.TransactionID });
         }
-
+      
         public IActionResult Success(Guid transactionId)
 		{
 			ViewBag.TransactionID = transactionId;
@@ -218,6 +218,18 @@ namespace ConstructEd.Controllers
 		{
 			return View();
 		}
-	}
+        [HttpGet]
+        public async Task<IActionResult> GetCartCount()
+        {
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Json(0);
+            }
+
+            int count = await _shoppingCartRepository.GetCartCountAsync(userId);
+            return Json(count);
+        }
+    }
 }
 

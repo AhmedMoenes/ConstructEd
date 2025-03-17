@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/ConstructEd.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js"></script>
+
     <style>
      
         body {
@@ -482,10 +484,18 @@
              <li class="nav-item"><a class="nav-link" asp-controller="Course" asp-action="Index">Courses</a></li>
              <li class="nav-item"><a class="nav-link" asp-controller="Plugin" asp-action="Index">Plugins</a></li>
              <li class="nav-item"><a class="nav-link" asp-controller="Account" asp-action="Manage">Manage</a></li>
-             <li class="nav-item"><a class="nav-link" asp-controller="ShoppingCart" asp-action="Index">Shopping Cart</a></li>
+                <!-- Cart Icon -->
+                <li class="nav-item">
+                    <a class="nav-link" href="/ShoppingCart">
+                        <i class="fa-solid fa-cart-shopping fa-lg"></i>
+                        <span class="badge bg-danger" id="cart-count">0</span>
+                    </a>
+                </li>
+                <!-- Heart Icon (Wishlist) -->
                 <li class="nav-item">
                     <a class="nav-link" asp-controller="WishList" asp-action="Index">
-                        Wish List (<span id="wishlist-count">0</span>)
+                        <i class="fa-solid fa-heart fa-lg"></i>
+                        <span class="badge bg-danger" id="wishlist-count">0</span>
                     </a>
                 </li>
                 <li class="nav-item"><a class="nav-link" asp-controller="Enrollment" asp-action="Index">Enrollments</a></li>
@@ -607,26 +617,87 @@
 
 </body>
 </html>
+ 
 <script>
     $(document).ready(function () {
         // Fetch wishlist count on page load
         updateWishlistCount();
 
         $(".wish-form").on("submit", function (event) {
+            event.preventDefault(); // Prevent form submission from reloading the page
+
             let icon = $(this).find("i");
 
             // Toggle UI instantly after form submission
             icon.toggleClass("far fas text-danger");
 
+            // Add a small animation for visual feedback
+            icon.css("transform", "scale(1.2)");
+            setTimeout(() => icon.css("transform", "scale(1)"), 300);
+
             // Update wishlist count dynamically
             setTimeout(updateWishlistCount, 500); // Delay to ensure DB update
-
         });
 
         function updateWishlistCount() {
             $.get("/WishList/GetWishlistCount", function (data) {
                 $("#wishlist-count").text(data);
+            }).fail(function () {
+                console.error("Failed to fetch wishlist count.");
+                alert("Something went wrong while updating the wishlist count.");
             });
         }
     });
 </script>
+
+<script>
+    $(document).ready(function () {
+        // Fetch cart count on page load
+        updateCartCount();
+
+        $(".cart-form").on("submit", function (event) {
+            event.preventDefault(); // Prevent form submission from reloading the page
+
+            let icon = $(this).find("i");
+
+            // Toggle UI instantly after form submission
+            icon.toggleClass("fa-thin fa-solid text-success");
+
+            // Add a small animation for visual feedback
+            icon.css("transform", "scale(1.2)");
+            setTimeout(() => icon.css("transform", "scale(1)"), 300);
+
+            // Update cart count dynamically
+            setTimeout(updateCartCount, 500); // Delay to ensure DB update
+        });
+
+        function updateCartCount() {
+            $.get("/ShoppingCart/GetCartCount", function (data) {
+                $("#cart-count").text(data);
+            }).fail(function () {
+                console.error("Failed to fetch cart count.");
+                alert("Something went wrong while updating the cart count.");
+            });
+        }
+    });
+</script>
+
+<style>
+    /* Customize the heart and cart icons */
+    .navbar-nav .nav-link i {
+        color: white; /* Set icon color */
+        transition: color 0.3s ease; /* Smooth color transition */
+    }
+
+    .navbar-nav .nav-link i:hover {
+        color: #ff4757; /* Change color on hover */
+    }
+
+    /* Style the badge */
+    .badge {
+        font-size: 0.75rem;
+        padding: 0.25em 0.5em;
+        margin-left: 0.25em;
+        vertical-align: middle;
+    }
+</style>

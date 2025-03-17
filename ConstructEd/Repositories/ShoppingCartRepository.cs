@@ -117,5 +117,11 @@ namespace ConstructEd.Repositories
             return await _context.ShoppingCarts
                 .AnyAsync(sc => sc.UserId == userId && sc.CourseId == courseId);
         }
+        public async Task<int> GetCartCountAsync(string userId)
+        {
+            return await _context.ShoppingCarts
+                .Where(sc => sc.UserId == userId)
+                .CountAsync();
+        }
     }
 }
