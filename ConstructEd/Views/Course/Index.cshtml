@@ -9,6 +9,10 @@
 {
     <div class="card" style="width:300px">
         <div class="card-body">
+            @if (!string.IsNullOrEmpty(course.Image))
+            {
+               <img src="/Image/@course.Image" class="card-img-top" alt="@course.Title" style="height: 100px; object-fit: cover;" />
+            }
             <h4 class="card-title">@course.Title</h4>
             <p class="card-text">Duration = @course.Duration</p>
             <p class="card-text">Price = @course.Price</p>
@@ -150,7 +154,4 @@
             });
         });
     });
-
-
-
 </script>

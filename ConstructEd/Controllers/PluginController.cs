@@ -1,228 +1,167 @@
-﻿using AutoMapper;
+﻿using System.Security.Claims;
+using AutoMapper;
 using ConstructEd.Models;
 using ConstructEd.Repositories;
 using ConstructEd.ViewModels;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace ConstructEd.Controllers
 {
     public class PluginController : Controller
     {
-        private readonly IPluginRepository _repository;
+        private readonly IPluginRepository _pluginRepository;
+        private readonly IMapper _mapper;
+        private readonly IWishListRepository _wishlistRepository;
+        private readonly IShoppingCartRepository _shoppingCartRepository;
 
-        public PluginController(IPluginRepository repository)
+        public PluginController(IPluginRepository pluginRepository, IMapper mapper,
+                                IWishListRepository wishlistRepository,
+                                IShoppingCartRepository shoppingCartRepository)
         {
-            _repository = repository;
+            _pluginRepository = pluginRepository;
+            _mapper = mapper;
         }
 
         public async Task<IActionResult> Index()
         {
-            var plugins = await _repository.GetAllAsync();
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var plugins = await _pluginRepository.GetAllAsync();
+            var pluginViewModels = _mapper.Map<List<PluginViewModel>>(plugins);
 
-            var viewModels = plugins.Select(p => new PluginViewModel
+            if (!string.IsNullOrEmpty(userId))
             {
-                Id = p.Id,
-                Title = p.Title,
-                Description = p.Description,
-                Price = p.Price,
-                CreatedAt = p.CreatedAt,
-                UpdatedAt = p.UpdatedAt,
-                //DownloadLink = p.DownloadLink,
-                //ImageUrl = p.ImageUrl,
+                foreach (var plugin in pluginViewModels)
+                {
+                    //plugin.IsInWishlist = await _wishlistRepository.IsCourseInWishlistAsync(userId, plugin.Id);
+                    //plugin.IsInCart = await _shoppingCartRepository.IsCourseInCartAsync(userId, plugin.Id); 
+                }
+            }
+            return View(nameof(Index), pluginViewModels);
+        }
 
-            }).ToList();
-
-            return View(viewModels);
+        [HttpGet]
+        public async Task<IActionResult> Details(int id)
+        {
+            var plugin = await _pluginRepository.GetByIdAsync(id);
+            if (plugin == null)
+            {
+                return NotFound();
+            }
+            var viewModel = _mapper.Map<PluginViewModel>(plugin);
+            return View(nameof(Details), viewModel);
         }
 
         [HttpGet]
         public IActionResult Create()
         {
-            ViewBag.Categories = Enum.GetValues(typeof(Category))
-              .Cast<Category>()
-              .Select(e => new SelectListItem
-              {
-                  Text = e.ToString(),
-                  Value = e.ToString()
-              }).ToList();
-
-            return View();
+            var viewModel = new PluginViewModel();
+            return View(nameof(Create), viewModel);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(PluginViewModel viewModel, IFormFile ImageUrl)
+        public async Task<IActionResult> Create(PluginViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
-                if (ImageUrl != null && ImageUrl.Length > 0)
+                if (viewModel.ImageFile != null && viewModel.ImageFile.Length > 0)
                 {
-                    var fileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(ImageUrl.FileName);
-                    var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Image", fileName);
+                    // Define the folder to save the image
+                    var imagesFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Image");
 
-                    Directory.CreateDirectory(Path.GetDirectoryName(filePath)!);
+                    // Generate a unique file name
+                    var fileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(viewModel.ImageFile.FileName);
+                    var filePath = Path.Combine(imagesFolder, fileName);
 
+                    // Save the file to the server
                     using (var stream = new FileStream(filePath, FileMode.Create))
                     {
-                        await ImageUrl.CopyToAsync(stream);
+                        await viewModel.ImageFile.CopyToAsync(stream);
                     }
 
-                    //viewModel.ImageUrl = fileName;
+                    viewModel.Image = fileName;
+                }
+                try
+                {
+                    var plugin = _mapper.Map<Plugin>(viewModel);
+                    await _pluginRepository.InsertAsync(plugin);
+                    return RedirectToAction(nameof(Index));
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError(string.Empty, ex.InnerException.Message);
                 }
 
-                var plugin = new Plugin
-                {
-                    Title = viewModel.Title,
-                    Description = viewModel.Description,
-                    Price = viewModel.Price,
-                    CreatedAt = DateTime.UtcNow,
-                    UpdatedAt = DateTime.UtcNow,
-                    //DownloadLink = viewModel.DownloadLink,
-                    //ImageUrl = viewModel.ImageUrl
-
-                };
-
-                await _repository.InsertAsync(plugin);
-                await _repository.SaveAsync();
-
-                return RedirectToAction(nameof(Index));
             }
-
-            ViewBag.Categories = Enum.GetValues(typeof(Category))
-              .Cast<Category>()
-              .Select(e => new SelectListItem
-              {
-                  Text = e.ToString(),
-                  Value = e.ToString()
-              }).ToList();
-
-            return View(viewModel);
+                return View(nameof(Create), viewModel);
         }
 
         public async Task<IActionResult> Edit(int id)
         {
-            var plugin = await _repository.GetByIdAsync(id);
-            if (plugin == null)
-                return NotFound();
-
-            var viewModel = new PluginViewModel
+            var course = await _pluginRepository.GetByIdAsync(id);
+            if (course == null)
             {
-                Id = plugin.Id,
-                Title = plugin.Title,
-                Description = plugin.Description,
-                Price = plugin.Price,
-                //DownloadLink = plugin.DownloadLink,
-                CreatedAt = plugin.CreatedAt,
-                UpdatedAt = plugin.UpdatedAt,
-                //ImageUrl = plugin.ImageUrl
+                return NotFound();
+            }
 
-            };
+            var viewModel = _mapper.Map<PluginViewModel>(course);
 
-            ViewBag.Categories = Enum.GetValues(typeof(Category))
-              .Cast<Category>()
-              .Select(e => new SelectListItem
-              {
-                  Text = e.ToString(),
-                  Value = e.ToString()
-              }).ToList();
-
-            return View(viewModel);
+            return View(nameof(Edit), viewModel);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, PluginViewModel viewModel, IFormFile ImageUrl, IFormFile DownloadLink)
+        public async Task<IActionResult> Edit(int id, PluginViewModel viewModel)
         {
             if (id != viewModel.Id)
+            {
                 return NotFound();
+            }
 
             if (ModelState.IsValid)
             {
-                var plugin = await _repository.GetByIdAsync(id);
-                if (plugin == null)
-                    return NotFound();
-
-                if (ImageUrl != null && ImageUrl.Length > 0)
+                try
                 {
-                    var fileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(ImageUrl.FileName);
-                    var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", fileName);
-                    Directory.CreateDirectory(Path.GetDirectoryName(filePath)!);
-
-                    using (var stream = new FileStream(filePath, FileMode.Create))
-                    {
-                        await ImageUrl.CopyToAsync(stream);
-                    }
-
-                    //plugin.ImageUrl = fileName;
+                    var plugin = _mapper.Map<Plugin>(viewModel);
+                    await _pluginRepository.UpdateAsync(plugin);
+                    return RedirectToAction(nameof(Index));
                 }
-
-                if (DownloadLink != null && DownloadLink.Length > 0)
+                catch (Exception ex)
                 {
-                    var downloadFileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(DownloadLink.FileName);
-                    var downloadPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "files", downloadFileName);
-                    Directory.CreateDirectory(Path.GetDirectoryName(downloadPath)!);
-
-                    using (var stream = new FileStream(downloadPath, FileMode.Create))
-                    {
-                        await DownloadLink.CopyToAsync(stream);
-                    }
-
-                    //plugin.DownloadLink = downloadFileName;
+                    ModelState.AddModelError(string.Empty, ex.InnerException.Message);
                 }
+            }
+            return View(nameof(Edit), viewModel);
+        }
 
-                plugin.Title = viewModel.Title;
-                plugin.Description = viewModel.Description;
-                plugin.Price = viewModel.Price;
-
-                plugin.UpdatedAt = DateTime.UtcNow;
-
-                await _repository.UpdateAsync(plugin);
-                await _repository.SaveAsync();
-
-                return RedirectToAction(nameof(Index));
+        [HttpGet]
+        public async Task<IActionResult> Remove(int id)
+        {
+            var plugin = await _pluginRepository.GetByIdAsync(id);
+            if (plugin == null)
+            {
+                return NotFound();
             }
 
-            ViewBag.Categories = Enum.GetValues(typeof(Category))
-                .Cast<Category>()
-                .Select(e => new SelectListItem
-                {
-                    Text = e.ToString(),
-                    Value = e.ToString()
-                }).ToList();
-
-            return View(viewModel);
+            var viewModel = _mapper.Map<PluginViewModel>(plugin);
+            return View(nameof(Remove), viewModel);
         }
 
-        public async Task<IActionResult> Delete(int id)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> RemoveConfirmed(int id)
         {
-            var plugin = await _repository.GetByIdAsync(id);
-            if (plugin == null)
-                return NotFound();
-
-            var viewModel = new PluginViewModel
+            try
             {
-                Id = plugin.Id,
-                Title = plugin.Title,
-                Description = plugin.Description,
-                Price = plugin.Price,
-                CreatedAt = plugin.CreatedAt,
-                UpdatedAt = plugin.UpdatedAt,
-                //DownloadLink = plugin.DownloadLink,
-                //ImageUrl = plugin.ImageUrl,
-
-            };
-
-            return View(viewModel);
+                await _pluginRepository.DeleteAsync(id);
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.InnerException.Message);
+                return View(nameof(Remove), await _pluginRepository.GetByIdAsync(id));
+            }
         }
 
-        //[HttpPost, ActionName("Delete")]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> DeleteConfirmed(int id)
-        //{
-        //    await _pluginRepository.DeleteAsync(id);
-        //    await _pluginRepository.SaveAsync();
-        //    return RedirectToAction(nameof(Index));
-        //}
     } 
 }

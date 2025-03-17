@@ -4,49 +4,55 @@
     ViewData["Title"] = "Add Plugin";
 }
 
-<form asp-action="Create" asp-controller="Plugin" enctype="multipart/form-data" method="post">
-    <div asp-validation-summary="All" class="text-danger"></div>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white text-center">
+                    <h1 class="card-title">Create Plugin</h1>
+                    <h4 class="card-subtitle">Add a new plugin</h4>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Create" asp-controller="Plugin" enctype="multipart/form-data" method="post">
+                        <div asp-validation-summary="All" class="alert alert-danger"></div>
 
+                        <!-- Title -->
                         <div class="form-group mb-3">
                             <label asp-for="Title" class="form-label">Title</label>
                             <input asp-for="Title" class="form-control" placeholder="Enter plugin title" />
                             <span asp-validation-for="Title" class="text-danger"></span>
                         </div>
 
-    <div class="form-group">
-        <label asp-for="Description" class="control-label"></label>
-        <textarea asp-for="Description" class="form-control"></textarea>
-        <span asp-validation-for="Description" class="text-danger"></span>
-    </div>
-   @*  <div class="form-group">
-        <label asp-for="DownloadLink" class="control-label"></label>
-        <input asp-for="DownloadLink" type="file" class="form-control" />
-        <span asp-validation-for="DownloadLink" class="text-danger"></span>
-    </div> *@
-    <div class="form-group">
-        <div class="form-group">
-            <label>Upload Image</label>
-            <input name="ImageUrl" type="file" class="form-control" />
-        </div>
-    </div>
+                        <!-- Description -->
+                        <div class="form-group mb-3">
+                            <label asp-for="Description" class="form-label">Description</label>
+                            <textarea asp-for="Description" class="form-control" placeholder="Enter plugin description"></textarea>
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                        </div>
 
-    <div class="form-group">
-        <label asp-for="Price" class="control-label"></label>
-        <input asp-for="Price" class="form-control" />
-        <span asp-validation-for="Price" class="text-danger"></span>
-    </div>
-    <select asp-for="Category" asp-items="ViewBag.Categories" class="form-control">
-        <option value="">-- Select Category --</option>
-    </select>
+                        <!-- Image Upload -->
+                        <div class="form-group mb-3">
+                            <label class="form-label">Upload Image</label>
+                            <input name="ImageFile" type="file" class="form-control" />
+                        </div>
 
+                        <!-- Price -->
+                        <div class="form-group mb-3">
+                            <label asp-for="Price" class="form-label">Price</label>
+                            <input asp-for="Price" class="form-control" placeholder="Enter plugin price" />
+                            <span asp-validation-for="Price" class="text-danger"></span>
+                        </div>
+
+                        <!-- Submit Button -->
                         <div class="form-group d-grid">
                             <button type="submit" class="btn btn-success btn-lg">Create</button>
                         </div>
+                        <div class="card-footer text-center">
+                    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+                        </div>
                     </form>
                 </div>
-                <div class="card-footer text-center">
-                    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
-                </div>
+                
             </div>
         </div>
     </div>

@@ -36,7 +36,6 @@ namespace ConstructEd.Controllers
         public async Task<IActionResult> Index()
         {
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
             var courses = await _courseRepository.GetAllAsync();
             var courseViewModels = _mapper.Map<List<CourseViewModel>>(courses);
 
@@ -48,7 +47,6 @@ namespace ConstructEd.Controllers
                     course.IsInCart = await _shoppingCartRepository.IsCourseInCartAsync(userId, course.Id); 
                 }
             }
-
             return View(nameof(Index), courseViewModels);
         }
 
@@ -65,21 +63,7 @@ namespace ConstructEd.Controllers
             return View(nameof(Details), viewModel);
         }
 
-        [HttpGet]
-        public async Task<IActionResult> ManageContent(int id)
-        {
-            var course = await _courseRepository.GetByIdAsync(id);
-            if (course == null)
-            {
-                return NotFound();
-            }
-
-            var viewModel = _mapper.Map<CourseViewModel>(course);
-            return View(nameof(ManageContent), viewModel);
-        }
-
-
-        [HttpGet]
+            [HttpGet]
         public async Task<IActionResult> Create()
         {
             var viewModel = new CourseViewModel();
@@ -94,6 +78,30 @@ namespace ConstructEd.Controllers
         {
             if (ModelState.IsValid)
             {
+                if (viewModel.ImageFile != null && viewModel.ImageFile.Length > 0)
+                {
+                    // Define the folder to save the image
+                    var imagesFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Image");
+
+                    // Generate a unique file name
+                    var fileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(viewModel.ImageFile.FileName);
+                    var filePath = Path.Combine(imagesFolder, fileName);
+
+                    // Ensure the folder exists
+                    if (!Directory.Exists(imagesFolder))
+                    {
+                        Directory.CreateDirectory(imagesFolder);
+                    }
+
+                    // Save the file to the server
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await viewModel.ImageFile.CopyToAsync(stream);
+                    }
+
+                    // Save the file name to the Image property
+                    viewModel.Image = fileName;
+                }
                 try
                 {
                     var course = _mapper.Map<Course>(viewModel);
@@ -167,7 +175,7 @@ namespace ConstructEd.Controllers
             return View(nameof(Remove), viewModel);
         }
 
-        [HttpPost, ActionName("Remove")]
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> RemoveConfirmed(int id)
         {

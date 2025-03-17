@@ -6,8 +6,8 @@ public class MappingProfile : Profile
 {
     public MappingProfile()
     {
-        // Payment to PaymentViewModel mapping (For displaying payments) // Fix?
         #region Payment
+        // Payment to PaymentViewModel mapping (For displaying payments) // Fix?
 
         CreateMap<PaymentViewModel, Payment>()
       .ForMember(dest => dest.MaskedCardNumber, opt => opt.MapFrom(src =>
@@ -34,13 +34,23 @@ public class MappingProfile : Profile
         #endregion
 
         #region Plugin
+        // Map from Plugin to PluginViewModel
+        CreateMap<Plugin, PluginViewModel>()
+            .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+            .ForMember(dest => dest.Title, opt => opt.MapFrom(src => src.Title))
+            .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Description))
+            .ForMember(dest => dest.Price, opt => opt.MapFrom(src => src.Price))
+            .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(src => src.CreatedAt))
+            .ForMember(dest => dest.UpdatedAt, opt => opt.MapFrom(src => src.UpdatedAt));
 
-        CreateMap<Plugin, PluginViewModel>();
-
+        // Map from PluginViewModel to Plugin
         CreateMap<PluginViewModel, Plugin>()
-            .ForMember(dest => dest.CreatedAt, opt => opt.Ignore())   // System-managed
-            .ForMember(dest => dest.UpdatedAt, opt => opt.Ignore());  // System-managed
-
+            .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+            .ForMember(dest => dest.Title, opt => opt.MapFrom(src => src.Title))
+            .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Description))
+            .ForMember(dest => dest.Price, opt => opt.MapFrom(src => src.Price))
+            .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(src => src.CreatedAt))
+            .ForMember(dest => dest.UpdatedAt, opt => opt.MapFrom(src => src.UpdatedAt));
         #endregion
 
         #region Course
