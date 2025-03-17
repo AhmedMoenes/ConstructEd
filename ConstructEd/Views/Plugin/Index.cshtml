@@ -22,7 +22,7 @@
                         <a asp-controller="Plugin" asp-action="Details" asp-route-id="@plugin.Id" class="btn btn-success">View Details</a>
 
                         <div class="d-grid mt-2">
-                @if (course.IsEnrolled)
+                @if (plugin.IsEnrolled)
                 {
                     <button class="btn btn-success" disabled>Enrolled</button>
                 }

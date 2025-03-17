@@ -39,7 +39,7 @@ namespace ConstructEd.Controllers
                 {
                     plugin.IsInWishlist = await _wishlistRepository.IsPluginInWishlistAsync(userId, plugin.Id);
                     plugin.IsInCart = await _shoppingCartRepository.IsPluginInCartAsync(userId, plugin.Id);
-                    plugin.IsEnrolled = await _enrollmentRepository.IsUserEnrolledInCourseAsync(userId, plugin.Id);
+                    plugin.IsEnrolled = await _enrollmentRepository.IsUserEnrolledInPluginAsync(userId, plugin.Id);
 
                 }
             }
@@ -56,7 +56,7 @@ namespace ConstructEd.Controllers
                 return NotFound();
             }
             var viewModel = _mapper.Map<PluginViewModel>(plugin);
-            viewModel.IsEnrolled = await _enrollmentRepository.IsUserEnrolledInCourseAsync(userId, id);
+            viewModel.IsEnrolled = await _enrollmentRepository.IsUserEnrolledInPluginAsync(userId, id);
             viewModel.IsInWishlist = await _wishlistRepository.IsPluginInWishlistAsync(userId, plugin.Id);
             viewModel.IsInCart = await _shoppingCartRepository.IsPluginInCartAsync(userId, plugin.Id);
             return View(nameof(Details), viewModel);

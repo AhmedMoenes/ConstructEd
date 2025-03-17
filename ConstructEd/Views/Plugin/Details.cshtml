@@ -44,24 +44,33 @@
                 </li>
             </ul>
             <div class="d-grid mt-4">
-                < <button type="button" class="btn btn-primary" id="buyNowButton" data-id="@Model.Id">
-                    Buy Now
-                </button>
-                <form class="cart-form" data-courseid="@Model.Id" data-incart="@(Model.IsInCart ? "true" : "false" )">
-                    <input type="hidden" name="id" value="@Model.Id" />
-                    <input type="hidden" name="type" value="Plugin" />
-                    <button type="submit" class="cart-button">
-                        <i class="@(Model.IsInCart ? "fas fa-shopping-cart" : "fas fa-cart-plus")"></i>
-                    </button>
-                </form>
+                @if (Model.IsEnrolled)
+                {
 
-                <form class="wish-form" data-courseid="@Model.Id" data-inwishlist="@(Model.IsInWishlist ? "true" : "false")">
-                    <input type="hidden" name="id" value="@Model.Id" />
-                    <input type="hidden" name="type" value="Plugin" />
-                    <button type="submit" class="wish-button">
-                        <i class="@(Model.IsInWishlist ? "fas" : "far") fa-heart"></i>
+                    <button class="btn btn-success" disabled>Enrolled</button>
+                }
+                else
+                {
+
+                    <button type="button" class="btn btn-primary" id="buyNowButton" data-id="@Model.Id">
+                        Buy Now
                     </button>
-                </form>
+                    <form class="cart-form" data-pluginid="@Model.Id" data-incart="@(Model.IsInCart ? "true" : "false" )">
+                        <input type="hidden" name="id" value="@Model.Id" />
+                        <input type="hidden" name="type" value="Plugin" />
+                        <button type="submit" class="cart-button">
+                            <i class="@(Model.IsInCart ? "fas fa-shopping-cart" : "fas fa-cart-plus")"></i>
+                        </button>
+                    </form>
+
+                    <form class="wish-form" data-pluginid="@Model.Id" data-inwishlist="@(Model.IsInWishlist ? "true" : "false")">
+                        <input type="hidden" name="id" value="@Model.Id" />
+                        <input type="hidden" name="type" value="Plugin" />
+                        <button type="submit" class="wish-button">
+                            <i class="@(Model.IsInWishlist ? "fas" : "far") fa-heart"></i>
+                        </button>
+                    </form>
+                }
             </div>
         </div>
     </div>
