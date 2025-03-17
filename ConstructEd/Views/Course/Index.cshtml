@@ -20,53 +20,36 @@
 
             <a asp-controller="Course" asp-action="Details" asp-route-id="@course.Id" class="btn btn-success">View Details</a>
 
-            <form class="cart-form" data-courseid="@course.Id" data-incart="@(course.IsInCart ? "true" : "false" )">
-                <input type="hidden" name="id" value="@course.Id" />
-                <input type="hidden" name="type" value="Course" />
-                <button type="submit" class="cart-button">
-                    <i class="@(course.IsInCart ? "fas fa-shopping-cart" : "fas fa-cart-plus")"></i>
-                </button>
+            <div class="d-grid mt-2">
+                @if (course.IsEnrolled)
+                {
+                    <button class="btn btn-success" disabled>Enrolled</button>
+                }
+                else
+                {
+                    <form class="cart-form" data-courseid="@course.Id" data-incart="@(course.IsInCart ? "true" : "false" )">
+                        <input type="hidden" name="id" value="@course.Id" />
+                        <input type="hidden" name="type" value="Course" />
+                        <button type="submit" class="cart-button">
+                            <i class="@(course.IsInCart ? "fas fa-shopping-cart" : "fas fa-cart-plus")"></i>
+                        </button>
+                    </form>
 
-            </form>
-
-            <form class="wish-form" data-courseid="@course.Id" data-inwishlist="@(course.IsInWishlist ? "true" : "false")">
-                <input type="hidden" name="id" value="@course.Id" />
-                <input type="hidden" name="type" value="Course" />
-                <button type="submit" class="wish-button">
-                    <i class="@(course.IsInWishlist ? "fas" : "far") fa-heart"></i>
-                </button>
-            </form>
-
-
+                    <form class="wish-form" data-courseid="@course.Id" data-inwishlist="@(course.IsInWishlist ? "true" : "false")">
+                        <input type="hidden" name="id" value="@course.Id" />
+                        <input type="hidden" name="type" value="Course" />
+                        <button type="submit" class="wish-button">
+                            <i class="@(course.IsInWishlist ? "fas" : "far") fa-heart"></i>
+                        </button>
+                    </form>
+                }
+            </div>
         </div>
     </div>
 }
 
 <style>
-    .cart-button {
-        font-size: 24px;
-        background: none;
-        border: none;
-        cursor: pointer;
-        transition: color 0.3s ease-in-out;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-        .cart-button i {
-            color: gray;
-            transition: color 0.3s ease-in-out;
-        }
-
-        .cart-button .fas {
-            color: green !important;
-        }
-
-
-
-
-    .wish-button {
+    .cart-button, .wish-button {
         font-size: 24px;
         background: none;
         border: none;
@@ -74,40 +57,34 @@
         transition: color 0.3s ease-in-out;
     }
 
-        .wish-button i {
-            color: gray;
-        }
+    .cart-button i, .wish-button i {
+        color: gray;
+        transition: color 0.3s ease-in-out;
+    }
 
-        .wish-button .fas {
-            color: red !important;
-        }
+    .cart-button .fas { color: green !important; }
+    .wish-button .fas { color: red !important; }
 </style>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-
-           $(document).ready(function () {
+    $(document).ready(function () {
         $(".wish-form").on("submit", function (event) {
             event.preventDefault();
-
             let form = $(this);
             let icon = form.find("i");
-            let inWishlist = form.data("inwishlist") === true; // Ensure it's treated as boolean
+            let inWishlist = form.data("inwishlist") === true;
 
-            let actionUrl = inWishlist
-                ? "/WishList/RemoveFromCart"
-                : "/WishList/AddToWish";
+            let actionUrl = inWishlist ? "/WishList/RemoveFromCart" : "/WishList/AddToWish";
 
             $.post(actionUrl, form.serialize(), function (response) {
                 if (response.success) {
                     let newStatus = !inWishlist;
-                    form.data("inwishlist", newStatus);  // ✅ Update flag correctly
-
-                    // Toggle heart icon style
+                    form.data("inwishlist", newStatus);
                     if (newStatus) {
-                        icon.removeClass("far").addClass("fas"); // Filled heart
+                        icon.removeClass("far").addClass("fas");
                     } else {
-                        icon.removeClass("fas").addClass("far"); // Empty heart
+                        icon.removeClass("fas").addClass("far");
                     }
                 } else {
                     alert(response.message || "Failed to update wishlist!");
@@ -116,35 +93,23 @@
                 alert("An error occurred!");
             });
         });
-    });
 
-</script>
-
-<script>
-        $(document).ready(function () {
         $(".cart-form").on("submit", function (event) {
             event.preventDefault();
-
             let form = $(this);
             let icon = form.find("i");
             let inCart = form.data("incart") === true;
 
-            let actionUrl = inCart
-                ? "/ShoppingCart/RemoveFromCart"
-                : "/ShoppingCart/AddToCart";
+            let actionUrl = inCart ? "/ShoppingCart/RemoveFromCart" : "/ShoppingCart/AddToCart";
 
             $.post(actionUrl, form.serialize(), function (response) {
                 if (response.success) {
                     let newStatus = !inCart;
                     form.data("incart", newStatus);
-
-                    // Toggle shopping cart icon and color
                     if (newStatus) {
-                        icon.removeClass("fa-cart-plus").addClass("fa-shopping-cart");
-                        icon.css("color", "green");
+                        icon.removeClass("fa-cart-plus").addClass("fa-shopping-cart").css("color", "green");
                     } else {
-                        icon.removeClass("fa-shopping-cart").addClass("fa-cart-plus");
-                        icon.css("color", "gray");
+                        icon.removeClass("fa-shopping-cart").addClass("fa-cart-plus").css("color", "gray");
                     }
                 } else {
                     alert(response.message || "Failed to update cart!");
