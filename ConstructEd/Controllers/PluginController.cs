@@ -44,12 +44,17 @@ namespace ConstructEd.Controllers
         [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
             var plugin = await _pluginRepository.GetByIdAsync(id);
             if (plugin == null)
             {
                 return NotFound();
             }
             var viewModel = _mapper.Map<PluginViewModel>(plugin);
+            viewModel.IsInWishlist = await _wishlistRepository.IsPluginInWishlistAsync(userId, plugin.Id);
+            viewModel.IsInCart = await _shoppingCartRepository.IsPluginInCartAsync(userId, plugin.Id);
+        
             return View(nameof(Details), viewModel);
         }
 
