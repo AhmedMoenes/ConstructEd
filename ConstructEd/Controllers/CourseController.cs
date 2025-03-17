@@ -44,7 +44,7 @@ namespace ConstructEd.Controllers
                 foreach (var course in courseViewModels)
                 {
                     course.IsInWishlist = await _wishlistRepository.IsCourseInWishlistAsync(userId, course.Id);
-                    course.IsInCart = await _shoppingCartRepository.IsCourseInCartAsync(userId, course.Id); // ✅ New check
+                    course.IsInCart = await _shoppingCartRepository.IsCourseInCartAsync(userId, course.Id); 
                 }
             }
             return View(nameof(Index), courseViewModels);

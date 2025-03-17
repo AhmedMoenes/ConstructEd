@@ -36,5 +36,6 @@ namespace ConstructEd.ViewModels
         public List<CourseContentViewModel> CourseContents { get; set; } = new List<CourseContentViewModel>();
         public bool IsInWishlist { get; set; }
         public bool IsInCart { get; set; }
+        public bool IsEnrolled { get; set; }
     }
 }
