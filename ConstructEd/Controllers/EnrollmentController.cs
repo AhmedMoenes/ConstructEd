@@ -21,7 +21,6 @@ public class EnrollmentsController : Controller
     private readonly IMapper _mapper;
 
     public EnrollmentsController(IEnrollmentRepository enrollmentRepository, IMapper mapper)
-
     {
 
         _enrollmentRepository = enrollmentRepository;

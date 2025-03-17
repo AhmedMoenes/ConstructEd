@@ -65,36 +65,6 @@ namespace ConstructEd.Repositories
             await _context.SaveChangesAsync();
         }
 
-
-
-        public async Task RemoveCourseFromCartAsync(string userId, int courseId)
-        {
-
-            var Wishlist = await _context.Wishlists
-                .FirstOrDefaultAsync(sc => sc.UserId == userId && sc.CourseId == courseId);
-
-            if (Wishlist != null)
-            {
-
-                _context.Wishlists.Remove(Wishlist);
-                await _context.SaveChangesAsync();
-            }
-        }
-
-
-        public async Task RemovePluginFromCartAsync(string userId, int pluginId)
-        {
-
-            var Wishlist = await _context.Wishlists
-                .FirstOrDefaultAsync(sc => sc.UserId == userId && sc.PluginId == pluginId);
-
-            if (Wishlist != null)
-            {
-
-                _context.Wishlists.Remove(Wishlist);
-                await _context.SaveChangesAsync();
-            }
-        }
         public async Task ClearCartAsync(string userId)
 
         {
@@ -120,6 +90,46 @@ namespace ConstructEd.Repositories
         {
             return await _context.Wishlists
                 .AnyAsync(w => w.UserId == userId && w.CourseId == courseId);
+        }
+
+        public async Task<Wishlist?> GetCourseByUserIdAsync(string userId, int courseId)
+        {
+            return await _context.Wishlists
+                .FirstOrDefaultAsync(w => w.UserId == userId && w.CourseId == courseId);
+        }
+
+        public async Task<Wishlist?> GetPluginByUserIdAsync(string userId, int pluginId)
+        {
+            return await _context.Wishlists
+                .FirstOrDefaultAsync(w => w.UserId == userId && w.PluginId == pluginId);
+        }
+        public async Task<bool> RemoveCourseFromCartAsync(string userId, int courseId)
+        {
+            var item = await _context.Wishlists
+                .FirstOrDefaultAsync(w => w.UserId == userId && w.CourseId == courseId);
+
+            if (item != null)
+            {
+                _context.Wishlists.Remove(item);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+
+            return false;
+        }
+        public async Task<bool> RemovePluginFromCartAsync(string userId, int pluginId)
+        {
+            var item = await _context.Wishlists
+                .FirstOrDefaultAsync(w => w.UserId == userId && w.PluginId == pluginId);
+
+            if (item != null)
+            {
+                _context.Wishlists.Remove(item);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+
+            return false;
         }
 
     }
