@@ -22,18 +22,16 @@
                 <button type="submit" class="btn btn-danger">Add To Cart</button>
             </form>
 
-            <!-- Wishlist Button -->
             <form asp-action="AddToWish" asp-controller="WishList" method="post" class="wish-form">
                 <input type="hidden" name="id" value="@course.Id" />
                 <input type="hidden" name="type" value="Course" />
                 <button type="submit" class="wish-button">
-                    <i class="far fa-heart"></i> <!-- Empty Heart -->
+                    <i class="@(course.IsInWishlist ? "fas" : "far") fa-heart"></i> 
                 </button>
             </form>
         </div>
     </div>
 }
-
 <style>
     .wish-button {
         font-size: 24px;
@@ -43,24 +41,34 @@
         transition: color 0.3s ease-in-out;
     }
 
-        .wish-button i {
-            color: gray; /* Default unselected heart color */
-        }
+    .wish-button i {
+        color: gray; /* Default unselected heart color */
+    }
 
-        .wish-button .fas {
-            color: red !important; /* Make filled heart red */
-        }
+    .wish-button .fas {
+        color: red !important; /* Make filled heart red */
+    }
 </style>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     $(document).ready(function () {
         $(".wish-form").on("submit", function (event) {
-            event.preventDefault(); // Prevent form submission
+            event.preventDefault(); // Prevent default submission
 
-            let icon = $(this).find("i");
-            icon.toggleClass("far fas"); // Toggle empty/filled heart
-            icon.toggleClass("text-danger"); // Ensure it turns red
+            let form = $(this);
+            let icon = form.find("i");
+
+            $.post(form.attr("action"), form.serialize(), function (response) {
+                if (response.success) {
+                    icon.toggleClass("far fas");
+                    icon.toggleClass("text-danger");
+                } else {
+                    alert("Failed to add to wishlist!");
+                }
+            }).fail(function () {
+                alert("An error occurred!");
+            });
         });
     });
 </script>

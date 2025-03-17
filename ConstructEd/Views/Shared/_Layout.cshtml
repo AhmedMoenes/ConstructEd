@@ -483,8 +483,12 @@
              <li class="nav-item"><a class="nav-link" asp-controller="Plugin" asp-action="Index">Plugins</a></li>
              <li class="nav-item"><a class="nav-link" asp-controller="Account" asp-action="Manage">Manage</a></li>
              <li class="nav-item"><a class="nav-link" asp-controller="ShoppingCart" asp-action="Index">Shopping Cart</a></li>
-             <li class="nav-item"><a class="nav-link" asp-controller="WishList" asp-action="Index">Wish List</a></li>
-             @* <li class="nav-item"><a class="nav-link" asp-controller="About" asp-action="Index">Resources</a></li> *@
+                <li class="nav-item">
+                    <a class="nav-link" asp-controller="WishList" asp-action="Index">
+                        Wish List (<span id="wishlist-count">0</span>)
+                    </a>
+                </li>
+                @* <li class="nav-item"><a class="nav-link" asp-controller="About" asp-action="Index">Resources</a></li> *@
          </ul>
          <!-- Right Side Buttons -->
          <div class="d-flex">
@@ -602,3 +606,26 @@
 
 </body>
 </html>
+<script>
+    $(document).ready(function () {
+        // Fetch wishlist count on page load
+        updateWishlistCount();
+
+        $(".wish-form").on("submit", function (event) {
+            let icon = $(this).find("i");
+
+            // Toggle UI instantly after form submission
+            icon.toggleClass("far fas text-danger");
+
+            // Update wishlist count dynamically
+            setTimeout(updateWishlistCount, 500); // Delay to ensure DB update
+
+        });
+
+        function updateWishlistCount() {
+            $.get("/WishList/GetWishlistCount", function (data) {
+                $("#wishlist-count").text(data);
+            });
+        }
+    });
+</script>

@@ -110,7 +110,17 @@ namespace ConstructEd.Repositories
             }
 
         }
+        public async Task<int> GetCountByUserIdAsync(string userId)
+        {
+            return await _context.Wishlists
+                .Where(w => w.UserId == userId)
+                .CountAsync();
+        }
+        public async Task<bool> IsCourseInWishlistAsync(string userId, int courseId)
+        {
+            return await _context.Wishlists
+                .AnyAsync(w => w.UserId == userId && w.CourseId == courseId);
+        }
 
-		
-	}
+    }
 }

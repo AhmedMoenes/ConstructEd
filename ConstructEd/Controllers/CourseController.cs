@@ -4,6 +4,7 @@ using ConstructEd.Repositories;
 using ConstructEd.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Security.Claims;
 
 namespace ConstructEd.Controllers
 {
@@ -12,26 +13,41 @@ namespace ConstructEd.Controllers
         private readonly ICourseRepository _courseRepository;
         private readonly IInstructorRepository _instructorRepository;
         private readonly ICourseContentRepository _courseContentRepository;
+        private readonly IWishListRepository _wishlistRepository;
         private readonly IMapper _mapper;
 
         public CourseController(ICourseRepository courseRepository,
                                 IInstructorRepository instructorRepository,
                                 ICourseContentRepository courseContentRepository,
+                                IWishListRepository wishlistRepository,
                                 IMapper mapper)
         {
             _courseRepository = courseRepository;
             _instructorRepository = instructorRepository;
             _courseContentRepository = courseContentRepository;
+            _wishlistRepository = wishlistRepository;
             _mapper = mapper;
         }
 
         [HttpGet]
         public async Task<IActionResult> Index()
         {
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
             var courses = await _courseRepository.GetAllAsync();
             var courseViewModels = _mapper.Map<List<CourseViewModel>>(courses);
+
+            if (!string.IsNullOrEmpty(userId))
+            {
+                foreach (var course in courseViewModels)
+                {
+                    course.IsInWishlist = await _wishlistRepository.IsCourseInWishlistAsync(userId, course.Id);
+                }
+            }
+
             return View(nameof(Index), courseViewModels);
         }
+
 
         [HttpGet]
         public async Task<IActionResult> Details(int id)

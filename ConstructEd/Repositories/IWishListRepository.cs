@@ -10,9 +10,8 @@ namespace ConstructEd.Repositories
         Task RemoveCourseFromCartAsync(string userId, int courseId);
         Task RemovePluginFromCartAsync(string userId, int pluginId);
         Task ClearCartAsync(string userId);
+        Task<int> GetCountByUserIdAsync(string userId);
+        Task<bool> IsCourseInWishlistAsync(string userId, int courseId);
 
-
-
-
-	}
+    }
 }

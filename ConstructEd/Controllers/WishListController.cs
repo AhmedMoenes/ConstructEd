@@ -119,5 +119,19 @@ namespace ConstructEd.Controllers
 
 			return RedirectToAction(nameof(Index));
 		}
-	}
+
+        [HttpGet]
+        public async Task<IActionResult> GetWishlistCount()
+        {
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Json(0);
+            }
+
+            int count = await _wishlistRepository.GetCountByUserIdAsync(userId);
+            return Json(count);
+        }
+
+    }
 }
