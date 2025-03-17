@@ -32,9 +32,10 @@ namespace ConstructEd.Repositories
         }
         public async Task InsertAsync(Plugin obj)
         {
-            await _dataContext.AddAsync(obj);
+            await _dataContext.Plugins.AddAsync(obj);
+            await _dataContext.SaveChangesAsync();
+
         }
-       
 
         public async Task SaveAsync()
         {

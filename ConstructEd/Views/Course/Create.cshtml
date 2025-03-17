@@ -15,8 +15,9 @@
 					<h4 class="card-subtitle">Add a new course</h4>
 				</div>
 				<div class="card-body">
-					<form asp-action="Create">
+					<form asp-action="Create" enctype="multipart/form-data">
 						<div asp-validation-summary="All" class="alert alert-danger"></div>
+
 
 						<div class="form-group mb-3">
 							<label asp-for="Title" class="form-label">Title</label>
@@ -28,6 +29,11 @@
 							<label asp-for="Description" class="form-label">Description</label>
 							<input asp-for="Description" class="form-control" placeholder="Enter course description" />
 							<span asp-validation-for="Description" class="text-danger"></span>
+						</div>
+
+						<div class="form-group mb-3">
+							<label class="form-label">Upload Image</label>
+							<input name="ImageFile" type="file" class="form-control" />
 						</div>
 
 						<div class="form-group mb-3">
@@ -61,11 +67,10 @@
 						<div class="form-group d-grid">
 							<button type="submit" class="btn btn-primary btn-lg">Create</button>
 						</div>
+						<div class="card-footer text-center">
+							<a asp-action="Index" class="btn btn-secondary">Back to List</a>
+						</div>
 					</form>
-				</div>
-				<div class="card-footer text-center">
-					<a asp-action="Index" class="btn btn-secondary">Back to List</a>
-				</div>
 			</div>
 		</div>
 	</div>

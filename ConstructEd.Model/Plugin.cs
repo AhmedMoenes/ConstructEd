@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace ConstructEd.Models
 {
@@ -18,6 +13,7 @@ namespace ConstructEd.Models
         [Required]
         [DataType(DataType.Currency)]
         public decimal Price { get; set; }
+        public string? Image {  get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
         public ICollection<Enrollment>? Enrollments { get; set; } = new HashSet<Enrollment>();

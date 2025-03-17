@@ -1,75 +1,154 @@
 ﻿@model List<PluginViewModel>
 @{
-	ViewData["Title"] = "Index";
+    ViewData["Title"] = "Plugins";
 }
+
 <h2>Plugins</h2>
 
-@{
-    ViewData["Title"] = "Plugin Catalog";
-}
-
-<h1 class="mb-4">Plugin Catalog</h1>
-
-<div class="row row-cols-1 row-cols-md-3 g-4">
+<div class="row">
     @foreach (var plugin in Model)
     {
-        <div class="col">
-            <div class="card h-100 shadow-sm border-0">
-                <div class="card-body d-flex flex-column">
-                    <h5 class="card-title">@plugin.Title</h5>
-                    <p class="card-text">@plugin.Description</p>
-                    <p class="card-text fw-bold text-primary">@plugin.Price.ToString("C")</p>
+            <div class="col-md-4 mb-4">
+                <div class="card shadow-sm">
+                @if (!string.IsNullOrEmpty(plugin.Image))
+                {
+                        <img src="/Image/@plugin.Image" class="card-img-top" alt="@plugin.Title" style="width: 100px; object-fit: cover;" />
+                }
+                    <div class="card-body">
+                        <h4 class="card-title">@plugin.Title</h4>
+                        <p class="card-text">Price: @plugin.Price.ToString("C")</p>
 
+                        <!-- View Details Button -->
+                        <a asp-controller="Plugin" asp-action="Details" asp-route-id="@plugin.Id" class="btn btn-success">View Details</a>
 
-                   @*  @if (!string.IsNullOrEmpty(plugin.ImageUrl))
-                    {
-                        <img src="~/Image/@plugin.ImageUrl" class="card-img-top" alt="@plugin.Title" />
-                    }
+                        <!-- Add to Cart Form -->
+                        <form class="cart-form" data-pluginid="@plugin.Id" data-incart="@(plugin.IsInCart ? "true" : "false")">
+                            <input type="hidden" name="id" value="@plugin.Id" />
+                            <input type="hidden" name="type" value="Plugin" />
+                            <button type="submit" class="cart-button">
+                                <i class="@(plugin.IsInCart ? "fas fa-shopping-cart" : "fas fa-cart-plus")"></i>
+                            </button>
+                        </form>
 
-                    <td>
-                        @if (!string.IsNullOrEmpty(plugin.DownloadLink))
-                        {
-                            <a href="~/files/@plugin.DownloadLink" download class="btn btn-sm btn-outline-primary">Download</a>
-                        }
-                        else
-                        {
-                            <span class="text-muted">N/A</span>
-                        }
-                    </td> *@
-
-                    <div class="mt-3 d-flex justify-content-between">
-                        <a asp-action="Edit" asp-route-id="@plugin.Id" class="btn btn-sm btn-warning">Edit</a>
-                        <a asp-action="Delete" asp-route-id="@plugin.Id" class="btn btn-sm btn-danger">Delete</a>
+                        <!-- Add to Wishlist Form -->
+                        <form class="wish-form" data-pluginid="@plugin.Id" data-inwishlist="@(plugin.IsInWishlist ? "true" : "false")">
+                            <input type="hidden" name="id" value="@plugin.Id" />
+                            <input type="hidden" name="type" value="Plugin" />
+                            <button type="submit" class="wish-button">
+                                <i class="@(plugin.IsInWishlist ? "fas" : "far") fa-heart"></i>
+                            </button>
+                        </form>
                     </div>
                 </div>
             </div>
-        </div>
     }
 </div>
 
-<div class="mt-4 text-end">
-    <a asp-action="Create" class="btn btn-primary">Create New Plugin</a>
-</div>
-@foreach (var plugin in Model)
-{
-		<div class="card" style="width:300px">
-		@* <img class="card-img-top" src="/Images/@Model.ImageURL" alt="Card image"> *@
-			<div class="card-body">
-					<h4 class="card-title">@plugin.Title</h4>
-						<p class="card-text">Price = @plugin.Price</p>
-			@* Handle This *@
-						<a asp-controller="Plugin" asp-action="Details" asp-route-id="@plugin.Id" class="btn btn-success">View Details</a>
-			<form asp-action="AddToCart" asp-controller="ShoppingCart" method="post">
-							<input type="hidden" name="id" value="@plugin.Id" />
-						<input type="hidden" name="type" value="Plugin" />
-						<button type="submit" class="btn btn-danger">Add To Cart</button>
-						</form>
-			@* تعديل الكود باي صاصا *@
-			<form asp-action="AddToWish" asp-controller="WishList" method="post">
-				<input type="hidden" name="id" value="@plugin.Id" />
-				<input type="hidden" name="type" value="Plugin" />
-				<button type="submit" class="btn btn-danger">Add To Wish List</button>
-			</form>
-			</div>
-		</div>
-}
+<style>
+    .cart-button {
+        font-size: 24px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        transition: color 0.3s ease-in-out;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+        .cart-button i {
+            color: gray;
+            transition: color 0.3s ease-in-out;
+        }
+
+        .cart-button .fas {
+            color: green !important;
+        }
+
+    .wish-button {
+        font-size: 24px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        transition: color 0.3s ease-in-out;
+    }
+
+        .wish-button i {
+            color: gray;
+        }
+
+        .wish-button .fas {
+            color: red !important;
+        }
+</style>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $(".wish-form").on("submit", function (event) {
+            event.preventDefault();
+
+            let form = $(this);
+            let icon = form.find("i");
+            let inWishlist = form.data("inwishlist") === true; // Ensure it's treated as boolean
+
+            let actionUrl = inWishlist
+                ? "/WishList/RemoveFromCart"
+                : "/WishList/AddToWish";
+
+            $.post(actionUrl, form.serialize(), function (response) {
+                if (response.success) {
+                    let newStatus = !inWishlist;
+                    form.data("inwishlist", newStatus);  // ✅ Update flag correctly
+
+                    // Toggle heart icon style
+                    if (newStatus) {
+                        icon.removeClass("far").addClass("fas"); // Filled heart
+                    } else {
+                        icon.removeClass("fas").addClass("far"); // Empty heart
+                    }
+                } else {
+                    alert(response.message || "Failed to update wishlist!");
+                }
+            }).fail(function () {
+                alert("An error occurred!");
+            });
+        });
+    });
+</script>
+
+<script>
+    $(document).ready(function () {
+        $(".cart-form").on("submit", function (event) {
+            event.preventDefault();
+
+            let form = $(this);
+            let icon = form.find("i");
+            let inCart = form.data("incart") === true;
+
+            let actionUrl = inCart
+                ? "/ShoppingCart/RemoveFromCart"
+                : "/ShoppingCart/AddToCart";
+
+            $.post(actionUrl, form.serialize(), function (response) {
+                if (response.success) {
+                    let newStatus = !inCart;
+                    form.data("incart", newStatus);
+
+                    // Toggle shopping cart icon and color
+                    if (newStatus) {
+                        icon.removeClass("fa-cart-plus").addClass("fa-shopping-cart");
+                        icon.css("color", "green");
+                    } else {
+                        icon.removeClass("fa-shopping-cart").addClass("fa-cart-plus");
+                        icon.css("color", "gray");
+                    }
+                } else {
+                    alert(response.message || "Failed to update cart!");
+                }
+            }).fail(function () {
+                alert("An error occurred!");
+            });
+        });
+    });
+</script>
