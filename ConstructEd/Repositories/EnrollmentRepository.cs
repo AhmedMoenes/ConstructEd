@@ -3,46 +3,74 @@ using ConstructEd.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace ConstructEd.Repositories
-
 {
     public class EnrollmentRepository : IEnrollmentRepository
     {
-        private readonly DataContext dataContext;
+        private readonly DataContext _dataContext;
 
         public EnrollmentRepository(DataContext dataContext)
         {
-            this.dataContext = dataContext;
-        }
-        public void Delete(int id)
-        {
-            Enrollment emp = GetById(id);
-            dataContext.Remove(emp);
+            _dataContext = dataContext;
         }
 
-        public ICollection<Enrollment> GetAll()
+        public async Task DeleteAsync(int id)
         {
-            return dataContext.Enrollments.Include(n=>n.Course).Include(b=>b.User).ToList();
+            var entity = await GetByIdAsync(id);
+            if (entity != null)
+            {
+                _dataContext.Remove(entity);
+            }
         }
 
-        public Enrollment GetById(int id)
+        public async Task<ICollection<Enrollment>> GetAllAsync()
         {
-
-            return dataContext.Enrollments.Include(n => n.Course).Include(b => b.User).FirstOrDefault(e => e.Id == id);
+            return await _dataContext.Enrollments
+                .Include(n => n.Course)
+                .Include(b => b.User)
+                .ToListAsync();
         }
 
-        public void Insert(Enrollment obj)
+        public Task<List<Enrollment>> GetByCourseIdAsync(string courseId)
         {
-            dataContext.Add(obj);
+            throw new NotImplementedException();
         }
 
-        public int Save()
+        public async Task<Enrollment> GetByIdAsync(int id)
         {
-            return dataContext.SaveChanges();
+            return await _dataContext.Enrollments
+                .Include(n => n.Course)
+                .Include(b => b.User)
+                .FirstOrDefaultAsync(e => e.Id == id);
         }
 
-        public void Update(Enrollment obj)
+        public async Task<Enrollment?> GetByUserAndCourseAsync(string userId, int courseId)
         {
-            dataContext.Update(obj);
+            return await _dataContext.Enrollments
+                         .FirstOrDefaultAsync(e => e.UserId == userId && e.CourseId == courseId);
+        }
+
+        public async Task<List<Enrollment>> GetByUserIdAsync(string userId)
+        {
+            return await _dataContext.Enrollments
+                        .Include(e => e.Course)
+                        .Where(e => e.UserId == userId)
+                        .ToListAsync();
+        }
+
+        public async Task InsertAsync(Enrollment obj)
+        {
+            await _dataContext.AddAsync(obj);
+        }
+
+        public async Task SaveAsync()
+        {
+            await _dataContext.SaveChangesAsync();
+        }
+
+        public async Task UpdateAsync(Enrollment obj)
+        {
+            _dataContext.Update(obj); 
+            await Task.CompletedTask;
         }
     }
 }

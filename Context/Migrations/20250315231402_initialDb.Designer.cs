@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ConstructEd.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20250312200117_mostafa")]
-    partial class mostafa
+    [Migration("20250315231402_initialDb")]
+    partial class initialDb
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -74,10 +74,6 @@ namespace ConstructEd.Data.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
-                    b.Property<string>("Role")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
@@ -109,8 +105,8 @@ namespace ConstructEd.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("Category")
-                        .HasColumnType("int");
+                    b.Property<byte>("Category")
+                        .HasColumnType("tinyint");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -119,11 +115,11 @@ namespace ConstructEd.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<TimeSpan>("Duration")
-                        .HasColumnType("time");
+                    b.Property<decimal>("Duration")
+                        .HasColumnType("decimal(18,2)");
 
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
+                    b.Property<int>("InstructorId")
+                        .HasColumnType("int");
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
@@ -136,6 +132,8 @@ namespace ConstructEd.Data.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("InstructorId");
 
                     b.ToTable("Courses");
                 });
@@ -152,18 +150,17 @@ namespace ConstructEd.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("FileUrl")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Order")
+                    b.Property<int?>("Order")
                         .HasColumnType("int");
 
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Type")
-                        .HasColumnType("int");
+                    b.Property<byte>("Type")
+                        .HasColumnType("tinyint");
 
                     b.HasKey("Id");
 
@@ -186,8 +183,11 @@ namespace ConstructEd.Data.Migrations
                     b.Property<DateTime>("EnrollmentDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("Progress")
+                    b.Property<int?>("PluginId")
                         .HasColumnType("int");
+
+                    b.Property<double?>("Progress")
+                        .HasColumnType("float");
 
                     b.Property<string>("UserId")
                         .IsRequired()
@@ -197,9 +197,40 @@ namespace ConstructEd.Data.Migrations
 
                     b.HasIndex("CourseId");
 
+                    b.HasIndex("PluginId");
+
                     b.HasIndex("UserId");
 
                     b.ToTable("Enrollments");
+                });
+
+            modelBuilder.Entity("ConstructEd.Models.Instructor", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Bio")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ProfilePicture")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Instructors");
                 });
 
             modelBuilder.Entity("ConstructEd.Models.Payment", b =>
@@ -213,18 +244,81 @@ namespace ConstructEd.Data.Migrations
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("CourseId")
-                        .HasColumnType("int");
+                    b.Property<string>("CardHolderName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ExpiryDate")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MaskedCardNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("PaymentDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("Status")
+                    b.Property<byte>("Status")
+                        .HasColumnType("tinyint");
+
+                    b.Property<Guid>("TransactionID")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Payments");
+                });
+
+            modelBuilder.Entity("ConstructEd.Models.Plugin", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<string>("TransactionId")
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Plugins");
+                });
+
+            modelBuilder.Entity("ConstructEd.Models.ShoppingCart", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CourseId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PluginId")
+                        .HasColumnType("int");
 
                     b.Property<string>("UserId")
                         .IsRequired()
@@ -234,9 +328,43 @@ namespace ConstructEd.Data.Migrations
 
                     b.HasIndex("CourseId");
 
+                    b.HasIndex("PluginId");
+
                     b.HasIndex("UserId");
 
-                    b.ToTable("Payments");
+                    b.ToTable("ShoppingCarts");
+                });
+
+            modelBuilder.Entity("ConstructEd.Models.Wishlist", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("AddedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("CourseId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PluginId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CourseId");
+
+                    b.HasIndex("PluginId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Wishlists");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -372,6 +500,17 @@ namespace ConstructEd.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("ConstructEd.Models.Course", b =>
+                {
+                    b.HasOne("ConstructEd.Models.Instructor", "Instructor")
+                        .WithMany("Courses")
+                        .HasForeignKey("InstructorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Instructor");
+                });
+
             modelBuilder.Entity("ConstructEd.Models.CourseContent", b =>
                 {
                     b.HasOne("ConstructEd.Models.Course", "Course")
@@ -391,6 +530,10 @@ namespace ConstructEd.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("ConstructEd.Models.Plugin", null)
+                        .WithMany("Enrollments")
+                        .HasForeignKey("PluginId");
+
                     b.HasOne("ConstructEd.Models.ApplicationUser", "User")
                         .WithMany("Enrollments")
                         .HasForeignKey("UserId")
@@ -404,19 +547,65 @@ namespace ConstructEd.Data.Migrations
 
             modelBuilder.Entity("ConstructEd.Models.Payment", b =>
                 {
-                    b.HasOne("ConstructEd.Models.Course", "Course")
-                        .WithMany()
-                        .HasForeignKey("CourseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("ConstructEd.Models.ApplicationUser", "User")
                         .WithMany("Payments")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("ConstructEd.Models.ShoppingCart", b =>
+                {
+                    b.HasOne("ConstructEd.Models.Course", "Course")
+                        .WithMany("ShoppingCarts")
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ConstructEd.Models.Plugin", "Plugin")
+                        .WithMany("ShoppingCarts")
+                        .HasForeignKey("PluginId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ConstructEd.Models.ApplicationUser", "User")
+                        .WithMany("ShoppingCarts")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Course");
+
+                    b.Navigation("Plugin");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("ConstructEd.Models.Wishlist", b =>
+                {
+                    b.HasOne("ConstructEd.Models.Course", "Course")
+                        .WithMany("Wishlists")
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ConstructEd.Models.Plugin", "Plugin")
+                        .WithMany("Wishlists")
+                        .HasForeignKey("PluginId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ConstructEd.Models.ApplicationUser", "User")
+                        .WithMany("Wishlists")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Course");
+
+                    b.Navigation("Plugin");
 
                     b.Navigation("User");
                 });
@@ -477,6 +666,10 @@ namespace ConstructEd.Data.Migrations
                     b.Navigation("Enrollments");
 
                     b.Navigation("Payments");
+
+                    b.Navigation("ShoppingCarts");
+
+                    b.Navigation("Wishlists");
                 });
 
             modelBuilder.Entity("ConstructEd.Models.Course", b =>
@@ -484,6 +677,24 @@ namespace ConstructEd.Data.Migrations
                     b.Navigation("CourseContents");
 
                     b.Navigation("Enrollments");
+
+                    b.Navigation("ShoppingCarts");
+
+                    b.Navigation("Wishlists");
+                });
+
+            modelBuilder.Entity("ConstructEd.Models.Instructor", b =>
+                {
+                    b.Navigation("Courses");
+                });
+
+            modelBuilder.Entity("ConstructEd.Models.Plugin", b =>
+                {
+                    b.Navigation("Enrollments");
+
+                    b.Navigation("ShoppingCarts");
+
+                    b.Navigation("Wishlists");
                 });
 #pragma warning restore 612, 618
         }

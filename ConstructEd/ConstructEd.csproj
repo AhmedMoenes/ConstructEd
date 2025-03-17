@@ -17,4 +17,8 @@
     <ProjectReference Include="..\Context\ConstructEd.Data.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Filters\" />
+  </ItemGroup>
+
 </Project>

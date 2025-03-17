@@ -1,20 +1,17 @@
-﻿
-
-namespace ConstructEd.Repositories
-
+﻿namespace ConstructEd.Repositories
 {
     public interface IRepository<T>
     {
-        ICollection<T> GetAll();
-        
-        T GetById(int id);
-        
-        void Insert(T obj);
-        
-        void Update(T obj);
-        
-        void Delete(int id);
-        
-        int Save();
+        Task<ICollection<T>> GetAllAsync();
+
+        Task<T> GetByIdAsync(int id);
+
+        Task InsertAsync(T obj);
+
+        Task UpdateAsync(T obj);
+
+        Task DeleteAsync(int id);
+
+        Task SaveAsync();
     }
 }

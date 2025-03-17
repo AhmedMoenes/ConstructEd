@@ -25,4 +25,8 @@
     <ProjectReference Include="..\ConstructEd.Model\ConstructEd.Models.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Migrations\" />
+  </ItemGroup>
+
 </Project>
