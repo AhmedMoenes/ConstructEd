@@ -65,18 +65,27 @@
                         </li>
                     </ul>
                     <div class="d-grid mt-4">
-                        <button type="button" class="btn btn-primary" id="buyNowButton" data-id="@Model.Id">
-                            Buy Now
-                        </button>
-                        <form asp-action="AddToCart" asp-controller="ShoppingCart" method="post">
-                            <input type="hidden" name="id" value="@Model.Id" />
-                            <input type="hidden" name="type" value="Course" />
-                            <button type="submit" class="btn btn-danger">Add To Cart</button>
-                        </form>
-                        <form asp-action="AddToWish" asp-controller="WishList" method="post" asp-route-id="@Model.Id">
-                            <input type="hidden" name="type" value="Course" />
-                            <button type="submit" class="btn btn-danger">Add To Wish List</button>
-                        </form>
+                        @if (Model.IsEnrolled)
+                        {
+                           
+                            <button class="btn btn-success" disabled>Enrolled</button>
+                        }
+                        else
+                        {
+                            
+                            <button type="button" class="btn btn-primary" id="buyNowButton" data-id="@Model.Id">
+                                Buy Now
+                            </button>
+                            <form asp-action="AddToCart" asp-controller="ShoppingCart" method="post">
+                                <input type="hidden" name="id" value="@Model.Id" />
+                                <input type="hidden" name="type" value="Course" />
+                                <button type="submit" class="btn btn-danger">Add To Cart</button>
+                            </form>
+                            <form asp-action="AddToWish" asp-controller="WishList" method="post" asp-route-id="@Model.Id">
+                                <input type="hidden" name="type" value="Course" />
+                                <button type="submit" class="btn btn-danger">Add To Wish List</button>
+                            </form>
+                        }
                     </div>
                 </div>
             </div>

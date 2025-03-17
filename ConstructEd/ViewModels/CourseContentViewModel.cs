@@ -24,5 +24,7 @@ namespace ConstructEd.ViewModels
         // Additional properties for the view
         public IEnumerable<SelectListItem>? Courses { get; set; }
         public IEnumerable<SelectListItem>? ContentTypes { get; set; }
+        //new
+        public bool IsEnrolled { get; set; }
     }
 }
