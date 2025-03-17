@@ -47,14 +47,12 @@ namespace ConstructEd.Controllers
         [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
-            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var plugin = await _pluginRepository.GetByIdAsync(id);
             if (plugin == null)
             {
                 return NotFound();
             }
             var viewModel = _mapper.Map<PluginViewModel>(plugin);
-            viewModel.IsEnrolled = await _enrollmentRepository.IsUserEnrolledInCourseAsync(userId, id);
             return View(nameof(Details), viewModel);
         }
 
