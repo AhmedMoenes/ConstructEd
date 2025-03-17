@@ -1,0 +1,58 @@
+﻿@model ConstructEd.ViewModels.WishListViewModel
+
+@{
+    ViewData["Title"] = "My Wishlist";
+}
+
+<h2>My Wishlist</h2>
+
+@if (Model.Courses.Any() || Model.Plugins.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Category/Duration</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var course in Model.Courses)
+            {
+                <tr>
+                    <td>@course.Title (Course)</td>
+                    <td>@course.Description</td>
+                    <td>@course.Category - @course.Duration</td>
+                    <td>
+                        <form asp-action="RemoveFromCart" asp-controller="WishList" method="post">
+                            <input type="hidden" name="id" value="@course.Id" />
+                            <input type="hidden" name="type" value="course" />
+                            <button type="submit" class="btn btn-danger">Remove</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+
+            @foreach (var plugin in Model.Plugins)
+            {
+                <tr>
+                    <td>@plugin.Title (Plugin)</td>
+                    <td>@plugin.Description</td>
+                    <td>-</td>
+                    <td>
+                        <form asp-action="RemoveFromCart" asp-controller="WishList" method="post">
+                            <input type="hidden" name="id" value="@plugin.Id" />
+                            <input type="hidden" name="type" value="plugin" />
+                            <button type="submit" class="btn btn-danger">Remove</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>Your wishlist is empty.</p>
+}

@@ -1,0 +1,106 @@
+﻿@model IEnumerable<ConstructEd.ViewModels.CourseContentViewModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+@Html.AntiForgeryToken()
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                <label asp-for="@Model.First().Id"></label>
+            </th>
+            <th>
+                <label asp-for="@Model.First().Title"></label>
+            </th>
+            <th>
+                <label asp-for="@Model.First().Type"></label>
+            </th>
+            <th>
+                <label asp-for="@Model.First().FileUrl"></label>
+            </th>
+            <th>
+                <label asp-for="@Model.First().Order"></label>
+            </th>
+            <th>
+                Course Name
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr id="row-@item.Id">
+                <td>
+                    <span>@item.Id</span>
+                </td>
+                <td>
+                    <span>@item.Title</span>
+                </td>
+                <td>
+                    <span>@item.Type</span>
+                </td>
+                <td>
+                    <span>@item.FileUrl</span>
+                </td>
+                <td>
+                    <span>@item.Order</span>
+                </td>
+                <td>
+                    <span>@ViewBag.CourseNames[item.CourseId]</span>
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <button type="button" class="btn btn-link text-danger delete-button" data-toggle="modal" data-target="#deleteModal" data-id="@item.Id">Delete</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<!-- Include the Delete Modal Partial View -->
+@await Html.PartialAsync("_DeleteModal", new ConstructEd.ViewModels.CourseContentViewModel())
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            var deleteId;
+
+            // Set the ID of the item to delete when the modal is shown
+            $('.delete-button').on('click', function () {
+                deleteId = $(this).data('id');
+            });
+
+            // Handle the delete confirmation
+            $('#confirmDelete').on('click', function () {
+                $.ajax({
+                    url: '/CourseContent/DeleteConfirmed/' + deleteId,
+                    type: 'POST',
+                    headers: {
+                        'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
+                    },
+                    success: function (response) {
+                        if (response.success) {
+                            // Remove the deleted row from the table
+                            $('#row-' + deleteId).remove();
+                            $('#deleteModal').modal('hide');
+                        } else {
+                            alert('Failed to delete the item.');
+                        }
+                    },
+                    error: function () {
+                        alert('An error occurred while deleting the item.');
+                    }
+                });
+            });
+        });
+    </script>
+}

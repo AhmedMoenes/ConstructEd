@@ -1,6 +1,7 @@
 ﻿using ConstructEd.Models;
 using Microsoft.EntityFrameworkCore;
 using ConstructEd.Data;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace ConstructEd.Repositories
 {
@@ -19,7 +20,7 @@ namespace ConstructEd.Repositories
             if (entity != null)
             {
                 _dataContext.CourseContents.Remove(entity);
-                await SaveAsync(); 
+                await SaveAsync();
             }
         }
 
@@ -40,7 +41,7 @@ namespace ConstructEd.Repositories
         public async Task InsertAsync(CourseContent obj)
         {
             await _dataContext.CourseContents.AddAsync(obj);
-            await SaveAsync(); 
+            await SaveAsync();
         }
 
         public async Task SaveAsync()
@@ -51,7 +52,31 @@ namespace ConstructEd.Repositories
         public async Task UpdateAsync(CourseContent obj)
         {
             _dataContext.CourseContents.Update(obj);
-            await SaveAsync(); 
+            await SaveAsync();
+        }
+
+        public IEnumerable<SelectListItem> GetContentTypesAsSelectList()
+        {
+            return Enum.GetValues(typeof(ContentType))
+                      .Cast<ContentType>()
+                      .Select(t => new SelectListItem
+                      {
+                          Value = t.ToString(),
+                          Text = t.ToString()
+                      });
+        }
+
+        public async Task<Dictionary<int, string>> GetCourseNamesAsync()
+        {
+            return await _dataContext.Courses
+                .ToDictionaryAsync(c => c.Id, c => c.Title);
+        }
+
+        public async Task<string> GetCourseNameByIdAsync(int courseId)
+        {
+            var course = await _dataContext.Courses
+                .FirstOrDefaultAsync(c => c.Id == courseId);
+            return course?.Title;
         }
     }
 }
