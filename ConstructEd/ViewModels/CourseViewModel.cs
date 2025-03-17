@@ -27,6 +27,7 @@ namespace ConstructEd.ViewModels
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
+        public DateTime EnrolledDate { get; set; } = DateTime.UtcNow;
 
         public List<CourseContentViewModel> CourseContents { get; set; } = new List<CourseContentViewModel>();
         public bool IsInWishlist { get; set; }

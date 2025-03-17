@@ -22,6 +22,8 @@ namespace ConstructEd.ViewModels
         [Required(ErrorMessage = "Category is required")]
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
+        public DateTime EnrolledDate { get; set; } = DateTime.UtcNow;
+
         public Category Category { get; set; }
     }
 }

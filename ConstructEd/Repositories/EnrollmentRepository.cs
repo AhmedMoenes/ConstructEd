@@ -25,7 +25,7 @@ namespace ConstructEd.Repositories
         public async Task<ICollection<Enrollment>> GetAllAsync()
         {
             return await _dataContext.Enrollments
-                .Include(n => n.Course)
+                .Include(n => n.Course).Include(b => b.Plugin)
                 .Include(b => b.User)
                 .ToListAsync();
         }
@@ -102,5 +102,7 @@ namespace ConstructEd.Repositories
                 .Select(e => e.Plugin) // Select the plugin object
                 .ToListAsync();
         }
+
+        
     }
 }

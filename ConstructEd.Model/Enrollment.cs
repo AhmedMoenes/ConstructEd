@@ -26,6 +26,6 @@ namespace ConstructEd.Models
         // 🔹 Ensure Only One of Course or Plugin is Chosen
         [NotMapped]
         public bool IsValid => (CourseId.HasValue && !PluginId.HasValue) || (!CourseId.HasValue && PluginId.HasValue);
-
+        
     }
 }
