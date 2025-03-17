@@ -64,6 +64,7 @@ namespace ConstructEd.Controllers
 
             return Json(new { success = false, message = "Item is already in cart" });
         }
+
         [HttpPost]
         public async Task<IActionResult> RemoveFromCart(int id, string type)
         {
