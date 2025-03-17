@@ -18,6 +18,8 @@ namespace ConstructEd.Controllers
                                 IWishListRepository wishlistRepository,
                                 IShoppingCartRepository shoppingCartRepository)
         {
+            _shoppingCartRepository = shoppingCartRepository;
+            _wishlistRepository = wishlistRepository;
             _pluginRepository = pluginRepository;
             _mapper = mapper;
         }
@@ -32,8 +34,8 @@ namespace ConstructEd.Controllers
             {
                 foreach (var plugin in pluginViewModels)
                 {
-                    //plugin.IsInWishlist = await _wishlistRepository.IsCourseInWishlistAsync(userId, plugin.Id);
-                    //plugin.IsInCart = await _shoppingCartRepository.IsCourseInCartAsync(userId, plugin.Id); 
+                    plugin.IsInWishlist = await _wishlistRepository.IsPluginInWishlistAsync(userId, plugin.Id);
+                    plugin.IsInCart = await _shoppingCartRepository.IsPluginInCartAsync(userId, plugin.Id); 
                 }
             }
             return View(nameof(Index), pluginViewModels);

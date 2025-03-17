@@ -91,6 +91,11 @@ namespace ConstructEd.Repositories
             return await _context.Wishlists
                 .AnyAsync(w => w.UserId == userId && w.CourseId == courseId);
         }
+        public async Task<bool> IsPluginInWishlistAsync(string userId, int pluginId)
+        {
+            return await _context.Wishlists
+                .AnyAsync(w => w.UserId == userId && w.PluginId == pluginId);
+        }
 
         public async Task<Wishlist?> GetCourseByUserIdAsync(string userId, int courseId)
         {

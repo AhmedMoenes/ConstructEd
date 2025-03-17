@@ -12,6 +12,7 @@ namespace ConstructEd.Repositories
         Task ClearCartAsync(string userId);
         Task<int> GetCountByUserIdAsync(string userId);
         Task<bool> IsCourseInWishlistAsync(string userId, int courseId);
+        Task<bool> IsPluginInWishlistAsync(string userId, int pluginId);
         Task<Wishlist?> GetCourseByUserIdAsync(string userId, int courseId);
         Task<Wishlist?> GetPluginByUserIdAsync(string userId, int pluginId);
     }
