@@ -1,31 +1,66 @@
 ﻿@model List<CourseViewModel>
 @{
-	ViewData["Title"] = "Index";
+    ViewData["Title"] = "Courses";
 }
+
 <h2>Courses</h2>
 
 @foreach (var course in Model)
 {
-	<div class="card" style="width:300px">
-	@* <img class="card-img-top" src="/Images/@Model.ImageURL" alt="Card image"> *@
-		<div class="card-body">
-			<h4 class="card-title">@course.Title</h4>
-			<p class="card-text">Duration = @course.Duration</p>
-				<p class="card-text">Price = @course.Price</p>
-				<p class="card-text">Instructor = @course.InstructorId</p>
-					@* Handle This *@
-				<a asp-controller="Course" asp-action="Details" asp-route-id="@course.Id" class="btn btn-success">View Details</a>
-			<form asp-action="AddToCart" asp-controller="ShoppingCart" method="post">
-						<input type="hidden" name="id" value="@course.Id" />
-					<input type="hidden" name="type" value="Course" />
-					<button type="submit" class="btn btn-danger">Add To Cart</button>
-					</form>
-			@* تعديل الكود باي صاصا *@
-			<form asp-action="AddToWish" asp-controller="WishList" method="post">
-				<input type="hidden" name="id" value="@course.Id" />
-				<input type="hidden" name="type" value="Course" />
-				<button type="submit" class="btn btn-danger">Add To Wish List</button>
-			</form>
-		</div>
-	</div>
+    <div class="card" style="width:300px">
+        <div class="card-body">
+            <h4 class="card-title">@course.Title</h4>
+            <p class="card-text">Duration = @course.Duration</p>
+            <p class="card-text">Price = @course.Price</p>
+            <p class="card-text">Instructor = @course.InstructorId</p>
+
+            <a asp-controller="Course" asp-action="Details" asp-route-id="@course.Id" class="btn btn-success">View Details</a>
+
+            <form asp-action="AddToCart" asp-controller="ShoppingCart" method="post">
+                <input type="hidden" name="id" value="@course.Id" />
+                <input type="hidden" name="type" value="Course" />
+                <button type="submit" class="btn btn-danger">Add To Cart</button>
+            </form>
+
+            <!-- Wishlist Button -->
+            <form asp-action="AddToWish" asp-controller="WishList" method="post" class="wish-form">
+                <input type="hidden" name="id" value="@course.Id" />
+                <input type="hidden" name="type" value="Course" />
+                <button type="submit" class="wish-button">
+                    <i class="far fa-heart"></i> <!-- Empty Heart -->
+                </button>
+            </form>
+        </div>
+    </div>
 }
+
+<style>
+    .wish-button {
+        font-size: 24px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        transition: color 0.3s ease-in-out;
+    }
+
+        .wish-button i {
+            color: gray; /* Default unselected heart color */
+        }
+
+        .wish-button .fas {
+            color: red !important; /* Make filled heart red */
+        }
+</style>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $(".wish-form").on("submit", function (event) {
+            event.preventDefault(); // Prevent form submission
+
+            let icon = $(this).find("i");
+            icon.toggleClass("far fas"); // Toggle empty/filled heart
+            icon.toggleClass("text-danger"); // Ensure it turns red
+        });
+    });
+</script>
