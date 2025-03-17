@@ -65,14 +65,19 @@
                         </li>
                     </ul>
                     <div class="d-grid mt-4">
-                        <a asp-controller="" asp-action="" asp-route-courseId="@Model.Id" class="btn btn-success btn-lg">
-                            <i class="fas fa-check-circle"></i> Buy Now
-                        </a>
+                        <button type="button" class="btn btn-primary" id="buyNowButton" data-id="@Model.Id">
+                            Buy Now
+                        </button>
                         <form asp-action="AddToCart" asp-controller="ShoppingCart" method="post">
                             <input type="hidden" name="id" value="@Model.Id" />
                             <input type="hidden" name="type" value="Course" />
                             <button type="submit" class="btn btn-danger">Add To Cart</button>
-                    </form>
+                        </form>
+                        <form asp-action="AddToWish" asp-controller="WishList" method="post" asp-route-id="@Model.Id">
+                            <input type="hidden" name="type" value="Course" />
+                            <button type="submit" class="btn btn-danger">Add To Wish List</button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
