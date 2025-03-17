@@ -22,16 +22,19 @@
                 <button type="submit" class="btn btn-danger">Add To Cart</button>
             </form>
 
-            <form asp-action="AddToWish" asp-controller="WishList" method="post" class="wish-form">
+            <form class="wish-form" data-courseid="@course.Id" data-inwishlist="@(course.IsInWishlist ? "true" : "false")">
                 <input type="hidden" name="id" value="@course.Id" />
                 <input type="hidden" name="type" value="Course" />
                 <button type="submit" class="wish-button">
-                    <i class="@(course.IsInWishlist ? "fas" : "far") fa-heart"></i> 
+                    <i class="@(course.IsInWishlist ? "fas" : "far") fa-heart"></i>
                 </button>
             </form>
+
+
         </div>
     </div>
 }
+
 <style>
     .wish-button {
         font-size: 24px;
@@ -41,30 +44,43 @@
         transition: color 0.3s ease-in-out;
     }
 
-    .wish-button i {
-        color: gray; /* Default unselected heart color */
-    }
+        .wish-button i {
+            color: gray;
+        }
 
-    .wish-button .fas {
-        color: red !important; /* Make filled heart red */
-    }
+        .wish-button .fas {
+            color: red !important;
+        }
 </style>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-    $(document).ready(function () {
+
+           $(document).ready(function () {
         $(".wish-form").on("submit", function (event) {
-            event.preventDefault(); // Prevent default submission
+            event.preventDefault();
 
             let form = $(this);
             let icon = form.find("i");
+            let inWishlist = form.data("inwishlist") === true; // Ensure it's treated as boolean
 
-            $.post(form.attr("action"), form.serialize(), function (response) {
+            let actionUrl = inWishlist
+                ? "/WishList/RemoveFromCart"
+                : "/WishList/AddToWish";
+
+            $.post(actionUrl, form.serialize(), function (response) {
                 if (response.success) {
-                    icon.toggleClass("far fas");
-                    icon.toggleClass("text-danger");
+                    let newStatus = !inWishlist;
+                    form.data("inwishlist", newStatus);  // ✅ Update flag correctly
+
+                    // Toggle heart icon style
+                    if (newStatus) {
+                        icon.removeClass("far").addClass("fas"); // Filled heart
+                    } else {
+                        icon.removeClass("fas").addClass("far"); // Empty heart
+                    }
                 } else {
-                    alert("Failed to add to wishlist!");
+                    alert(response.message || "Failed to update wishlist!");
                 }
             }).fail(function () {
                 alert("An error occurred!");
