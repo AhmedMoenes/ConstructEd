@@ -1,53 +1,127 @@
 ﻿@model ConstructEd.ViewModels.LoginViewModel
 
 @{
-    ViewData["Title"] = "Login";
+    ViewData["Title"] = "Sign In";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card shadow">
-                <div class="card-header bg-primary text-white text-center">
-                    <h3>Login</h3>
-                </div>
-                <div class="card-body">
-                    <form asp-action="Login">
-                        <div asp-validation-summary="All" class="text-danger"></div>
+<style>
+    /* Input Fields */
+    .input-custom {
+        background-color: transparent;
+        border: 1px solid #5b4b8a;
+        color: #fff;
+        border-radius: 5px;
+        padding: 10px;
+    }
 
-                        <!-- Email Field -->
-                        <div class="form-group mb-3">
-                            <label asp-for="Email" class="form-label">Email</label>
-                            <input asp-for="Email" class="form-control" placeholder="Enter your email" />
-                            <span asp-validation-for="Email" class="text-danger"></span>
-                        </div>
+        .input-custom:focus {
+            border-color: #7663c1;
+            box-shadow: none;
+            outline: none;
+        }
 
-                        <!-- Password Field -->
-                        <div class="form-group mb-3">
-                            <label asp-for="Password" class="form-label">Password</label>
-                            <input asp-for="Password" type="password" class="form-control" placeholder="Enter your password" />
-                            <span asp-validation-for="Password" class="text-danger"></span>
-                        </div>
+    /* Sign In Button */
+    .btn-signin {
+        background: linear-gradient(90deg, #6f42c1, #aa2068);
+        border: none;
+        padding: 10px;
+        color: #fff;
+        font-weight: bold;
+        border-radius: 5px;
+        transition: 0.3s ease;
+    }
 
-                        <!-- Login Button -->
-                        <div class="form-group mb-3">
-                            <button type="submit" class="btn btn-primary w-100">Login</button>
-                        </div>
-                    </form>
+        .btn-signin:hover {
+            background: linear-gradient(90deg, #502ea7, #881856);
+            transform: scale(1.02);
+        }
 
-                    <!-- Register Link -->
-                    <div class="text-center">
-                        <p>Don't have an account? <a asp-action="Register" class="text-primary">Register here</a></p>
-                    </div>
-                </div>
+    /* Create Account Button (New Dark Purple Theme) */
+    .btn-create-account {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 15px 38px;
+        border-radius: 16px;
+        border: 1px solid transparent;
+        color: #ffffff;
+        background: linear-gradient(90deg, #5B4B8A, #7663C1);
+        font-size: 16px;
+        letter-spacing: 1px;
+        transition: all 0.2s ease-in-out;
+        text-decoration: none;
+    }
+
+        .btn-create-account:hover {
+            background: rgba(193, 158, 224, 0.1);
+            border-color: #C19EE0;
+            color: #C19EE0;
+            transform: translateY(-4px) scale(1.05);
+        }
+
+        .btn-create-account:active {
+            background-color: transparent;
+            border-color: #C19EE0;
+            color: #C19EE0;
+            transform: translateY(4px) scale(0.95);
+        }
+
+        .btn-create-account:disabled {
+            background-color: rgba(255, 255, 255, 0.16);
+            color: #8E8E93;
+            border-color: #8E8E93;
+        }
+</style>
+
+<div class="d-flex justify-content-center align-items-center min-vh-100" style="background-color: #0c081f;">
+    <div class="card shadow-lg p-4 rounded-4" style="background-color: #1b1535; color: #fff; width: 380px;">
+
+        <h3 class="text-center mt-3">Sign in</h3>
+
+        <form asp-action="Login" asp-controller="Account" method="post">
+            <!-- Email Input -->
+            <div class="mb-3">
+                <label asp-for="Email" class="form-label">Email</label>
+                <input asp-for="Email" type="email" class="form-control input-custom" required>
+                <span asp-validation-for="Email" class="text-danger"></span>
             </div>
+
+            <!-- Password Input -->
+            <div class="mb-3">
+                <label asp-for="Password" class="form-label">Password</label>
+                <input asp-for="Password" type="password" class="form-control input-custom" required>
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+
+            <!-- Remember Me Checkbox -->
+            <div class="form-check mb-3">
+                <input type="checkbox" class="form-check-input" id="rememberMe">
+                <label class="form-check-label" for="rememberMe">Remember me</label>
+            </div>
+
+            <!-- Sign In Button -->
+            <button type="submit" class="btn-signin w-100">Sign in</button>
+
+            <!-- Additional Options -->
+            <div class="text-center mt-3">
+                <a asp-action="ForgotPassword" asp-controller="Account" class="text-decoration-none" style="color: #5998ff;">Forgot password?</a>
+            </div>
+            <div class="text-center mt-1">
+                <a asp-action="SSOLogin" asp-controller="Account" class="text-decoration-none" style="color: #5998ff;">Sign in with company or school (SSO)</a>
+            </div>
+        </form>
+
+        <hr class="mt-4 mb-3 border-secondary">
+
+        <!-- Create Account Button -->
+        <div class="text-center">
+            <p class="mb-2">Don't have an account?</p>
+            <a asp-action="Register" asp-controller="Account" class="btn-create-account">Create an account</a>
         </div>
     </div>
 </div>
 
 @section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
+    <partial name="_ValidationScriptsPartial" />
 }
