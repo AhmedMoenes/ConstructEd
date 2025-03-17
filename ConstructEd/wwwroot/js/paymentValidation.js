@@ -1,7 +1,9 @@
 ﻿$(document).ready(function () {
     $('#paymentModal').on('show.bs.modal', function () {
         let totalPrice = $('#totalPrice').text().trim();
-        $('#paymentAmount').val(totalPrice);
+        let numericValue = totalPrice.replace(/[^\d.]/g, '');
+
+        $('#paymentAmount').val(numericValue);
     });
 
     $('#CardNumber').on('input', function () {
