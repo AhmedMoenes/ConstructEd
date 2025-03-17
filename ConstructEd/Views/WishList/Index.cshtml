@@ -1,4 +1,4 @@
-﻿@model ConstructEd.ViewModels.WishListViewModel
+﻿@model WishListViewModel
 
 @{
     ViewData["Title"] = "My Wishlist";
@@ -25,10 +25,13 @@
                     <td>@course.Description</td>
                     <td>@course.Category - @course.Duration</td>
                     <td>
-                        <form asp-action="RemoveFromCart" asp-controller="WishList" method="post">
+                        <form asp-action="RemoveFromCart" asp-controller="WishList" method="post" class="remove-item-form">
+                            @Html.AntiForgeryToken()
                             <input type="hidden" name="id" value="@course.Id" />
-                            <input type="hidden" name="type" value="course" />
-                            <button type="submit" class="btn btn-danger">Remove</button>
+                            <input type="hidden" name="type" value="Course" />
+                            <button type="button" class="btn btn-danger remove-item" data-id="@course.Id" data-type="Course">
+                                <i class="fas fa-trash-alt"></i> <!-- Basket Icon -->
+                            </button>
                         </form>
                     </td>
                 </tr>
@@ -41,10 +44,13 @@
                     <td>@plugin.Description</td>
                     <td>-</td>
                     <td>
-                        <form asp-action="RemoveFromCart" asp-controller="WishList" method="post">
+                        <form asp-action="RemoveFromCart" asp-controller="WishList" method="post" class="remove-item-form">
+                            @Html.AntiForgeryToken()
                             <input type="hidden" name="id" value="@plugin.Id" />
-                            <input type="hidden" name="type" value="plugin" />
-                            <button type="submit" class="btn btn-danger">Remove</button>
+                            <input type="hidden" name="type" value="Plugin" />
+                            <button type="button" class="btn btn-danger remove-item" data-id="@plugin.Id" data-type="Plugin">
+                                <i class="fas fa-trash-alt"></i> <!-- Basket Icon -->
+                            </button>
                         </form>
                     </td>
                 </tr>
@@ -56,3 +62,37 @@ else
 {
     <p>Your wishlist is empty.</p>
 }
+
+<!-- FontAwesome for Icons -->
+<script src="https://kit.fontawesome.com/your-kit-id.js" crossorigin="anonymous"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll(".remove-item").forEach(button => {
+            button.addEventListener("click", function () {
+                const form = this.closest("form");
+                const formData = new FormData(form);
+                const token = form.querySelector('input[name="__RequestVerificationToken"]').value;
+
+                fetch(form.action, {
+                    method: "POST",
+                    headers: {
+                        "X-Requested-With": "XMLHttpRequest",
+                        "RequestVerificationToken": token,
+                        "Content-Type": "application/x-www-form-urlencoded"
+                    },
+                    body: new URLSearchParams(formData)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        this.closest("tr").remove();
+                    } else {
+                        alert(data.message || "Failed to remove item!");
+                    }
+                })
+                .catch(error => console.error("Error:", error));
+            });
+        });
+    });
+</script>
