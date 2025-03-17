@@ -30,7 +30,7 @@ namespace ConstructEd.Controllers
                 UpdatedAt = p.UpdatedAt,
                 //DownloadLink = p.DownloadLink,
                 //ImageUrl = p.ImageUrl,
-                
+
             }).ToList();
 
             return View(viewModels);
@@ -52,7 +52,7 @@ namespace ConstructEd.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(PluginViewModel viewModel,IFormFile ImageUrl)
+        public async Task<IActionResult> Create(PluginViewModel viewModel, IFormFile ImageUrl)
         {
             if (ModelState.IsValid)
             {
@@ -80,7 +80,7 @@ namespace ConstructEd.Controllers
                     UpdatedAt = DateTime.UtcNow,
                     //DownloadLink = viewModel.DownloadLink,
                     //ImageUrl = viewModel.ImageUrl
-                    
+
                 };
 
                 await _repository.InsertAsync(plugin);
@@ -102,7 +102,7 @@ namespace ConstructEd.Controllers
 
         public async Task<IActionResult> Edit(int id)
         {
-            var plugin = await _pluginRepository.GetByIdAsync(id);
+            var plugin = await _repository.GetByIdAsync(id);
             if (plugin == null)
                 return NotFound();
 
@@ -116,7 +116,7 @@ namespace ConstructEd.Controllers
                 CreatedAt = plugin.CreatedAt,
                 UpdatedAt = plugin.UpdatedAt,
                 //ImageUrl = plugin.ImageUrl
-                
+
             };
 
             ViewBag.Categories = Enum.GetValues(typeof(Category))
@@ -174,7 +174,7 @@ namespace ConstructEd.Controllers
                 plugin.Title = viewModel.Title;
                 plugin.Description = viewModel.Description;
                 plugin.Price = viewModel.Price;
-               
+
                 plugin.UpdatedAt = DateTime.UtcNow;
 
                 await _repository.UpdateAsync(plugin);
@@ -196,7 +196,7 @@ namespace ConstructEd.Controllers
 
         public async Task<IActionResult> Delete(int id)
         {
-            var plugin = await _pluginRepository.GetByIdAsync(id);
+            var plugin = await _repository.GetByIdAsync(id);
             if (plugin == null)
                 return NotFound();
 
@@ -210,19 +210,19 @@ namespace ConstructEd.Controllers
                 UpdatedAt = plugin.UpdatedAt,
                 //DownloadLink = plugin.DownloadLink,
                 //ImageUrl = plugin.ImageUrl,
-               
+
             };
 
             return View(viewModel);
         }
 
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            await _pluginRepository.DeleteAsync(id);
-            await _pluginRepository.SaveAsync();
-            return RedirectToAction(nameof(Index));
-        }
-    }
+        //[HttpPost, ActionName("Delete")]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> DeleteConfirmed(int id)
+        //{
+        //    await _pluginRepository.DeleteAsync(id);
+        //    await _pluginRepository.SaveAsync();
+        //    return RedirectToAction(nameof(Index));
+        //}
+    } 
 }
