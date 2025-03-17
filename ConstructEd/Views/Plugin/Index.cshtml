@@ -21,23 +21,30 @@
                         <!-- View Details Button -->
                         <a asp-controller="Plugin" asp-action="Details" asp-route-id="@plugin.Id" class="btn btn-success">View Details</a>
 
-                        <!-- Add to Cart Form -->
-                        <form class="cart-form" data-pluginid="@plugin.Id" data-incart="@(plugin.IsInCart ? "true" : "false")">
-                            <input type="hidden" name="id" value="@plugin.Id" />
-                            <input type="hidden" name="type" value="Plugin" />
-                            <button type="submit" class="cart-button">
-                                <i class="@(plugin.IsInCart ? "fas fa-shopping-cart" : "fas fa-cart-plus")"></i>
-                            </button>
-                        </form>
+                        <div class="d-grid mt-2">
+                @if (plugin.IsEnrolled)
+                {
+                    <button class="btn btn-success" disabled>Enrolled</button>
+                }
+                else
+                {
+                    <form class="cart-form" data-pluginid="@plugin.Id" data-incart="@(plugin.IsInCart ? "true" : "false" )">
+                        <input type="hidden" name="id" value="@plugin.Id" />
+                        <input type="hidden" name="type" value="Plugin" />
+                        <button type="submit" class="cart-button">
+                            <i class="@(plugin.IsInCart ? "fas fa-shopping-cart" : "fas fa-cart-plus")"></i>
+                        </button>
+                    </form>
 
-                        <!-- Add to Wishlist Form -->
-                        <form class="wish-form" data-pluginid="@plugin.Id" data-inwishlist="@(plugin.IsInWishlist ? "true" : "false")">
-                            <input type="hidden" name="id" value="@plugin.Id" />
-                            <input type="hidden" name="type" value="Plugin" />
-                            <button type="submit" class="wish-button">
-                                <i class="@(plugin.IsInWishlist ? "fas" : "far") fa-heart"></i>
-                            </button>
-                        </form>
+                    <form class="wish-form" data-pluginid="@plugin.Id" data-inwishlist="@(plugin.IsInWishlist ? "true" : "false")">
+                        <input type="hidden" name="id" value="@plugin.Id" />
+                        <input type="hidden" name="type" value="Plugin" />
+                        <button type="submit" class="wish-button">
+                                    <i class="@(plugin.IsInWishlist ? "fas" : "far") fa-heart"></i>
+                        </button>
+                    </form>
+                }
+            </div>
                     </div>
                 </div>
             </div>
