@@ -184,8 +184,17 @@
                         <li class="nav-item"><a class="nav-link" asp-controller="Enrollment" asp-action="Index">Enrollments</a></li>
                     </ul>
 
-                    <!-- Sign In Button -->
-                    <a class="btn-signin ms-2" asp-controller="Account" asp-action="Login">Sign In</a>
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <!-- Logout Button -->
+                        <a class="btn-signin ms-2" asp-controller="Account" asp-action="Logout">Log out</a>
+                    }
+                    else
+                    {
+                        <!-- Sign In Button -->
+                        <a class="btn-signin ms-2" asp-controller="Account" asp-action="Login">Log in</a>
+                    }
+
                 </div>
             </div>
         </nav>
