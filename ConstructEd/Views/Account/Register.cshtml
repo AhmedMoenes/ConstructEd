@@ -4,48 +4,8 @@
     ViewData["Title"] = "Register";
 }
 
-<<<<<<< Updated upstream
 <h1>Register</h1>
 
-<h4>RegisterViewModel</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Register">
-            <div asp-validation-summary="All" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="FullName" class="control-label"></label>
-                <input asp-for="FullName" class="form-control" />
-                <span asp-validation-for="FullName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="PhoneNumber" class="control-label"></label>
-                <input asp-for="PhoneNumber" class="form-control" />
-                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Password" class="control-label"></label>
-                <input asp-for="Password" class="form-control" />
-                <span asp-validation-for="Password" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ConfirmedPassword" class="control-label"></label>
-                <input asp-for="ConfirmedPassword" class="form-control" />
-                <span asp-validation-for="ConfirmedPassword" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Register" class="btn btn-primary" />
-            </div>
-            <div class="form-group">
-                <a asp-action="Login" class="btn btn-primary">Login</a>
-            </div>
-        </form>
-        =======
         <style>
             .input-custom {
                 background-color: transparent;
@@ -62,7 +22,6 @@
                 }
 
             .btn-signin {
-                background: linear-gradient(90deg, #6f42c1, #aa2068);
                 border: none;
                 padding: 10px;
                 color: #fff;
@@ -118,16 +77,12 @@
                 <div class="text-center mt-3">
                     <a asp-action="Login" asp-controller="Account" class="text-decoration-none" style="color: #5998ff;">Already have an account? Sign in</a>
                 </div>
-                >>>>>>> Stashed changes
             </div>
         </div>
 
         @section Scripts {
-            <<<<<<< Updated upstream
             @{
                 await Html.RenderPartialAsync("_ValidationScriptsPartial");
             }
-            =======
             <partial name="_ValidationScriptsPartial" />
-            >>>>>>> Stashed changes
         }
