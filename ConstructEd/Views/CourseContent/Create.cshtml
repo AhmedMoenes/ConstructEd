@@ -1,4 +1,4 @@
-﻿@model ConstructEd.ViewModels.CourseContentViewModel
+@model CourseContentViewModel
 
 @{
     ViewData["Title"] = "Create";
@@ -40,7 +40,6 @@
 
 <div class="d-flex justify-content-center align-items-center min-vh-100" style="background-color: #0c081f;">
     <div class="card shadow-lg p-4 rounded-4" style="background-color: #1b1535; color: #fff; width: 420px;">
-
         <h3 class="text-center mt-3">Create Course Content</h3>
 
         <form asp-action="Create" class="mt-4">
@@ -100,4 +99,3 @@
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }
-
