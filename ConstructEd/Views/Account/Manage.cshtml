@@ -3,51 +3,90 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="container-fluid">
-    <div class="row">
-        
-    <!-- Main Content -->
-        <div class="col-md-9 p-4">
-            <h1 class="display-4 mb-4">Welcome to Admin Dashboard</h1>
+<style>
+    body {
+        background-color: #0c081f;
+        color: #fff;
+    }
 
-    <!-- Courses Section -->
-    <div class="row mb-4">
+    .card {
+        background-color: #1b1535;
+        border-radius: 12px;
+        transition: transform 0.3s;
+    }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+    .card-header {
+        border-radius: 12px 12px 0 0;
+    }
+
+    .btn {
+        border-radius: 8px;
+        transition: background-color 0.2s, transform 0.2s;
+    }
+
+        .btn:hover {
+            transform: scale(1.03);
+        }
+
+    .btn-outline-primary {
+        color: #5998ff;
+        border-color: #5998ff;
+    }
+
+        .btn-outline-primary:hover {
+            background-color: #5998ff;
+            color: white;
+        }
+
+    .btn-outline-success {
+        color: #5cb85c;
+        border-color: #5cb85c;
+    }
+
+        .btn-outline-success:hover {
+            background-color: #5cb85c;
+            color: white;
+        }
+
+</style>
+
+<div class="container-fluid mt-4">
+    <div class="row">
         <div class="col-md-12">
+            <h1 class="display-4 mb-4">Welcome to Admin Dashboard</h1>
+        </div>
+
+        <!-- Courses Section -->
+        <div class="col-md-12 mb-4">
             <div class="card shadow">
-                <div class="card-header bg-primary text-white">
-                    <h3 class="card-title">Courses</h3>
-                </div>
+                <div class="card-header bg-primary text-white">Courses</div>
                 <div class="card-body">
                     <a asp-controller="Course" asp-action="Index" class="btn btn-outline-primary me-2">View Courses</a>
-                    <a asp-controller="Course" asp-action="Create" class="btn btn-outline-success">Create Course</a>
+                    <a asp-controller="Course" asp-action="Create" class="btn btn-outline-success me-2">Create Course</a>
                     <a asp-controller="CourseContent" asp-action="Create" class="btn btn-outline-success">Add Content</a>
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- Plugins Section -->
-    <div class="row mb-4">
-        <div class="col-md-12">
+        <!-- Plugins Section -->
+        <div class="col-md-12 mb-4">
             <div class="card shadow">
-                <div class="card-header bg-success text-white">
-                    <h3 class="card-title">Plugins</h3>
-                </div>
+                <div class="card-header bg-success text-white">Plugins</div>
                 <div class="card-body">
                     <a asp-controller="Plugin" asp-action="Index" class="btn btn-outline-primary me-2">View Plugins</a>
                     <a asp-controller="Plugin" asp-action="Create" class="btn btn-outline-success">Create Plugin</a>
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- Instructors Section -->
-    <div class="row mb-4">
-        <div class="col-md-12">
+        <!-- Instructors Section -->
+        <div class="col-md-12 mb-4">
             <div class="card shadow">
-                <div class="card-header bg-warning text-dark">
-                    <h3 class="card-title">Instructors</h3>
-                </div>
+                <div class="card-header bg-warning text-dark">Instructors</div>
                 <div class="card-body">
                     <a asp-controller="Instructor" asp-action="Index" class="btn btn-outline-primary me-2">View Instructors</a>
                     <a asp-controller="Instructor" asp-action="Create" class="btn btn-outline-success">Add Instructor</a>

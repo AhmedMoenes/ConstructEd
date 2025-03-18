@@ -1,55 +1,82 @@
-﻿@model ConstructEd.ViewModels.CourseContentViewModel
+﻿@model CourseContentViewModel
 
 @{
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
+<style>
+    .input-custom {
+        background-color: transparent;
+        border: 1px solid #5b4b8a;
+        color: #fff;
+        border-radius: 5px;
+        padding: 10px;
+    }
 
-<h4>CourseContentViewModel</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
+        .input-custom:focus {
+            border-color: #7663c1;
+            box-shadow: none;
+            outline: none;
+        }
+
+    .btn-create {
+        background: linear-gradient(90deg, #6f42c1, #aa2068);
+        border: none;
+        padding: 10px;
+        color: #fff;
+        font-weight: bold;
+        border-radius: 5px;
+        transition: 0.3s ease;
+    }
+
+        .btn-create:hover {
+            background: linear-gradient(90deg, #502ea7, #881856);
+            transform: scale(1.02);
+        }
+</style>
+
+<div class="d-flex justify-content-center align-items-center min-vh-100" style="background-color: #0c081f;">
+    <div class="card shadow-lg p-4 rounded-4" style="background-color: #1b1535; color: #fff; width: 400px;">
+        <h3 class="text-center mb-4">Create Course Content</h3>
+
         <form asp-action="Create">
-            <div asp-validation-summary="All" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Title" class="control-label"></label>
-                <input asp-for="Title" class="form-control" />
+            <div class="mb-3">
+                <label asp-for="Title" class="form-label">Title</label>
+                <input asp-for="Title" class="form-control input-custom" required />
                 <span asp-validation-for="Title" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Type" class="control-label"></label>
-                <select asp-for="Type" asp-items="Model.ContentTypes" class="form-control">
+
+            <div class="mb-3">
+                <label asp-for="Type" class="form-label">Type</label>
+                <select asp-for="Type" asp-items="Model.ContentTypes" class="form-control input-custom">
                     <option value="">-- Select Content Type --</option>
                 </select>
                 <span asp-validation-for="Type" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="FileUrl" class="control-label"></label>
-                <input asp-for="FileUrl" class="form-control" />
+
+            <div class="mb-3">
+                <label asp-for="FileUrl" class="form-label">File URL</label>
+                <input asp-for="FileUrl" class="form-control input-custom" required />
                 <span asp-validation-for="FileUrl" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Order" class="control-label"></label>
-                <input asp-for="Order" class="form-control" />
+
+            <div class="mb-3">
+                <label asp-for="Order" class="form-label">Order</label>
+                <input asp-for="Order" class="form-control input-custom" required />
                 <span asp-validation-for="Order" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="CourseId" class="control-label"></label>
-                <select asp-for="CourseId" asp-items="ViewBag.Courses" class="form-control">
+
+            <div class="mb-3">
+                <label asp-for="CourseId" class="form-label">Course</label>
+                <select asp-for="CourseId" asp-items="ViewBag.Courses" class="form-control input-custom">
                     <option value="">-- Select Course --</option>
                 </select>
                 <span asp-validation-for="CourseId" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
+
+            <button type="submit" class="btn-create w-100">Create</button>
         </form>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {
