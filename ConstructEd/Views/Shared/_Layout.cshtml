@@ -5,16 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewData["Title"] - ConstructEd</title>
 
-    <!-- Bootstrap 5 CSS -->
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" asp-append-version="true">
 
-    <!-- FontAwesome for Icons -->
+   
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
-    <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="@Url.Content("~/lib/logo.png")">
 
-    <!-- Custom Styles -->
+   
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true">
     <link rel="stylesheet" href="~/ConstructEd.styles.css" asp-append-version="true">
 
@@ -22,25 +20,29 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js"></script>
 
     <style>
-        /* Page Layout */
         body {
             background-color: #130f25;
             color: white;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            padding-top: 70px; 
         }
 
-        /* Navbar */
         .custom-nav {
             background-color: #322D5B;
+            position: fixed;
+            top: 0; 
+            width: 100%; 
+            z-index: 1000; 
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3); 
         }
 
-        /* Footer */
+        
         .footer {
             background-color: #2a2753;
             color: white;
-            margin-top: auto; /* Push footer to bottom */
+            margin-top: auto; 
             padding: 15px;
             text-align: center;
         }
@@ -51,7 +53,7 @@
                 gap: 15px;
             }
 
-            /* Social Media Icons */
+           
             .footer .social-icons a {
                 display: inline-flex;
                 align-items: center;
@@ -71,17 +73,17 @@
                     transition: color 0.3s ease;
                 }
 
-                /* Hover Effects */
+                
                 .footer .social-icons a:hover {
                     background-color: #aa2068;
                     transform: scale(1.1);
                 }
 
                     .footer .social-icons a:hover i {
-                        color: #130f25; /* Dark background color */
+                        color: #130f25; 
                     }
 
-        /* Button Styling */
+        
         .btn-signin {
             text-decoration: none;
             position: relative;
@@ -91,13 +93,11 @@
             cursor: pointer;
             color: #fff;
             width: 9em;
-            height: 3em;
+            height: 2em;
             line-height: 2em;
             text-align: center;
             background: linear-gradient(90deg, #FF7700, #f441a5, #ffeb3b, #FC1871);
             background-size: 300%;
-            border-radius: 30px;
-            z-index: 1;
             display: inline-flex;
             align-items: center;
             justify-content: center;
@@ -127,7 +127,7 @@
             right: -5px;
             bottom: -5px;
             z-index: -1;
-            background: linear-gradient(90deg, #FF7700, #f441a5, #ffeb3b,#FC1871);
+            background: linear-gradient(90deg, #FF7700, #f441a5, #ffeb3b, #FC1871);
             background-size: 400%;
             border-radius: 35px;
             transition: 1s;
@@ -139,6 +139,31 @@
 
         .btn-signin:active {
             background: linear-gradient(32deg, #03a9f4, #f441a5, #ffeb3b, #03a9f4);
+        }
+
+        .navbar-nav .nav-link i {
+            color: white; 
+            transition: color 0.3s ease; 
+        }
+
+            .navbar-nav .nav-link i:hover {
+                color: #ff4757;
+            }
+
+        .badge {
+            font-size: 0.75rem;
+            padding: 0.25em 0.5em;
+            margin-left: 0.25em;
+            vertical-align: middle;
+        }
+
+        .navbar-brand img {
+            vertical-align: middle;
+            margin-top: -12px;
+        }
+
+        .flex-grow-1 {
+            margin-bottom: 50px
         }
     </style>
 </head>
@@ -184,17 +209,8 @@
                         <li class="nav-item"><a class="nav-link" asp-controller="Enrollment" asp-action="Index">Enrollments</a></li>
                     </ul>
 
-                    @if (User.Identity.IsAuthenticated)
-                    {
-                        <!-- Logout Button -->
-                        <a class="btn-signin ms-2" asp-controller="Account" asp-action="Logout">Log out</a>
-                    }
-                    else
-                    {
-                        <!-- Sign In Button -->
-                        <a class="btn-signin ms-2" asp-controller="Account" asp-action="Login">Log in</a>
-                    }
-
+                    <!-- Sign In Button -->
+                    <a class="btn-signin ms-2" asp-controller="Account" asp-action="Login">Sign In</a>
                 </div>
             </div>
         </nav>
@@ -235,6 +251,7 @@
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
+
 <script>
     $(document).ready(function () {
         // Fetch wishlist count on page load
@@ -298,23 +315,3 @@
         }
     });
 </script>
-
-<style>
-    /* Customize the heart and cart icons */
-    .navbar-nav .nav-link i {
-        color: white; /* Set icon color */
-        transition: color 0.3s ease; /* Smooth color transition */
-    }
-
-        .navbar-nav .nav-link i:hover {
-            color: #ff4757; /* Change color on hover */
-        }
-
-    /* Style the badge */
-    .badge {
-        font-size: 0.75rem;
-        padding: 0.25em 0.5em;
-        margin-left: 0.25em;
-        vertical-align: middle;
-    }
-</style>
