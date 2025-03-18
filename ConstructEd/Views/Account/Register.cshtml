@@ -1,133 +1,98 @@
-﻿@model RegisterViewModel
+@model RegisterViewModel
 
 @{
     ViewData["Title"] = "Register";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<<<<<<< Updated upstream
-<h1>Register</h1>
+<style>
+    /* Input Fields */
+    .input-custom {
+        background-color: transparent;
+        border: 1px solid #5b4b8a;
+        color: #fff;
+        border-radius: 5px;
+        padding: 10px;
+    }
 
-<h4>RegisterViewModel</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Register">
-            <div asp-validation-summary="All" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="FullName" class="control-label"></label>
-                <input asp-for="FullName" class="form-control" />
+        .input-custom:focus {
+            border-color: #7663c1;
+            box-shadow: none;
+            outline: none;
+        }
+
+    /* Register Button */
+    .btn-register {
+        background: linear-gradient(90deg, #6f42c1, #aa2068);
+        border: none;
+        padding: 10px;
+        color: #fff;
+        font-weight: bold;
+        border-radius: 5px;
+        transition: 0.3s ease;
+    }
+
+        .btn-register:hover {
+            background: linear-gradient(90deg, #502ea7, #881856);
+            transform: scale(1.02);
+        }
+
+    /* Alert Box */
+    div.alert-danger {
+        background-color: rgba(0, 0, 0, 0) !important;
+        color: #fff !important;
+        border: 1px solid #881856 !important;
+    }
+</style>
+
+<div class="d-flex justify-content-center align-items-center min-vh-100" style="background-color: #0c081f;">
+    <div class="card shadow-lg p-4 rounded-4" style="background-color: #1b1535; color: #fff; width: 420px;">
+        <h3 class="text-center mb-4">Create a New Account</h3>
+
+        <form asp-action="Register" method="post">
+            <div asp-validation-summary="All" class="alert alert-danger"></div>
+
+            <div class="mb-3">
+                <label asp-for="FullName" class="form-label">Full Name</label>
+                <input asp-for="FullName" class="form-control input-custom" placeholder="Enter your full name" />
                 <span asp-validation-for="FullName" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
+
+            <div class="mb-3">
+                <label asp-for="Email" class="form-label">Email</label>
+                <input asp-for="Email" type="email" class="form-control input-custom" placeholder="Enter your email" />
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="PhoneNumber" class="control-label"></label>
-                <input asp-for="PhoneNumber" class="form-control" />
+
+            <div class="mb-3">
+                <label asp-for="PhoneNumber" class="form-label">Phone Number</label>
+                <input asp-for="PhoneNumber" class="form-control input-custom" placeholder="Enter your phone number" />
                 <span asp-validation-for="PhoneNumber" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Password" class="control-label"></label>
-                <input asp-for="Password" class="form-control" />
+
+            <div class="mb-3">
+                <label asp-for="Password" class="form-label">Password</label>
+                <input asp-for="Password" type="password" class="form-control input-custom" placeholder="Enter your password" />
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="ConfirmedPassword" class="control-label"></label>
-                <input asp-for="ConfirmedPassword" class="form-control" />
+
+            <div class="mb-3">
+                <label asp-for="ConfirmedPassword" class="form-label">Confirm Password</label>
+                <input asp-for="ConfirmedPassword" type="password" class="form-control input-custom" placeholder="Confirm your password" />
                 <span asp-validation-for="ConfirmedPassword" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Register" class="btn btn-primary" />
+
+            <div class="d-grid">
+                <button type="submit" class="btn-register">Register</button>
             </div>
-            <div class="form-group">
-                <a asp-action="Login" class="btn btn-primary">Login</a>
+
+            <div class="text-center mt-4">
+                <p>Already have an account? <a asp-action="Login" class="text-decoration-none" style="color: #5998ff;">Login here</a></p>
             </div>
         </form>
-        =======
-        <style>
-            .input-custom {
-                background-color: transparent;
-                border: 1px solid #5b4b8a;
-                color: #fff;
-                border-radius: 5px;
-                padding: 10px;
-            }
+    </div>
+</div>
 
-                .input-custom:focus {
-                    border-color: #7663c1;
-                    box-shadow: none;
-                    outline: none;
-                }
-
-            .btn-signin {
-                background: linear-gradient(90deg, #6f42c1, #aa2068);
-                border: none;
-                padding: 10px;
-                color: #fff;
-                font-weight: bold;
-                border-radius: 5px;
-                transition: 0.3s ease;
-            }
-
-                .btn-signin:hover {
-                    background: linear-gradient(90deg, #502ea7, #881856);
-                    transform: scale(1.02);
-                }
-        </style>
-
-        <div class="d-flex justify-content-center align-items-center min-vh-100" style="background-color: #0c081f;">
-            <div class="card shadow-lg p-4 rounded-4" style="background-color: #1b1535; color: #fff; width: 400px;">
-                <h3 class="text-center mb-4">Create an Account</h3>
-
-                <form asp-action="Register" asp-controller="Account" method="post">
-                    <div class="mb-3">
-                        <label asp-for="FullName" class="form-label">Full Name</label>
-                        <input asp-for="FullName" class="form-control input-custom" required>
-                        <span asp-validation-for="FullName" class="text-danger"></span>
-                    </div>
-
-                    <div class="mb-3">
-                        <label asp-for="Email" class="form-label">Email</label>
-                        <input asp-for="Email" type="email" class="form-control input-custom" required>
-                        <span asp-validation-for="Email" class="text-danger"></span>
-                    </div>
-
-                    <div class="mb-3">
-                        <label asp-for="PhoneNumber" class="form-label">Phone Number</label>
-                        <input asp-for="PhoneNumber" type="tel" class="form-control input-custom" required>
-                        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-                    </div>
-
-                    <div class="mb-3">
-                        <label asp-for="Password" class="form-label">Password</label>
-                        <input asp-for="Password" type="password" class="form-control input-custom" required>
-                        <span asp-validation-for="Password" class="text-danger"></span>
-                    </div>
-
-                    <div class="mb-3">
-                        <label asp-for="ConfirmedPassword" class="form-label">Confirm Password</label>
-                        <input asp-for="ConfirmedPassword" type="password" class="form-control input-custom" required>
-                        <span asp-validation-for="ConfirmedPassword" class="text-danger"></span>
-                    </div>
-
-                    <button type="submit" class="btn-signin w-100">Register</button>
-                </form>
-
-                <div class="text-center mt-3">
-                    <a asp-action="Login" asp-controller="Account" class="text-decoration-none" style="color: #5998ff;">Already have an account? Sign in</a>
-                </div>
-                >>>>>>> Stashed changes
-            </div>
-        </div>
-
-        @section Scripts {
-            <<<<<<< Updated upstream
-            @{
-                await Html.RenderPartialAsync("_ValidationScriptsPartial");
-            }
-            =======
-            <partial name="_ValidationScriptsPartial" />
-            >>>>>>> Stashed changes
-        }
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

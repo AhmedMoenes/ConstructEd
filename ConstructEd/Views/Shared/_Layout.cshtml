@@ -1,28 +1,18 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewData["Title"] - ConstructEd</title>
 
-    <!-- Bootstrap 5 CSS -->
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" asp-append-version="true">
-
-    <!-- FontAwesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-
-    <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="@Url.Content("~/lib/logo.png")">
-
-    <!-- Custom Styles -->
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true">
     <link rel="stylesheet" href="~/ConstructEd.styles.css" asp-append-version="true">
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js"></script>
 
     <style>
-        /* Page Layout */
         body {
             background-color: #130f25;
             color: white;
@@ -32,21 +22,19 @@
             padding-top: 70px; /* Adjust for fixed navbar */
         }
 
-        /* Navbar */
         .custom-nav {
             background-color: #322D5B;
-            position: fixed; /* Keep navbar fixed at the top */
-            top: 0; /* Align navbar to the top */
-            width: 100%; /* Make it full width */
-            z-index: 1000; /* Ensure it stays on top of other elements */
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3); /* Optional: Adds a shadow to make the navbar stand out */
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
         }
 
-        /* Footer */
         .footer {
             background-color: #2a2753;
             color: white;
-            margin-top: auto; /* Push footer to bottom */
+            margin-top: auto;
             padding: 15px;
             text-align: center;
         }
@@ -57,7 +45,6 @@
                 gap: 15px;
             }
 
-            /* Social Media Icons */
             .footer .social-icons a {
                 display: inline-flex;
                 align-items: center;
@@ -77,17 +64,15 @@
                     transition: color 0.3s ease;
                 }
 
-                /* Hover Effects */
                 .footer .social-icons a:hover {
                     background-color: #aa2068;
                     transform: scale(1.1);
                 }
 
                     .footer .social-icons a:hover i {
-                        color: #130f25; /* Dark background color */
+                        color: #130f25;
                     }
 
-        /* Button Styling */
         .btn-signin {
             text-decoration: none;
             position: relative;
@@ -144,17 +129,15 @@
             background: linear-gradient(32deg, #03a9f4, #f441a5, #ffeb3b, #03a9f4);
         }
 
-        /* Customize the heart and cart icons */
         .navbar-nav .nav-link i {
-            color: white; /* Set icon color */
-            transition: color 0.3s ease; /* Smooth color transition */
+            color: white;
+            transition: color 0.3s ease;
         }
 
             .navbar-nav .nav-link i:hover {
-                color: #ff4757; /* Change color on hover */
+                color: #ff4757;
             }
 
-        /* Style the badge */
         .badge {
             font-size: 0.75rem;
             padding: 0.25em 0.5em;
@@ -168,7 +151,7 @@
         }
 
         .flex-grow-1 {
-            margin-bottom: 50px
+            margin-bottom: 50px;
         }
     </style>
 </head>
@@ -214,16 +197,8 @@
                         <li class="nav-item"><a class="nav-link" asp-controller="Enrollment" asp-action="Index">Enrollments</a></li>
                     </ul>
 
-                    @if (User.Identity.IsAuthenticated)
-                    {
-                        <!-- Logout Button -->
-                        <a class="btn-signin ms-2" asp-controller="Account" asp-action="Logout">Log out</a>
-                    }
-                    else
-                    {
-                        <!-- Sign In Button -->
-                        <a class="btn-signin ms-2" asp-controller="Account" asp-action="Login">Log in</a>
-                    }
+                    <!-- Sign In Button -->
+                    <a class="btn-signin ms-2" asp-controller="Account" asp-action="Login">Sign In</a>
                 </div>
             </div>
         </nav>
