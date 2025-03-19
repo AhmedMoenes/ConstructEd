@@ -21,10 +21,8 @@ namespace ConstructEd.Controllers
         public async Task<IActionResult> AddToWish(int id, string type)
         {
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (string.IsNullOrEmpty(userId))
-            {
-                return Json(new { success = false, message = "User not logged in" });
-            }
+            if (string.IsNullOrEmpty(userId)) 
+                return Unauthorized(new { message = "User not logged in" });
 
             var existingItem = await _wishlistRepository.GetByUserIdAsync(userId);
             bool isAlreadyInWishlist = existingItem.Any(sc =>
@@ -54,10 +52,11 @@ namespace ConstructEd.Controllers
 		{
 			// Get logged-in user ID
 			string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-			if (string.IsNullOrEmpty(userId)) return RedirectToAction("Login", "Account");
+            if (string.IsNullOrEmpty(userId))
+                return Unauthorized(new { message = "User not logged in" });
 
-			// Get shopping cart items for the user
-			var wish = await _wishlistRepository.GetByUserIdAsync(userId);
+            // Get shopping cart items for the user
+            var wish = await _wishlistRepository.GetByUserIdAsync(userId);
 
 			// Map to ShoppingCartViewModel
 			var viewModel = new WishListViewModel
@@ -93,10 +92,7 @@ namespace ConstructEd.Controllers
         public async Task<IActionResult> RemoveFromCart(int id, string type)
         {
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (string.IsNullOrEmpty(userId))
-            {
-                return Json(new { success = false, message = "User not logged in" });
-            }
+            if (string.IsNullOrEmpty(userId)) return RedirectToAction("Login", "Account");
 
             bool removed = false;
 
