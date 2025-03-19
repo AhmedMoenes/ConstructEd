@@ -9,7 +9,7 @@ namespace ConstructEd
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -27,7 +27,6 @@ namespace ConstructEd
             builder.Services.AddScoped<IShoppingCartRepository, ShoppingCartRepository>();
             builder.Services.AddScoped<IWishListRepository,WishListRepository>();
 
-
             builder.Services.AddDbContext<DataContext>(options =>
                      options.UseSqlServer(builder.Configuration.GetConnectionString("CS")));
 
@@ -39,6 +38,12 @@ namespace ConstructEd
             .AddDefaultTokenProviders();
 
             var app = builder.Build();
+
+            using (var scope = app.Services.CreateScope())
+            {
+                var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+                await DbInitializer.SeedRolesAsync(roleManager);
+            }
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())

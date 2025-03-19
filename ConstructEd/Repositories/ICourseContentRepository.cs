@@ -9,5 +9,6 @@ namespace ConstructEd.Repositories
         IEnumerable<SelectListItem> GetContentTypesAsSelectList();
         Task<Dictionary<int, string>> GetCourseNamesAsync();
         Task<string> GetCourseNameByIdAsync(int courseId);
+        Task<ICollection<CourseContent>> GetCourseContent(int id);
     }
 }

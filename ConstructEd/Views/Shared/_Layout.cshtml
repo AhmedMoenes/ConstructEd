@@ -76,14 +76,14 @@
         .btn-signin {
             text-decoration: none;
             position: relative;
-            border: none;
-            font-size: 14px;
+            margin: 7px;
+            font-size: 1rem; 
             font-family: inherit;
             cursor: pointer;
             color: #fff;
-            width: 9em;
-            height: 2em;
-            line-height: 2em;
+            width: 7em;
+            height: 1.75em;
+            line-height: 2.0em; 
             text-align: center;
             background: linear-gradient(90deg, #FF7700, #f441a5, #ffeb3b, #FC1871);
             background-size: 300%;
@@ -91,6 +91,7 @@
             align-items: center;
             justify-content: center;
             transition: all 0.3s ease-in-out;
+            padding: 0.5rem 1rem; 
         }
 
             .btn-signin:hover {
@@ -153,19 +154,35 @@
         .flex-grow-1 {
             margin-bottom: 50px;
         }
+
+        .navbar-nav {
+            gap: 1.5rem; 
+        }
+
+        .navbar-collapse {
+            justify-content: space-between; 
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 1rem; 
+        }
+
+        .navbar-nav .nav-link {
+            font-size: 1.1rem; 
+            padding: 0.5rem 1rem; 
+        }
     </style>
 </head>
 <body>
     <!-- Navbar -->
     <header>
         <nav class="navbar navbar-expand-lg navbar-dark custom-nav">
-            <div class="container">
+            <div class="container-fluid">
                 <!-- Logo -->
                 <a class="navbar-brand" asp-controller="Home" asp-action="Index">
-                    <img src="@Url.Content("~/logo.png")" alt="Logo" height="30">
-                </a>
-                <a class="navbar-brand" href="#">
-                    <img src="~/final web.png" alt="Logo" height="30">
+                    <img src="@Url.Content("~/logo.png")" alt="Logo" height="30"/>
+                    <img src="~/final web.png" alt="Logo" height="30"/> 
                 </a>
 
                 <!-- Responsive Navbar Toggle Button -->
@@ -175,11 +192,16 @@
 
                 <!-- Navbar Items -->
                 <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav me-auto">
-                        <li class="nav-item"><a class="nav-link" asp-controller="Home" asp-action="Index">Home</a></li>
+                    <!-- Navigation Links (Centered) -->
+                    <ul class="navbar-nav mx-auto">
                         <li class="nav-item"><a class="nav-link" asp-controller="Course" asp-action="Index">Courses</a></li>
                         <li class="nav-item"><a class="nav-link" asp-controller="Plugin" asp-action="Index">Plugins</a></li>
-                        <li class="nav-item"><a class="nav-link" asp-controller="Account" asp-action="Manage">Manage</a></li>
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                                    <li class="nav-item"><a class="nav-link" asp-controller="Enrollment" asp-action="Index">Enrollments</a></li>
+                                    <li class="nav-item"><a class="nav-link" asp-controller="Account" asp-action="Manage">Manage</a></li>
+                        }
+                        <li class="nav-item"><a class="nav-link" asp-controller="#" asp-action="#">About</a></li>
                         <!-- Cart Icon -->
                         <li class="nav-item">
                             <a class="nav-link" href="/ShoppingCart">
@@ -194,20 +216,22 @@
                                 <span class="badge bg-danger" id="wishlist-count">0</span>
                             </a>
                         </li>
-                        <li class="nav-item"><a class="nav-link" asp-controller="Enrollment" asp-action="Index">Enrollments</a></li>
                     </ul>
 
-                    @if (User.Identity.IsAuthenticated)
-                    {
-                        <form method="post" asp-controller="Account" asp-action="Logout" class="d-inline">
-                            <button type="submit" class="btn-signin ms-2">Logout</button>
-                        </form>
-                    }
-                    else
-                    {
-                        <a class="btn-signin ms-2" asp-controller="Account" asp-action="Login">Log In</a>
-                    }
-
+                    <!-- Auth Buttons (Right) -->
+                    <div class="auth-buttons">
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                                    <form method="post" asp-controller="Account" asp-action="Logout" class="btn-signin">
+                                        <button type="submit" class="btn-signin">Logout</button>
+                                    </form>
+                        }
+                        else
+                        {
+                                    <a class="btn-signin" asp-controller="Account" asp-action="Register">Register</a>
+                                    <a class="btn-signin" asp-controller="Account" asp-action="Login">Log In</a>
+                        }
+                    </div>
                 </div>
             </div>
         </nav>
@@ -248,66 +272,3 @@
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
-
-<script>
-    $(document).ready(function () {
-        // Fetch wishlist count on page load
-        updateWishlistCount();
-
-        $(".wish-form").on("submit", function (event) {
-            event.preventDefault(); // Prevent form submission from reloading the page
-
-            let icon = $(this).find("i");
-
-            // Toggle UI instantly after form submission
-            icon.toggleClass("far fas text-danger");
-
-            // Add a small animation for visual feedback
-            icon.css("transform", "scale(1.2)");
-            setTimeout(() => icon.css("transform", "scale(1)"), 300);
-
-            // Update wishlist count dynamically
-            setTimeout(updateWishlistCount, 500); // Delay to ensure DB update
-        });
-
-        function updateWishlistCount() {
-            $.get("/WishList/GetWishlistCount", function (data) {
-                $("#wishlist-count").text(data);
-            }).fail(function () {
-                console.error("Failed to fetch wishlist count.");
-                alert("Something went wrong while updating the wishlist count.");
-            });
-        }
-    });
-</script>
-
-<script>
-    $(document).ready(function () {
-        updateCartCount();
-
-        $(".cart-form").on("submit", function (event) {
-            event.preventDefault(); // Prevent form submission from reloading the page
-
-            let icon = $(this).find("i");
-
-            // Toggle UI instantly after form submission
-            icon.toggleClass("fa-thin fa-solid text-success");
-
-            // Add a small animation for visual feedback
-            icon.css("transform", "scale(1.2)");
-            setTimeout(() => icon.css("transform", "scale(1)"), 300);
-
-            // Update cart count dynamically
-            setTimeout(updateCartCount, 500); // Delay to ensure DB update
-        });
-
-        function updateCartCount() {
-            $.get("/ShoppingCart/GetCartCount", function (data) {
-                $("#cart-count").text(data);
-            }).fail(function () {
-                console.error("Failed to fetch cart count.");
-                alert("Something went wrong while updating the cart count.");
-            });
-        }
-    });
-</script>

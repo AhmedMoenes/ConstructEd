@@ -35,7 +35,13 @@ namespace ConstructEd.Repositories
         {
             return await _dataContext.CourseContents
                 .Include(m => m.Course)
-                .FirstOrDefaultAsync(e => e.Id == id);
+                .FirstOrDefaultAsync(e => e.CourseId == id);
+        }
+
+        public async Task<ICollection<CourseContent>> GetCourseContent(int id)
+        {
+            return await _dataContext.CourseContents
+                .Include(m => m.Course).Where(m => m.CourseId == id).ToListAsync();
         }
 
         public async Task InsertAsync(CourseContent obj)

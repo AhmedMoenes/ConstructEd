@@ -3,7 +3,6 @@ using ConstructEd.Models;
 using ConstructEd.Repositories;
 using ConstructEd.ViewModels;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Security.Claims;
 
 namespace ConstructEd.Controllers
@@ -49,7 +48,6 @@ namespace ConstructEd.Controllers
                 {
                     course.IsInWishlist = await _wishlistRepository.IsCourseInWishlistAsync(userId, course.Id);
                     course.IsInCart = await _shoppingCartRepository.IsCourseInCartAsync(userId, course.Id);
-                    //enrolled
                     course.IsEnrolled = await _enrollmentRepository.IsUserEnrolledInCourseAsync(userId, course.Id);
                 }
             }
@@ -68,12 +66,10 @@ namespace ConstructEd.Controllers
                 return NotFound();
             }
             var viewModel = _mapper.Map<CourseDetailsViewModel>(course);
-            //enrolled
             viewModel.IsEnrolled = await _enrollmentRepository.IsUserEnrolledInCourseAsync(userId, id);
-
             viewModel.IsInWishlist = await _wishlistRepository.IsCourseInWishlistAsync(userId, course.Id);
             viewModel.IsInCart = await _shoppingCartRepository.IsCourseInCartAsync(userId, course.Id);
-
+            ViewBag.courseContents = await _courseContentRepository.GetCourseContent(id);
 
             return View(nameof(Details), viewModel);
         }

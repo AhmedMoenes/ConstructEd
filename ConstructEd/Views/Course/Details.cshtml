@@ -22,22 +22,28 @@
             <!-- Course Content -->
             <div class="card mb-4 shadow">
                 <div class="card-body">
-                    <h2 class="card-title text-primary mb-4">Course Content</h2>
-                    @foreach (var content in Model.CourseContents)
-                    {
-                        <div class="mb-4">
-                            <h5 class="text-secondary">@content.Title</h5>
-                            <p class="text-muted"><strong>Type:</strong> @content.Type</p>
-                            @if (!string.IsNullOrEmpty(content.FileUrl))
+                    <h2 class="card-title text-primary mb-3">Course Content</h2>
+                    <ul class="list-group list-group-flush">
+                        @if (ViewBag.courseContents != null)
+                        {
+                            foreach (var content in ViewBag.courseContents)
                             {
-                                <a href="@content.FileUrl" class="btn btn-outline-primary btn-sm">
-                                    <i class="fas fa-eye"></i> View Content
-                                </a>
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <span>@content.Title</span>
+                                    <span class="badge bg-secondary rounded-pill">@content.Type</span>
+                                </li>
                             }
-                        </div>
-                        <hr class="my-3" />
-                    }
+                        }
+                        else
+                        {
+                            <li class="list-group-item">No content available for this course.</li>
+                        }
+                    </ul>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
             </div>
         </div>
 

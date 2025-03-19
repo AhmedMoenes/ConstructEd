@@ -3,6 +3,7 @@ using ConstructEd.Models;
 using ConstructEd.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using ConstructEd.Services;
+using ConstructEd.Repositories;
 
 public class AuthService : IAuthService
 {
@@ -10,17 +11,20 @@ public class AuthService : IAuthService
     private readonly SignInManager<ApplicationUser> _signInManager;
     private readonly RoleManager<IdentityRole> _roleManager;
     private readonly IMapper _mapper;
+    private readonly IInstructorRepository _instructorRepository;
 
     public AuthService(
         UserManager<ApplicationUser> userManager,
         SignInManager<ApplicationUser> signInManager,
         RoleManager<IdentityRole> roleManager,
-        IMapper mapper)
+        IMapper mapper,
+        IInstructorRepository instructorRepository)
     {
         _userManager = userManager;
         _signInManager = signInManager;
         _roleManager = roleManager;
         _mapper = mapper;
+        _instructorRepository = instructorRepository;
     }
 
     public async Task<IdentityResult> RegisterUserAsync(RegisterViewModel model)
@@ -32,23 +36,31 @@ public class AuthService : IAuthService
 
         if (result.Succeeded)
         {
-            const string defaultRole = "User";
-            var roleExists = await _roleManager.RoleExistsAsync(defaultRole);
-            if (!roleExists)
-            {
-                await _roleManager.CreateAsync(new IdentityRole(defaultRole));
-            }
-
-            await _userManager.AddToRoleAsync(user, defaultRole);
+            await _userManager.AddToRoleAsync(user, Role.User.ToString());
         }
-
         return result;
     }
-    public async Task<IdentityResult> AddRoleAsync(RoleViewModel model)
+    public async Task<IdentityResult> RegisterInstructorAsync(InstructorViewModel model)
     {
-        IdentityRole role = new IdentityRole();
-        role.Name = model.RoleName;
-        IdentityResult result = await _roleManager.CreateAsync(role);
+        var user = _mapper.Map<ApplicationUser>(model);
+        user.CreatedAt = DateTime.UtcNow;
+
+        var result = await _userManager.CreateAsync(user, model.Password);
+
+        if (result.Succeeded)
+        {
+            await _userManager.AddToRoleAsync(user, Role.Instructor.ToString());
+
+            var instructor = new Instructor
+            {
+                UserId = user.Id,
+                Bio = model.Bio,
+                ProfilePicture = model.ProfilePicture,
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow
+            };
+            await _instructorRepository.InsertAsync(instructor);
+        }
         return result;
     }
     public async Task<SignInResult> LoginUserAsync(LoginViewModel model)
@@ -64,4 +76,10 @@ public class AuthService : IAuthService
     {
         await _signInManager.SignOutAsync();
     }
+
+    public async Task<IdentityResult> AddRoleAsync(RoleViewModel model)
+    {
+        return await _roleManager.CreateAsync(new IdentityRole(model.UserRole.ToString()));
+    }
+
 }

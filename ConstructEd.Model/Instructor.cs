@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Identity;
 
 namespace ConstructEd.Models
 {
@@ -19,6 +19,10 @@ namespace ConstructEd.Models
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 
         // Navigation property for courses taught by the instructor
-        public ICollection<Course>? Courses { get; set; } 
+        public ICollection<Course>? Courses { get; set; }
+
+        // Add this property to link to IdentityUser
+        public string UserId { get; set; }
+        public IdentityUser User { get; set; }
     }
 }
