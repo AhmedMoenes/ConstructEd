@@ -90,14 +90,24 @@
 </style>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 <script>
-    $(document).ready(function () {
+
+       $(document).ready(function () {
+        function handleUnauthorized(xhr) {
+            if (xhr.status === 401) {
+                window.location.href = "/Account/Login"; // Redirect to login if unauthorized
+            } else {
+                alert("An error occurred!");
+            }
+        }
+
         $(".wish-form").on("submit", function (event) {
             event.preventDefault();
 
             let form = $(this);
             let icon = form.find("i");
-            let inWishlist = form.data("inwishlist") === true; // Ensure it's treated as boolean
+            let inWishlist = form.data("inwishlist") === true; // Ensure boolean value
 
             let actionUrl = inWishlist
                 ? "/WishList/RemoveFromCart"
@@ -117,15 +127,9 @@
                 } else {
                     alert(response.message || "Failed to update wishlist!");
                 }
-            }).fail(function () {
-                alert("An error occurred!");
-            });
+            }).fail(handleUnauthorized);
         });
-    });
-</script>
 
-<script>
-    $(document).ready(function () {
         $(".cart-form").on("submit", function (event) {
             event.preventDefault();
 
@@ -153,9 +157,8 @@
                 } else {
                     alert(response.message || "Failed to update cart!");
                 }
-            }).fail(function () {
-                alert("An error occurred!");
-            });
+            }).fail(handleUnauthorized);
         });
     });
+
 </script>

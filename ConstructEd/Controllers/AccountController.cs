@@ -84,7 +84,7 @@ namespace ConstructEd.Controllers
         public async Task<IActionResult> Logout()
         {
             await _authService.LogoutAsync();
-            return RedirectToAction(nameof(HomeController.Index), nameof(HomeController));
+            return RedirectToAction("Index", "Home");
         }
 
         // To Do : Forget Password, Reset Password  , External Login Via Google, Facebook ## //
