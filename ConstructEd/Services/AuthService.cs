@@ -12,7 +12,6 @@ public class AuthService : IAuthService
     private readonly SignInManager<ApplicationUser> _signInManager;
     private readonly RoleManager<IdentityRole> _roleManager;
     private readonly IMapper _mapper;
-    private readonly IInstructorRepository _instructorRepository;
 
     public AuthService(IHttpContextAccessor httpContextAccessor,
         UserManager<ApplicationUser> userManager,
@@ -26,7 +25,6 @@ public class AuthService : IAuthService
         _signInManager = signInManager;
         _roleManager = roleManager;
         _mapper = mapper;
-        _instructorRepository = instructorRepository;
     }
 
     public async Task<IdentityResult> RegisterUserAsync(RegisterViewModel model)
@@ -52,16 +50,6 @@ public class AuthService : IAuthService
         if (result.Succeeded)
         {
             await _userManager.AddToRoleAsync(user, Role.Instructor.ToString());
-
-            var instructor = new Instructor
-            {
-                UserId = user.Id,
-                Bio = model.Bio,
-                ProfilePicture = model.ProfilePicture,
-                CreatedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow
-            };
-            await _instructorRepository.InsertAsync(instructor);
         }
         return result;
     }

@@ -39,11 +39,13 @@ namespace ConstructEd
 
             var app = builder.Build();
 
-            using (var scope = app.Services.CreateScope())
-            {
-                var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-                await DbInitializer.SeedRolesAsync(roleManager);
-            }
+            //Seeding DataBase With Roles 
+
+            //using (var scope = app.Services.CreateScope())
+            //{
+            //    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            //    await DbInitializer.SeedRolesAsync(roleManager);
+            //}
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())

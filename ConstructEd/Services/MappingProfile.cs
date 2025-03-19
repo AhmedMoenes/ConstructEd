@@ -32,6 +32,15 @@ public class MappingProfile : Profile
             .ForSourceMember(src => src.Password, opt => opt.DoNotValidate())
             .ForSourceMember(src => src.ConfirmedPassword, opt => opt.DoNotValidate());
 
+        CreateMap<InstructorViewModel, ApplicationUser>()
+           .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.Email))
+           .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email))
+           .ForMember(dest => dest.PhoneNumber, opt => opt.MapFrom(src => src.PhoneNumber))
+           .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => src.FullName))
+           .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(_ => DateTime.UtcNow))
+           .ForSourceMember(src => src.Password, opt => opt.DoNotValidate())
+           .ForSourceMember(src => src.ConfirmedPassword, opt => opt.DoNotValidate());
+
         // Mapping Between ProfileVM and ApplicationUser
         //src             dest
         CreateMap<ApplicationUser, ProfileViewModel>()
@@ -40,9 +49,8 @@ public class MappingProfile : Profile
                 ? "/uploads/" + src.UserName + ".jpg"
                 : "/Image/default-user.jpg"
             ));
-
-
         #endregion
+
 
         #region Enrollments
 

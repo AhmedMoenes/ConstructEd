@@ -4,8 +4,6 @@ namespace ConstructEd.ViewModels
 {
     public class InstructorViewModel
     {
-        public int Id { get; set; }
-
         [Required(ErrorMessage = "Full Name is required")]
         [Display(Name = "Full Name")]
         public string FullName { get; set; }
@@ -37,7 +35,6 @@ namespace ConstructEd.ViewModels
         [Display(Name = "Profile Picture URL")]
         [Url(ErrorMessage = "Invalid URL format")]
         public string? ProfilePicture { get; set; }
-
 
         public List<CourseViewModel> Courses { get; set; } = new List<CourseViewModel>();
     }

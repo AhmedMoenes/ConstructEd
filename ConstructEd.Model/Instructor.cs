@@ -16,13 +16,9 @@ namespace ConstructEd.Models
         public string? ProfilePicture { get; set; } // URL to the instructor's profile picture
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-        public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 
         // Navigation property for courses taught by the instructor
         public ICollection<Course>? Courses { get; set; }
 
-        // Add this property to link to IdentityUser
-        public string UserId { get; set; }
-        public IdentityUser User { get; set; }
     }
 }
