@@ -38,9 +38,7 @@ namespace ConstructEd.Controllers
         {
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (string.IsNullOrEmpty(userId))
-            {
-                return Json(new { success = false, message = "User not logged in" });
-            }
+                return Unauthorized(new { message = "User not logged in" });
 
             var existingItem = await _shoppingCartRepository.GetByUserIdAsync(userId);
             bool isAlreadyInCart = existingItem.Any(sc =>
@@ -70,9 +68,7 @@ namespace ConstructEd.Controllers
         {
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (string.IsNullOrEmpty(userId))
-            {
-                return Json(new { success = false, message = "User not logged in" });
-            }
+                return Unauthorized(new { message = "User not logged in" });
 
             bool removed = false;
 

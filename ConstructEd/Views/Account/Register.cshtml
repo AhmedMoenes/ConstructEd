@@ -49,36 +49,36 @@
     <div class="card shadow-lg p-4 rounded-4" style="background-color: #1b1535; color: #fff; width: 420px;">
         <h3 class="text-center mb-4">Create a New Account</h3>
 
-        <form asp-action="Register" method="post">
+        <form asp-action="Register" asp-controller="Account" method="post">
             <div asp-validation-summary="All" class="alert alert-danger"></div>
 
             <div class="mb-3">
                 <label asp-for="FullName" class="form-label">Full Name</label>
-                <input asp-for="FullName" class="form-control input-custom" placeholder="Enter your full name" />
+                <input asp-for="FullName" class="form-control input-custom" placeholder="Enter your full name" required>
                 <span asp-validation-for="FullName" class="text-danger"></span>
             </div>
 
             <div class="mb-3">
                 <label asp-for="Email" class="form-label">Email</label>
-                <input asp-for="Email" type="email" class="form-control input-custom" placeholder="Enter your email" />
+                <input asp-for="Email" type="email" class="form-control input-custom" placeholder="Enter your email" required>
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
 
             <div class="mb-3">
                 <label asp-for="PhoneNumber" class="form-label">Phone Number</label>
-                <input asp-for="PhoneNumber" class="form-control input-custom" placeholder="Enter your phone number" />
+                <input asp-for="PhoneNumber" class="form-control input-custom" placeholder="Enter your phone number" required>
                 <span asp-validation-for="PhoneNumber" class="text-danger"></span>
             </div>
 
             <div class="mb-3">
                 <label asp-for="Password" class="form-label">Password</label>
-                <input asp-for="Password" type="password" class="form-control input-custom" placeholder="Enter your password" />
+                <input asp-for="Password" type="password" class="form-control input-custom" placeholder="Enter your password" required>
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
 
             <div class="mb-3">
                 <label asp-for="ConfirmedPassword" class="form-label">Confirm Password</label>
-                <input asp-for="ConfirmedPassword" type="password" class="form-control input-custom" placeholder="Confirm your password" />
+                <input asp-for="ConfirmedPassword" type="password" class="form-control input-custom" placeholder="Confirm your password" required>
                 <span asp-validation-for="ConfirmedPassword" class="text-danger"></span>
             </div>
 

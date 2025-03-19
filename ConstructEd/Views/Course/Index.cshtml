@@ -3,120 +3,166 @@
     ViewData["Title"] = "Courses";
 }
 
-<h2>Courses</h2>
+<h2 class="text-center text-white my-5">Courses</h2>
 
-@foreach (var course in Model)
-{
-    <div class="card" style="width:300px">
-        <div class="card-body">
-            @if (!string.IsNullOrEmpty(course.Image))
-            {
-               <img src="/Image/@course.Image" class="card-img-top" alt="@course.Title" style="height: 100px; object-fit: cover;" />
-            }
-            <h4 class="card-title">@course.Title</h4>
-            <p class="card-text">Duration = @course.Duration</p>
-            <p class="card-text">Price = @course.Price</p>
-            <p class="card-text">Instructor = @course.InstructorId</p>
+<div class="row justify-content-center">
+    @foreach (var course in Model)
+    {
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="course-card-wrapper">
+                <div class="course-card">
+                    <div class="card-body">
+                        @if (!string.IsNullOrEmpty(course.Image))
+                        {
+                            <img src="/Image/@course.Image" class="card-img-top" alt="@course.Title" />
+                        }
 
-            <a asp-controller="Course" asp-action="Details" asp-route-id="@course.Id" class="btn btn-success">View Details</a>
+                        <h5 class="card-title text-white">@course.Title</h5>
+                        <p class="card-text text-muted">Duration: @course.Duration</p>
+                        <p class="card-text text-muted">Price: @course.Price</p>
+                        <p class="card-text text-muted">Instructor: @course.InstructorId</p>
 
-            <div class="d-grid mt-2">
-                @if (course.IsEnrolled)
-                {
-                    <button class="btn btn-success" disabled>Enrolled</button>
-                }
-                else
-                {
-                    <form class="cart-form" data-courseid="@course.Id" data-incart="@(course.IsInCart ? "true" : "false" )">
-                        <input type="hidden" name="id" value="@course.Id" />
-                        <input type="hidden" name="type" value="Course" />
-                        <button type="submit" class="cart-button">
-                            <i class="@(course.IsInCart ? "fas fa-shopping-cart" : "fas fa-cart-plus")"></i>
-                        </button>
-                    </form>
+                        <a asp-controller="Course" asp-action="Details" asp-route-id="@course.Id" class="btn btn-success btn-block">View Details</a>
 
-                    <form class="wish-form" data-courseid="@course.Id" data-inwishlist="@(course.IsInWishlist ? "true" : "false")">
-                        <input type="hidden" name="id" value="@course.Id" />
-                        <input type="hidden" name="type" value="Course" />
-                        <button type="submit" class="wish-button">
-                            <i class="@(course.IsInWishlist ? "fas" : "far") fa-heart"></i>
-                        </button>
-                    </form>
-                }
+                        <div class="d-grid mt-3">
+                            @if (course.IsEnrolled)
+                            {
+                                <button class="btn btn-success" disabled>Enrolled</button>
+                            }
+                            else
+                            {
+                                <form class="cart-form" data-courseid="@course.Id" data-incart="@(course.IsInCart ? "true" : "false" )">
+                                    <input type="hidden" name="id" value="@course.Id" />
+                                    <input type="hidden" name="type" value="Course" />
+                                    <button type="submit" class="cart-button btn btn-outline-success">
+                                        <i class="@(course.IsInCart ? "fas fa-shopping-cart" : "fas fa-cart-plus")"></i>
+                                    </button>
+                                </form>
+
+                                <form class="wish-form" data-courseid="@course.Id" data-inwishlist="@(course.IsInWishlist ? "true" : "false")">
+                                    <input type="hidden" name="id" value="@course.Id" />
+                                    <input type="hidden" name="type" value="Course" />
+                                    <button type="submit" class="wish-button btn btn-outline-danger">
+                                        <i class="@(course.IsInWishlist ? "fas" : "far") fa-heart"></i>
+                                    </button>
+                                </form>
+                            }
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-}
+    }
+</div>
 
 <style>
+    .course-card-wrapper {
+        position: relative;
+        width: 350px; /* Increased width */
+        height: 460px; /* Increased height */
+        margin-bottom: 30px; /* Space between cards */
+    }
+
+    .course-card {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background-color: #212529; /* Main card stays grey */
+        display: flex;
+        flex-direction: column;
+        justify-content: end;
+        padding: 16px;
+        gap: 16px;
+        border-radius: 12px;
+        cursor: pointer;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        z-index: 10; /* Main card stays above the rotating background */
+    }
+
+    /* Rotating Background Card */
+    .course-card-wrapper::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        left: -10px; /* Adjusted for larger card */
+        margin: auto;
+        width: 370px; /* Increased size */
+        height: 480px; /* Increased size */
+        border-radius: 10px;
+        background: linear-gradient(-45deg, #ab9e60 0%, #e81cff 100%);
+        z-index: -10;
+        pointer-events: none;
+        transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .course-card-wrapper::after {
+        content: "";
+        z-index: -1;
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(-45deg, #ab9e60 0%, #e81cff 100%);
+        transform: translate3d(0, 0, 0) scale(0.95);
+        filter: blur(20px);
+    }
+
+    /* Rotation Effect for Background Card */
+    .course-card-wrapper:hover::before {
+        transform: rotate(-90deg) scaleX(1.34) scaleY(0.77);
+    }
+
+    .course-card-wrapper:hover::after {
+        filter: blur(30px);
+    }
+
+    /* Hover Effect for Main Card */
+    .course-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+    }
+
+    .course-card img {
+        max-height: 120px; /* Adjusted for smaller size */
+        width: 100%; /* Ensure it takes the full width of the card */
+        object-fit: cover; /* Maintain the aspect ratio without stretching */
+        border-radius: 8px;
+        margin-bottom: 12px; /* Space between image and text */
+    }
+
+
+    .course-card .card-title {
+        font-size: 22px;
+        color: #f8f9fa;
+        font-weight: 600;
+    }
+
+    .course-card .card-text {
+        font-size: 16px;
+        color: #adb5bd;
+    }
+
+    .course-card .btn {
+        transition: background-color 0.3s ease;
+    }
+
+        .course-card .btn:hover {
+            background-color: #1b1535 !important;
+        }
+
     .cart-button, .wish-button {
-        font-size: 24px;
+        font-size: 20px;
         background: none;
         border: none;
         cursor: pointer;
         transition: color 0.3s ease-in-out;
     }
 
-    .cart-button i, .wish-button i {
-        color: gray;
-        transition: color 0.3s ease-in-out;
-    }
+        .cart-button i, .wish-button i {
+            color: gray;
+        }
 
-    .cart-button .fas { color: green !important; }
-    .wish-button .fas { color: red !important; }
+      
+
+        .wish-button .fas {
+            color: red !important;
+        }
 </style>
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-    $(document).ready(function () {
-        $(".wish-form").on("submit", function (event) {
-            event.preventDefault();
-            let form = $(this);
-            let icon = form.find("i");
-            let inWishlist = form.data("inwishlist") === true;
-
-            let actionUrl = inWishlist ? "/WishList/RemoveFromCart" : "/WishList/AddToWish";
-
-            $.post(actionUrl, form.serialize(), function (response) {
-                if (response.success) {
-                    let newStatus = !inWishlist;
-                    form.data("inwishlist", newStatus);
-                    if (newStatus) {
-                        icon.removeClass("far").addClass("fas");
-                    } else {
-                        icon.removeClass("fas").addClass("far");
-                    }
-                } else {
-                    alert(response.message || "Failed to update wishlist!");
-                }
-            }).fail(function () {
-                alert("An error occurred!");
-            });
-        });
-
-        $(".cart-form").on("submit", function (event) {
-            event.preventDefault();
-            let form = $(this);
-            let icon = form.find("i");
-            let inCart = form.data("incart") === true;
-
-            let actionUrl = inCart ? "/ShoppingCart/RemoveFromCart" : "/ShoppingCart/AddToCart";
-
-            $.post(actionUrl, form.serialize(), function (response) {
-                if (response.success) {
-                    let newStatus = !inCart;
-                    form.data("incart", newStatus);
-                    if (newStatus) {
-                        icon.removeClass("fa-cart-plus").addClass("fa-shopping-cart").css("color", "green");
-                    } else {
-                        icon.removeClass("fa-shopping-cart").addClass("fa-cart-plus").css("color", "gray");
-                    }
-                } else {
-                    alert(response.message || "Failed to update cart!");
-                }
-            }).fail(function () {
-                alert("An error occurred!");
-            });
-        });
-    });
-</script>

@@ -126,7 +126,7 @@
         }
 
         .btn-signin:active {
-            background: linear-gradient(32deg, #03a9f4, #f441a5, #ffeb3b, #03a9f4);
+            background: linear-gradient(32deg, #FF7700, #f441a5, #ffeb3b, #FC1871);
         }
 
         .navbar-nav .nav-link i {
@@ -197,8 +197,17 @@
                         <li class="nav-item"><a class="nav-link" asp-controller="Enrollment" asp-action="Index">Enrollments</a></li>
                     </ul>
 
-                    <!-- Sign In Button -->
-                    <a class="btn-signin ms-2" asp-controller="Account" asp-action="Login">Sign In</a>
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <form method="post" asp-controller="Account" asp-action="Logout" class="d-inline">
+                            <button type="submit" class="btn-signin ms-2">Logout</button>
+                        </form>
+                    }
+                    else
+                    {
+                        <a class="btn-signin ms-2" asp-controller="Account" asp-action="Login">Log In</a>
+                    }
+
                 </div>
             </div>
         </nav>
