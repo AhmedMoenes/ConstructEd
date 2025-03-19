@@ -33,8 +33,13 @@ public class MappingProfile : Profile
             .ForSourceMember(src => src.ConfirmedPassword, opt => opt.DoNotValidate());
 
         // Mapping Between ProfileVM and ApplicationUser
-                      //src             dest
-        CreateMap<ApplicationUser, ProfileViewModel>();
+        //src             dest
+        CreateMap<ApplicationUser, ProfileViewModel>()
+            .ForMember(dest => dest.ProfilePicture, opt => opt.MapFrom(src =>
+                File.Exists(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/uploads", src.UserName + ".jpg"))
+                ? "/uploads/" + src.UserName + ".jpg"
+                : "/Image/default-user.jpg"
+            ));
 
 
         #endregion

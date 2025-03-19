@@ -100,9 +100,8 @@ namespace ConstructEd.Controllers
         {
             var user = await _authService.GetCurrentUserAsync();
             if (user == null) return NotFound();
-
+      
             var profileViewModel = _mapper.Map<ProfileViewModel>(user);
-
             // Fetch enrollments separately and map them
             var enrollments = await _enrollmentRepository.GetAllEnrollmentsByUserIdAsync(user.Id);
             profileViewModel.Enrollments = _mapper.Map<List<EnrollmentViewModel>>(enrollments);

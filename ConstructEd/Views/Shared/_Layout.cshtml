@@ -197,12 +197,31 @@
                         </li>
                         <li class="nav-item"><a class="nav-link" asp-controller="Enrollment" asp-action="Index">Enrollments</a></li>
                     </ul>
-
+                  
                     @if (User.Identity.IsAuthenticated)
                     {
-                        <form method="post" asp-controller="Account" asp-action="Logout" class="d-inline">
-                            <button type="submit" class="btn-signin ms-2">Logout</button>
-                        </form>
+                        <div class="dropdown">
+                            <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                @{
+                                    string profilePicPath = "~/uploads/" + User.Identity.Name + ".jpg";
+                                    string defaultPic = "~/Image/default-user.jpg";
+
+                                    string profilePic = System.IO.File.Exists(Context.Request.PathBase + profilePicPath)
+                                    ? Url.Content(profilePicPath)
+                                    : Url.Content(defaultPic);
+                                    <img src="@profilePic" class="rounded-circle" alt="User Profile" width="40" height="40">
+
+                                }
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                                <li><a class="dropdown-item" asp-controller="Account" asp-action="Profile">Profile</a></li>
+                                <li>
+                                    <form method="post" asp-controller="Account" asp-action="Logout">
+                                        <button type="submit" class="dropdown-item">Logout</button>
+                                    </form>
+                                </li>
+                            </ul>
+                        </div>
                     }
                     else
                     {

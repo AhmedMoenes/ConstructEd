@@ -24,4 +24,8 @@
     <ProjectReference Include="..\Context\ConstructEd.Data.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\uploads\" />
+  </ItemGroup>
+
 </Project>
