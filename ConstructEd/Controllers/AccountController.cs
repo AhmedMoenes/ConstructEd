@@ -1,18 +1,27 @@
 ﻿using AutoMapper;
+using ConstructEd.Models;
+using ConstructEd.Repositories;
 using ConstructEd.Services;
 using ConstructEd.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace ConstructEd.Controllers
 {
     public class AccountController : Controller
     {
         private readonly IAuthService _authService;
+        private readonly IEnrollmentRepository _enrollmentRepository;
+        private readonly UserManager<ApplicationUser> _userManager;
         private readonly IMapper _mapper;
 
-        public AccountController(IAuthService authService, IMapper mapper)
+        public AccountController( UserManager<ApplicationUser> userManager
+                            , IAuthService authService, IMapper mapper
+                           , IEnrollmentRepository enrollmentRepository)
         {
+            _enrollmentRepository = enrollmentRepository;
+            _userManager =userManager;
             _authService = authService;
             _mapper = mapper;
         }
@@ -85,6 +94,20 @@ namespace ConstructEd.Controllers
         {
             await _authService.LogoutAsync();
             return RedirectToAction("Index", "Home");
+        }
+
+        public async Task<IActionResult> Profile()
+        {
+            var user = await _authService.GetCurrentUserAsync();
+            if (user == null) return NotFound();
+
+            var profileViewModel = _mapper.Map<ProfileViewModel>(user);
+
+            // Fetch enrollments separately and map them
+            var enrollments = await _enrollmentRepository.GetAllEnrollmentsByUserIdAsync(user.Id);
+            profileViewModel.Enrollments = _mapper.Map<List<EnrollmentViewModel>>(enrollments);
+
+            return View(profileViewModel);
         }
 
         // To Do : Forget Password, Reset Password  , External Login Via Google, Facebook ## //

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using ConstructEd.Models;
 using ConstructEd.ViewModels;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 public class MappingProfile : Profile
 {
@@ -31,11 +32,30 @@ public class MappingProfile : Profile
             .ForSourceMember(src => src.Password, opt => opt.DoNotValidate())
             .ForSourceMember(src => src.ConfirmedPassword, opt => opt.DoNotValidate());
 
+        // Mapping Between ProfileVM and ApplicationUser
+                      //src             dest
+        CreateMap<ApplicationUser, ProfileViewModel>();
+
+
         #endregion
 
-        #region Plugin
-        // Map from Plugin to PluginViewModel
-        CreateMap<Plugin, PluginViewModel>()
+        #region Enrollments
+
+        // Map Enrollment → EnrollmentViewModel
+        CreateMap<Enrollment, EnrollmentViewModel>()
+            .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.User.FullName)) // Map User's Full Name
+            .ForMember(dest => dest.CourseId, opt => opt.MapFrom(src => src.CourseId ?? 0)) // Default 0 if null
+            .ForMember(dest => dest.CourseTitle, opt => opt.MapFrom(src => src.Course != null ? src.Course.Title : "N/A"))
+            .ForMember(dest => dest.PluginId, opt => opt.MapFrom(src => src.PluginId ?? 0)) // Default 0 if null
+            .ForMember(dest => dest.PluginTitle, opt => opt.MapFrom(src => src.Plugin != null ? src.Plugin.Title : "N/A"))
+            .ForMember(dest => dest.EnrollmentDate, opt => opt.MapFrom(src => src.EnrollmentDate.ToString("yyyy-MM-dd")))
+            .ForMember(dest => dest.Progress, opt => opt.MapFrom(src => (int)(src.Progress ?? 0))); // Convert Progress to int
+    
+        #endregion
+
+    #region Plugin
+    // Map from Plugin to PluginViewModel
+    CreateMap<Plugin, PluginViewModel>()
             .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
             .ForMember(dest => dest.Title, opt => opt.MapFrom(src => src.Title))
             .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Description))

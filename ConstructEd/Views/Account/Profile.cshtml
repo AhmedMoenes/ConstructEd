@@ -1,0 +1,76 @@
+﻿@model ProfileViewModel
+
+@{
+    ViewData["Title"] = "Profile";
+}
+
+<div class="container mt-4">
+    <!-- Profile Header -->
+    <div class="card mb-4">
+        <div class="card-body text-center">
+            <img src="@(string.IsNullOrEmpty(Model.ProfilePicture) ? "/Image/default-user.jpg" : Url.Content("~/Image/" + Model.ProfilePicture))"
+                 class="rounded-circle"
+                 width="120" height="120" />
+
+            <h3 class="mt-3">@Model.FullName</h3>
+            <p>mail: @Model.Email</p>
+        </div>
+    </div>
+
+    <!-- Enrollments Section -->
+    <h4 class="mb-3">My Enrollments</h4>
+    @if (Model.Enrollments != null && Model.Enrollments.Any())
+    {
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Course / Plugin</th>
+                    <th>Enrollment Date</th>
+                    <th>Progress</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var enrollment in Model.Enrollments)
+                {
+                    <tr>
+                        <td>
+                            @if (enrollment.CourseId > 0)
+                            {
+                                <span class="badge bg-success">Course</span> @enrollment.CourseTitle
+                            }
+                            else if (enrollment.PluginId > 0)
+                            {
+                                <span class="badge bg-info">Plugin</span> @enrollment.PluginTitle
+                            }
+                        </td>
+                        <td>@enrollment.EnrollmentDate</td>
+                        <td>
+                            @if (enrollment.CourseId > 0)
+                            {
+                                <div class="progress" style="height: 20px;">
+                                    <div class="progress-bar" role="progressbar"
+                                         style="width: @enrollment.Progress%;"
+                                         aria-valuenow="@enrollment.Progress"
+                                         aria-valuemin="0"
+                                         aria-valuemax="100">
+                                        @enrollment.Progress%
+                                    </div>
+                                </div>
+                            }
+                            else
+                            {
+                                <span class="text-muted">N/A</span>
+                            }
+                        </td>
+
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p class="text-muted">You have no enrollments yet.</p>
+    }
+</div>
+
