@@ -22,7 +22,7 @@ namespace ConstructEd.ViewModels
 
         public Instructor? Instructor { get; set; } 
         public List<CourseContentViewModel> CourseContents { get; set; } = new List<CourseContentViewModel>();
-        //new
+        
         public bool IsEnrolled { get; set; }
 
     }

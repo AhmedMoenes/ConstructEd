@@ -52,7 +52,7 @@ namespace ConstructEd.Controllers
             var viewModel = _mapper.Map<CourseContentViewModel>(courseContent);
 
 
-            viewModel.IsEnrolled = await _enrollmentRepository.IsUserEnrolledInCourseAsync(userId, courseContent.CourseId);
+            //viewModel.IsEnrolled = await _enrollmentRepository.IsUserEnrolledInCourseAsync(userId, courseContent.CourseId);
 
 
 
