@@ -198,19 +198,26 @@
                         <li class="nav-item"><a class="nav-link" asp-controller="Enrollment" asp-action="Index">Enrollments</a></li>
                     </ul>
                   
+                    @inject IWebHostEnvironment HostingEnvironment
+
                     @if (User.Identity.IsAuthenticated)
                     {
                         <div class="dropdown">
                             <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 @{
-                                    string profilePicPath = "~/uploads/" + User.Identity.Name + ".jpg";
-                                    string defaultPic = "~/Image/default-user.jpg";
+                                    string profilePicPath = "uploads/" + User.Identity.Name + ".jpg"; // Relative path from wwwroot
+                                    string defaultPic = "Image/default-user.jpg"; // Relative path from wwwroot
 
-                                    string profilePic = System.IO.File.Exists(Context.Request.PathBase + profilePicPath)
-                                    ? Url.Content(profilePicPath)
-                                    : Url.Content(defaultPic);
+                                    // Combine the web root path with the relative paths
+                                    string fullProfilePicPath = System.IO.Path.Combine(HostingEnvironment.WebRootPath, profilePicPath);
+                                    string fullDefaultPicPath = System.IO.Path.Combine(HostingEnvironment.WebRootPath, defaultPic);
+
+                                    // Check if the file exists
+                                    string profilePic = System.IO.File.Exists(fullProfilePicPath)
+                                    ? Url.Content("~/" + profilePicPath) // Use ~/ to resolve the path correctly
+                                    : Url.Content("~/" + defaultPic);
+
                                     <img src="@profilePic" class="rounded-circle" alt="User Profile" width="40" height="40">
-
                                 }
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
