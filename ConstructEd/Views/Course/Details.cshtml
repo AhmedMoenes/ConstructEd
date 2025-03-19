@@ -76,14 +76,20 @@
                             <button type="button" class="btn btn-primary" id="buyNowButton" data-id="@Model.Id">
                                 Buy Now
                             </button>
-                            <form asp-action="AddToCart" asp-controller="ShoppingCart" method="post">
+                            <form class="cart-form" data-courseid="@Model.Id" data-incart="@(Model.IsInCart ? "true" : "false" )">
                                 <input type="hidden" name="id" value="@Model.Id" />
                                 <input type="hidden" name="type" value="Course" />
-                                <button type="submit" class="btn btn-danger">Add To Cart</button>
+                                <button type="submit" class="cart-button">
+                                    <i class="@(Model.IsInCart ? "fas fa-shopping-cart" : "fas fa-cart-plus")"></i>
+                                </button>
                             </form>
-                            <form asp-action="AddToWish" asp-controller="WishList" method="post" asp-route-id="@Model.Id">
+
+                            <form class="wish-form" data-courseid="@Model.Id" data-inwishlist="@(Model.IsInWishlist ? "true" : "false")">
+                                <input type="hidden" name="id" value="@Model.Id" />
                                 <input type="hidden" name="type" value="Course" />
-                                <button type="submit" class="btn btn-danger">Add To Wish List</button>
+                                <button type="submit" class="wish-button">
+                                    <i class="@(Model.IsInWishlist ? "fas" : "far") fa-heart"></i>
+                                </button>
                             </form>
                         }
                     </div>
@@ -98,6 +104,30 @@
     var paymentViewModel = new PaymentViewModel { Amount = Model.Price };
 }
 <partial name="_PaymentModal" model="paymentViewModel" />
+
+<style>
+    .cart-button, .wish-button {
+        font-size: 24px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        transition: color 0.3s ease-in-out;
+    }
+
+        .cart-button i, .wish-button i {
+            color: gray;
+            transition: color 0.3s ease-in-out;
+        }
+
+        .cart-button .fas {
+            color: green !important;
+        }
+
+        .wish-button .fas {
+            color: red !important;
+        }
+</style>
+
 
 @section Scripts {
     <!-- Ensure jQuery is loaded -->
@@ -140,4 +170,59 @@
             });
         });
     </script>
+
+    <script>
+        $(document).ready(function () {
+            $(".wish-form").on("submit", function (event) {
+                event.preventDefault();
+                let form = $(this);
+                let icon = form.find("i");
+                let inWishlist = form.data("inwishlist") === true;
+
+                let actionUrl = inWishlist ? "/WishList/RemoveFromCart" : "/WishList/AddToWish";
+
+                $.post(actionUrl, form.serialize(), function (response) {
+                    if (response.success) {
+                        let newStatus = !inWishlist;
+                        form.data("inwishlist", newStatus);
+                        if (newStatus) {
+                            icon.removeClass("far").addClass("fas");
+                        } else {
+                            icon.removeClass("fas").addClass("far");
+                        }
+                    } else {
+                        alert(response.message || "Failed to update wishlist!");
+                    }
+                }).fail(function () {
+                    alert("An error occurred!");
+                });
+            });
+
+            $(".cart-form").on("submit", function (event) {
+                event.preventDefault();
+                let form = $(this);
+                let icon = form.find("i");
+                let inCart = form.data("incart") === true;
+
+                let actionUrl = inCart ? "/ShoppingCart/RemoveFromCart" : "/ShoppingCart/AddToCart";
+
+                $.post(actionUrl, form.serialize(), function (response) {
+                    if (response.success) {
+                        let newStatus = !inCart;
+                        form.data("incart", newStatus);
+                        if (newStatus) {
+                            icon.removeClass("fa-cart-plus").addClass("fa-shopping-cart").css("color", "green");
+                        } else {
+                            icon.removeClass("fa-shopping-cart").addClass("fa-cart-plus").css("color", "gray");
+                        }
+                    } else {
+                        alert(response.message || "Failed to update cart!");
+                    }
+                }).fail(function () {
+                    alert("An error occurred!");
+                });
+            });
+        });
+    </script>
+
 }

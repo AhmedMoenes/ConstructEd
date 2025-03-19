@@ -1,67 +1,98 @@
-﻿@model ConstructEd.ViewModels.RegisterViewModel
+@model RegisterViewModel
 
 @{
     ViewData["Title"] = "Register";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card shadow">
-                <div class="card-header bg-primary text-white text-center">
-                    <h1 class="card-title">Register</h1>
-                    <h4 class="card-subtitle">Create a new account</h4>
-                </div>
-                <div class="card-body">
-                    <form asp-action="Register">
-                        <div asp-validation-summary="All" class="alert alert-danger"></div>
+<style>
+    /* Input Fields */
+    .input-custom {
+        background-color: transparent;
+        border: 1px solid #5b4b8a;
+        color: #fff;
+        border-radius: 5px;
+        padding: 10px;
+    }
 
-                        <div class="form-group mb-3">
-                            <label asp-for="FullName" class="form-label">Full Name</label>
-                            <input asp-for="FullName" class="form-control" placeholder="Enter your full name" />
-                            <span asp-validation-for="FullName" class="text-danger"></span>
-                        </div>
+        .input-custom:focus {
+            border-color: #7663c1;
+            box-shadow: none;
+            outline: none;
+        }
 
-                        <div class="form-group mb-3">
-                            <label asp-for="Email" class="form-label">Email</label>
-                            <input asp-for="Email" class="form-control" placeholder="Enter your email" />
-                            <span asp-validation-for="Email" class="text-danger"></span>
-                        </div>
+    /* Register Button */
+    .btn-register {
+        background: linear-gradient(90deg, #6f42c1, #aa2068);
+        border: none;
+        padding: 10px;
+        color: #fff;
+        font-weight: bold;
+        border-radius: 5px;
+        transition: 0.3s ease;
+    }
 
-                        <div class="form-group mb-3">
-                            <label asp-for="PhoneNumber" class="form-label">Phone Number</label>
-                            <input asp-for="PhoneNumber" class="form-control" placeholder="Enter your phone number" />
-                            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-                        </div>
+        .btn-register:hover {
+            background: linear-gradient(90deg, #502ea7, #881856);
+            transform: scale(1.02);
+        }
 
-                        <div class="form-group mb-3">
-                            <label asp-for="Password" class="form-label">Password</label>
-                            <input asp-for="Password" type="password" class="form-control" placeholder="Enter your password" />
-                            <span asp-validation-for="Password" class="text-danger"></span>
-                        </div>
+    /* Alert Box */
+    div.alert-danger {
+        background-color: rgba(0, 0, 0, 0) !important;
+        color: #fff !important;
+        border: 1px solid #881856 !important;
+    }
+</style>
 
-                        <div class="form-group mb-3">
-                            <label asp-for="ConfirmedPassword" class="form-label">Confirm Password</label>
-                            <input asp-for="ConfirmedPassword" type="password" class="form-control" placeholder="Confirm your password" />
-                            <span asp-validation-for="ConfirmedPassword" class="text-danger"></span>
-                        </div>
+<div class="d-flex justify-content-center align-items-center min-vh-100" style="background-color: #0c081f;">
+    <div class="card shadow-lg p-4 rounded-4" style="background-color: #1b1535; color: #fff; width: 420px;">
+        <h3 class="text-center mb-4">Create a New Account</h3>
 
-                        <div class="form-group mb-3 d-grid">
-                            <button type="submit" class="btn btn-primary btn-lg">Register</button>
-                        </div>
+        <form asp-action="Register" method="post">
+            <div asp-validation-summary="All" class="alert alert-danger"></div>
 
-                        <div class="form-group text-center">
-                            <p class="mb-0">Already have an account? <a asp-action="Login" class="text-primary">Login here</a></p>
-                        </div>
-                    </form>
-                </div>
+            <div class="mb-3">
+                <label asp-for="FullName" class="form-label">Full Name</label>
+                <input asp-for="FullName" class="form-control input-custom" placeholder="Enter your full name" />
+                <span asp-validation-for="FullName" class="text-danger"></span>
             </div>
-        </div>
+
+            <div class="mb-3">
+                <label asp-for="Email" class="form-label">Email</label>
+                <input asp-for="Email" type="email" class="form-control input-custom" placeholder="Enter your email" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="PhoneNumber" class="form-label">Phone Number</label>
+                <input asp-for="PhoneNumber" class="form-control input-custom" placeholder="Enter your phone number" />
+                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Password" class="form-label">Password</label>
+                <input asp-for="Password" type="password" class="form-control input-custom" placeholder="Enter your password" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="ConfirmedPassword" class="form-label">Confirm Password</label>
+                <input asp-for="ConfirmedPassword" type="password" class="form-control input-custom" placeholder="Confirm your password" />
+                <span asp-validation-for="ConfirmedPassword" class="text-danger"></span>
+            </div>
+
+            <div class="d-grid">
+                <button type="submit" class="btn-register">Register</button>
+            </div>
+
+            <div class="text-center mt-4">
+                <p>Already have an account? <a asp-action="Login" class="text-decoration-none" style="color: #5998ff;">Login here</a></p>
+            </div>
+        </form>
     </div>
 </div>
 
 @section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
+    <partial name="_ValidationScriptsPartial" />
 }

@@ -38,8 +38,8 @@ namespace ConstructEd.Models
         public string UserId { get; set; } 
         public ApplicationUser User { get; set; }
 
-        public ICollection<PaymentCourse> PaymentCourses { get; set; } = new HashSet<PaymentCourse>();
-        public ICollection<PaymentPlugin> PaymentPlugin { get; set; } = new HashSet<PaymentPlugin>();
+        public ICollection<PaymentCourse>? PaymentCourses { get; set; } = new HashSet<PaymentCourse>();
+        public ICollection<PaymentPlugin>? PaymentPlugin { get; set; } = new HashSet<PaymentPlugin>();
 
     }
 }

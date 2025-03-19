@@ -4,33 +4,33 @@
     ViewData["Title"] = "My Wishlist";
 }
 
-<h2>My Wishlist</h2>
+<h2 class="text-2xl font-bold mb-4">My Wishlist</h2>
 
 @if (Model.Courses.Any() || Model.Plugins.Any())
 {
-    <table class="table">
+    <table class="table-auto w-full border-collapse border border-gray-300">
         <thead>
-            <tr>
-                <th>Title</th>
-                <th>Description</th>
-                <th>Category/Duration</th>
-                <th>Actions</th>
+            <tr class="bg-gray-200">
+                <th class="border p-2 text-left">Title</th>
+                <th class="border p-2 text-left">Description</th>
+                <th class="border p-2 text-left">Category/Duration</th>
+                <th class="border p-2 text-left">Actions</th>
             </tr>
         </thead>
         <tbody>
             @foreach (var course in Model.Courses)
             {
                 <tr>
-                    <td>@course.Title (Course)</td>
-                    <td>@course.Description</td>
-                    <td>@course.Category - @course.Duration</td>
-                    <td>
+                    <td class="border p-2">@course.Title (Course)</td>
+                    <td class="border p-2">@course.Description</td>
+                    <td class="border p-2">@course.Category - @course.Duration</td>
+                    <td class="border p-2">
                         <form asp-action="RemoveFromCart" asp-controller="WishList" method="post" class="remove-item-form">
                             @Html.AntiForgeryToken()
                             <input type="hidden" name="id" value="@course.Id" />
                             <input type="hidden" name="type" value="Course" />
                             <button type="button" class="btn btn-danger remove-item" data-id="@course.Id" data-type="Course">
-                                <i class="fas fa-trash-alt"></i> <!-- Basket Icon -->
+                                <i class="fas fa-trash-alt"></i>
                             </button>
                         </form>
                     </td>
@@ -40,16 +40,16 @@
             @foreach (var plugin in Model.Plugins)
             {
                 <tr>
-                    <td>@plugin.Title (Plugin)</td>
-                    <td>@plugin.Description</td>
-                    <td>-</td>
-                    <td>
+                    <td class="border p-2">@plugin.Title (Plugin)</td>
+                    <td class="border p-2">@plugin.Description</td>
+                    <td class="border p-2">-</td>
+                    <td class="border p-2">
                         <form asp-action="RemoveFromCart" asp-controller="WishList" method="post" class="remove-item-form">
                             @Html.AntiForgeryToken()
                             <input type="hidden" name="id" value="@plugin.Id" />
                             <input type="hidden" name="type" value="Plugin" />
                             <button type="button" class="btn btn-danger remove-item" data-id="@plugin.Id" data-type="Plugin">
-                                <i class="fas fa-trash-alt"></i> <!-- Basket Icon -->
+                                <i class="fas fa-trash-alt"></i>
                             </button>
                         </form>
                     </td>
@@ -60,39 +60,77 @@
 }
 else
 {
-    <p>Your wishlist is empty.</p>
+    <p class="text-gray-600">Your wishlist is empty.</p>
 }
 
 <!-- FontAwesome for Icons -->
 <script src="https://kit.fontawesome.com/your-kit-id.js" crossorigin="anonymous"></script>
 
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        document.querySelectorAll(".remove-item").forEach(button => {
-            button.addEventListener("click", function () {
-                const form = this.closest("form");
-                const formData = new FormData(form);
-                const token = form.querySelector('input[name="__RequestVerificationToken"]').value;
+<!-- Load jQuery (Ensure it's included) -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-                fetch(form.action, {
-                    method: "POST",
-                    headers: {
-                        "X-Requested-With": "XMLHttpRequest",
-                        "RequestVerificationToken": token,
-                        "Content-Type": "application/x-www-form-urlencoded"
-                    },
-                    body: new URLSearchParams(formData)
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        this.closest("tr").remove();
+<script>
+
+    $(document).ready(function () {
+        // Fetch wishlist count on page load
+        updateWishlistCount();
+
+        $(".wish-form").on("submit", function (event) {
+            event.preventDefault(); // Prevent form submission from reloading the page
+
+            let icon = $(this).find("i");
+
+            // Toggle UI instantly after form submission
+            icon.toggleClass("far fas text-danger");
+
+            // Add a small animation for visual feedback
+            icon.css("transform", "scale(1.2)");
+            setTimeout(() => icon.css("transform", "scale(1)"), 300);
+
+            // Update wishlist count dynamically
+            setTimeout(updateWishlistCount, 500); // Delay to ensure DB update
+        });
+
+        // Handle remove item functionality (FIXED)
+        $(document).on("click", ".remove-item", function (e) {
+            e.preventDefault();
+
+            const button = $(this);
+            const form = button.closest(".remove-item-form");
+            const row = button.closest("tr");
+            const token = form.find('input[name="__RequestVerificationToken"]').val();
+
+            $.ajax({
+                url: "/WishList/RemoveFromCart",
+                type: "POST",
+                data: {
+                    id: button.data("id"),
+                    type: button.data("type"),
+                    __RequestVerificationToken: token
+                },
+                success: function (response) {
+                    if (response.success) {
+                        row.fadeOut(300, function () {
+                            $(this).remove();
+                            updateWishlistCount(); // Update count after removal
+                        });
                     } else {
-                        alert(data.message || "Failed to remove item!");
+                        alert("Failed to remove item: " + (response.message || "Unknown error"));
                     }
-                })
-                .catch(error => console.error("Error:", error));
+                },
+                error: function () {
+                    alert("An error occurred while removing the item!");
+                }
             });
         });
+
+        function updateWishlistCount() {
+            $.get("/WishList/GetWishlistCount", function (data) {
+                $("#wishlist-count").text(data);
+            }).fail(function () {
+                console.error("Failed to fetch wishlist count.");
+            });
+        }
     });
+
 </script>

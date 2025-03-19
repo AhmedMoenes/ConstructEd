@@ -16,20 +16,24 @@ namespace ConstructEd.Controllers
         private readonly IWishListRepository _wishlistRepository;
         private readonly IShoppingCartRepository _shoppingCartRepository;
         private readonly IMapper _mapper;
+        private readonly IEnrollmentRepository _enrollmentRepository;
+
 
         public CourseController(ICourseRepository courseRepository,
                                 IInstructorRepository instructorRepository,
                                 ICourseContentRepository courseContentRepository,
                                 IWishListRepository wishlistRepository,
                                 IShoppingCartRepository shoppingCartRepository,
-                                IMapper mapper)
+                                IMapper mapper,
+                                IEnrollmentRepository enrollmentRepository)
         {
             _courseRepository = courseRepository;
             _instructorRepository = instructorRepository;
             _courseContentRepository = courseContentRepository;
             _wishlistRepository = wishlistRepository;
-            _shoppingCartRepository= shoppingCartRepository;
+            _shoppingCartRepository = shoppingCartRepository;
             _mapper = mapper;
+            _enrollmentRepository = enrollmentRepository;
         }
 
         [HttpGet]
@@ -44,9 +48,12 @@ namespace ConstructEd.Controllers
                 foreach (var course in courseViewModels)
                 {
                     course.IsInWishlist = await _wishlistRepository.IsCourseInWishlistAsync(userId, course.Id);
-                    course.IsInCart = await _shoppingCartRepository.IsCourseInCartAsync(userId, course.Id); 
+                    course.IsInCart = await _shoppingCartRepository.IsCourseInCartAsync(userId, course.Id);
+                    //enrolled
+                    course.IsEnrolled = await _enrollmentRepository.IsUserEnrolledInCourseAsync(userId, course.Id);
                 }
             }
+          
             return View(nameof(Index), courseViewModels);
         }
 
@@ -54,12 +61,20 @@ namespace ConstructEd.Controllers
         [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var course = await _courseRepository.GetByIdAsync(id);
             if (course == null)
             {
                 return NotFound();
             }
             var viewModel = _mapper.Map<CourseDetailsViewModel>(course);
+            //enrolled
+            viewModel.IsEnrolled = await _enrollmentRepository.IsUserEnrolledInCourseAsync(userId, id);
+
+            viewModel.IsInWishlist = await _wishlistRepository.IsCourseInWishlistAsync(userId, course.Id);
+            viewModel.IsInCart = await _shoppingCartRepository.IsCourseInCartAsync(userId, course.Id);
+
+
             return View(nameof(Details), viewModel);
         }
 

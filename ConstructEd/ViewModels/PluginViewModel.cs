@@ -24,5 +24,6 @@ namespace ConstructEd.ViewModels
         public DateTime EnrolledDate { get; set; } = DateTime.UtcNow;
         public bool IsInWishlist { get; set; }
         public bool IsInCart { get; set; }
+        public bool IsEnrolled { get; set; }
     }
 }

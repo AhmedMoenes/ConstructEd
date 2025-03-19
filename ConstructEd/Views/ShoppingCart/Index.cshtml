@@ -8,7 +8,7 @@
 
 @if (Model.Courses.Any() || Model.Plugins.Any())
 {
-    <table class="table-auto w-full border-collapse border border-gray-300">
+    <table class="table-auto w-full border-collapse border border-gray-300" id="cartTable">
         <thead>
             <tr class="bg-gray-200">
                 <th class="border p-2 text-left">Item</th>
@@ -20,17 +20,17 @@
         <tbody>
             @foreach (var course in Model.Courses)
             {
-                <tr class="border">
+                <tr class="border cart-item" data-id="@course.Id" data-type="Course">
                     <td class="border p-2">@course.Title (Course)</td>
                     <td class="border p-2">@course.Description</td>
-                    <td class="border p-2">$@course.Price</td>
+                    <td class="border p-2 price">$@course.Price</td>
                     <td class="border p-2">
                         <form asp-action="RemoveFromCart" asp-controller="ShoppingCart" method="post" class="remove-item-form">
                             @Html.AntiForgeryToken()
                             <input type="hidden" name="id" value="@course.Id" />
                             <input type="hidden" name="type" value="Course" />
-                            <button type="button" class="btn btn-danger remove-item" data-id="@course.Id" data-type="Course">
-                                <i class="fas fa-trash-alt"></i> <!-- Basket Icon -->
+                            <button type="button" class="btn btn-danger remove-item">
+                                <i class="fas fa-trash-alt"></i> Remove
                             </button>
                         </form>
                     </td>
@@ -39,17 +39,17 @@
 
             @foreach (var plugin in Model.Plugins)
             {
-                <tr class="border">
+                <tr class="border cart-item" data-id="@plugin.Id" data-type="Plugin">
                     <td class="border p-2">@plugin.Title (Plugin)</td>
                     <td class="border p-2">@plugin.Description</td>
-                    <td class="border p-2">$@plugin.Price</td>
+                    <td class="border p-2 price">$@plugin.Price</td>
                     <td class="border p-2">
                         <form asp-action="RemoveFromCart" asp-controller="ShoppingCart" method="post" class="remove-item-form">
                             @Html.AntiForgeryToken()
                             <input type="hidden" name="id" value="@plugin.Id" />
                             <input type="hidden" name="type" value="Plugin" />
-                            <button type="button" class="btn btn-danger remove-item" data-id="@plugin.Id" data-type="Plugin">
-                                <i class="fas fa-trash-alt"></i> <!-- Basket Icon -->
+                            <button type="button" class="btn btn-danger remove-item">
+                                <i class="fas fa-trash-alt"></i> Remove
                             </button>
                         </form>
                     </td>
@@ -58,7 +58,7 @@
         </tbody>
     </table>
 
-    <div class="mt-4 text-right">
+    <div class="mt-4 text-right" id="cartSummary">
         <h3 class="text-xl font-semibold">Total: $<span id="totalPrice">@Model.TotalPrice</span></h3>
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#paymentModal">
             Proceed to Checkout
@@ -67,7 +67,7 @@
 }
 else
 {
-    <p class="text-gray-600">Your shopping cart is empty.</p>
+    <p class="text-gray-600" id="emptyCartMessage">Your shopping cart is empty.</p>
 }
 
 <!-- Include the Payment Modal Partial View -->
@@ -76,36 +76,95 @@ else
 }
 <partial name="_PaymentModal" model="paymentViewModel" />
 
-<!-- FontAwesome for Icons -->
-<script src="https://kit.fontawesome.com/your-kit-id.js" crossorigin="anonymous"></script>
 
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        document.querySelectorAll(".remove-item").forEach(button => {
-            button.addEventListener("click", function () {
-                const form = this.closest("form");
-                const formData = new FormData(form);
-                const token = form.querySelector('input[name="__RequestVerificationToken"]').value;
+@section Scripts {
 
-                fetch(form.action, {
-                    method: "POST",
-                    headers: {
-                        "X-Requested-With": "XMLHttpRequest",
-                        "RequestVerificationToken": token,
-                        "Content-Type": "application/x-www-form-urlencoded"
-                    },
-                    body: new URLSearchParams(formData)
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        this.closest("tr").remove();
-                    } else {
-                        alert(data.message || "Failed to remove item!");
-                    }
-                })
-                .catch(error => console.error("Error:", error));
+    <!-- Custom Validation Scripts -->
+    <script src="~/js/paymentValidation.js" asp-append-version="true"></script>
+
+    <!-- Load jQuery (Ensure it's included) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- FontAwesome for Icons -->
+    <script src="https://kit.fontawesome.com/your-kit-id.js" crossorigin="anonymous"></script>
+
+    <script>
+
+          $(document).ready(function () {
+            // Fetch cart count on page load
+            updateCartCount();
+
+            $(".cart-form").on("submit", function (event) {
+                event.preventDefault();
+
+                let icon = $(this).find("i");
+
+                // Toggle UI instantly after form submission
+                icon.toggleClass("fa-thin fa-solid text-success");
+
+                // Add animation for visual feedback
+                icon.css("transform", "scale(1.2)");
+                setTimeout(() => icon.css("transform", "scale(1)"), 300);
+
+                // Update cart count dynamically
+                setTimeout(updateCartCount, 500); // Delay to ensure DB update
             });
+
+            // Handle remove item functionality
+            $('.remove-item').on('click', function (e) {
+                e.preventDefault();
+
+                const button = $(this);
+                const form = button.closest('.remove-item-form');
+                const row = button.closest('tr');
+
+                $.ajax({
+                    url: form.attr('action'),
+                    type: form.attr('method'),
+                    data: form.serialize(),
+                    success: function (response) {
+                        if (response.success) {
+                            row.fadeOut(300, function () {
+                                $(this).remove();
+                                updateCartState();
+                                updateCartCount(); // Call function to update cart count after item removal
+                            });
+                        } else {
+                            alert('Failed to remove item: ' + (response.message || 'Unknown error'));
+                        }
+                    },
+                    error: function () {
+                        alert('An error occurred while removing the item!');
+                    }
+                });
+            });
+
+            function updateCartCount() {
+                $.get("/ShoppingCart/GetCartCount", function (data) {
+                    $("#cart-count").text(data);
+                }).fail(function () {
+                    console.error("Failed to fetch cart count.");
+                });
+            }
+
+            function updateCartState() {
+                const remainingItems = $(".cart-item").length;
+
+                if (remainingItems === 0) {
+                    $("#cartTable, #cartSummary").hide();
+                    $("#emptyCartMessage").show();
+                } else {
+                    let newTotal = 0;
+                    $(".cart-item").each(function () {
+                        const priceText = $(this).find(".price").text().replace("$", "");
+                        newTotal += parseFloat(priceText) || 0;
+                    });
+
+                    $("#totalPrice").text(newTotal.toFixed(2));
+                }
+            }
         });
-    });
-</script>
+
+    </script>
+
+}

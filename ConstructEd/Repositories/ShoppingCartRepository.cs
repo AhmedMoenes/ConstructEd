@@ -1,9 +1,9 @@
 ﻿using ConstructEd.Data;
 using ConstructEd.Models;
 using Microsoft.EntityFrameworkCore;
+using NuGet.Protocol.Plugins;
 
 namespace ConstructEd.Repositories
-
 {
     public class ShoppingCartRepository : IShoppingCartRepository
     {
@@ -116,6 +116,11 @@ namespace ConstructEd.Repositories
         {
             return await _context.ShoppingCarts
                 .AnyAsync(sc => sc.UserId == userId && sc.CourseId == courseId);
+        }
+        public async Task<bool> IsPluginInCartAsync(string userId, int pluginId)
+        {
+            return await _context.ShoppingCarts
+                .AnyAsync(sc => sc.UserId == userId && sc.PluginId == pluginId);
         }
         public async Task<int> GetCartCountAsync(string userId)
         {

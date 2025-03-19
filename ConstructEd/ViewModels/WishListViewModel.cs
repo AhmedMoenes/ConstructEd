@@ -9,9 +9,6 @@ namespace ConstructEd.ViewModels
 
         public List<CourseViewModel> Courses { get; set; } = new();
         public List<PluginViewModel> Plugins { get; set; } = new();
-
-       
-    }
-
-    
+ 
+    }  
 }

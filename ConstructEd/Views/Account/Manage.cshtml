@@ -1,58 +1,133 @@
-﻿@{
+@{
     ViewData["Title"] = "Dashboard";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="container-fluid">
-    <div class="row">
-        
-    <!-- Main Content -->
-        <div class="col-md-9 p-4">
-            <h1 class="display-4 mb-4">Welcome to Admin Dashboard</h1>
+<style>
+    /* Container Styling */
+    .dashboard-container {
+        background-color: #0c081f;
+        color: #fff;
+        min-height: 100vh;
+        padding-top: 50px;
+    }
 
-    <!-- Courses Section -->
-    <div class="row mb-4">
-        <div class="col-md-12">
-            <div class="card shadow">
-                <div class="card-header bg-primary text-white">
-                    <h3 class="card-title">Courses</h3>
-                </div>
-                <div class="card-body">
-                    <a asp-controller="Course" asp-action="Index" class="btn btn-outline-primary me-2">View Courses</a>
-                    <a asp-controller="Course" asp-action="Create" class="btn btn-outline-success">Create Course</a>
-                    <a asp-controller="CourseContent" asp-action="Create" class="btn btn-outline-success">Add Content</a>
+    /* Card Styling */
+    .card-dashboard {
+        background-color: #1b1535;
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        padding: 20px;
+        opacity: 0;
+        transform: translateY(20px);
+        transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+
+        /* Fade-in Animation */
+        .card-dashboard.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+    /* Button Styling */
+    .btn-dashboard {
+        background: linear-gradient(90deg, #6f42c1, #aa2068);
+        border: none;
+        padding: 10px 20px;
+        color: #fff;
+        border-radius: 5px;
+        font-weight: bold;
+        transition: background 0.3s ease, transform 0.2s ease;
+    }
+
+        .btn-dashboard:hover {
+            background: linear-gradient(90deg, #502ea7, #881856);
+            transform: scale(1.05);
+        }
+
+    /* Card Header */
+    .card-header-dashboard {
+        background-color: #5b4b8a;
+        color: #fff;
+    }
+
+    /* Section Title */
+    .card-title-dashboard {
+        font-size: 1.25rem;
+        font-weight: bold;
+    }
+
+    /* Hover animation for card on hover */
+    .card-dashboard:hover {
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        transform: translateY(-5px);
+    }
+</style>
+
+<div class="container-fluid dashboard-container">
+    <div class="row justify-content-center">
+
+        <!-- Main Content -->
+        <div class="col-md-9">
+            <h1 class="display-4 text-center text-white mb-4">Welcome to Admin Dashboard</h1>
+
+            <!-- Courses Section -->
+            <div class="row mb-4">
+                <div class="col-md-12">
+                    <div class="card card-dashboard shadow-lg">
+                        <div class="card-header card-header-dashboard">
+                            <h3 class="card-title-dashboard">Courses</h3>
+                        </div>
+                        <div class="card-body">
+                            <a asp-controller="Course" asp-action="Index" class="btn-dashboard me-2">View Courses</a>
+                            <a asp-controller="Course" asp-action="Create" class="btn-dashboard">Create Course</a>
+                            <a asp-controller="CourseContent" asp-action="Create" class="btn-dashboard mt-3">Add Content</a>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
 
-    <!-- Plugins Section -->
-    <div class="row mb-4">
-        <div class="col-md-12">
-            <div class="card shadow">
-                <div class="card-header bg-success text-white">
-                    <h3 class="card-title">Plugins</h3>
-                </div>
-                <div class="card-body">
-                    <a asp-controller="Plugin" asp-action="Index" class="btn btn-outline-primary me-2">View Plugins</a>
-                    <a asp-controller="Plugin" asp-action="Create" class="btn btn-outline-success">Create Plugin</a>
+            <!-- Plugins Section -->
+            <div class="row mb-4">
+                <div class="col-md-12">
+                    <div class="card card-dashboard shadow-lg">
+                        <div class="card-header card-header-dashboard">
+                            <h3 class="card-title-dashboard">Plugins</h3>
+                        </div>
+                        <div class="card-body">
+                            <a asp-controller="Plugin" asp-action="Index" class="btn-dashboard me-2">View Plugins</a>
+                            <a asp-controller="Plugin" asp-action="Create" class="btn-dashboard">Create Plugin</a>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
 
-    <!-- Instructors Section -->
-    <div class="row mb-4">
-        <div class="col-md-12">
-            <div class="card shadow">
-                <div class="card-header bg-warning text-dark">
-                    <h3 class="card-title">Instructors</h3>
-                </div>
-                <div class="card-body">
-                    <a asp-controller="Instructor" asp-action="Index" class="btn btn-outline-primary me-2">View Instructors</a>
-                    <a asp-controller="Instructor" asp-action="Create" class="btn btn-outline-success">Add Instructor</a>
+            <!-- Instructors Section -->
+            <div class="row mb-4">
+                <div class="col-md-12">
+                    <div class="card card-dashboard shadow-lg">
+                        <div class="card-header card-header-dashboard">
+                            <h3 class="card-title-dashboard">Instructors</h3>
+                        </div>
+                        <div class="card-body">
+                            <a asp-controller="Instructor" asp-action="Index" class="btn-dashboard me-2">View Instructors</a>
+                            <a asp-controller="Instructor" asp-action="Create" class="btn-dashboard">Add Instructor</a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const cards = document.querySelectorAll('.card-dashboard');
+        setTimeout(() => {
+            cards.forEach(card => {
+                card.classList.add('visible');
+            });
+        }, 200); // Delay for fade-in animation
+    });
+</script>

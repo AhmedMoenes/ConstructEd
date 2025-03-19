@@ -4,7 +4,6 @@ using ConstructEd.Repositories;
 using ConstructEd.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using System.Security.Claims;
 
 namespace ConstructEd.Controllers
 {
@@ -13,13 +12,11 @@ namespace ConstructEd.Controllers
         private readonly ICourseContentRepository _courseContentRepository;
         private readonly ICourseRepository _courseRepository;
         private readonly IMapper _mapper;
-        private readonly IEnrollmentRepository _enrollmentRepository;
 
         public CourseContentController(
             ICourseContentRepository courseContentRepository,
             ICourseRepository courseRepository,
-            IMapper mapper,
-            IEnrollmentRepository enrollmentRepository)
+            IMapper mapper)
         {
             _courseContentRepository = courseContentRepository;
             _courseRepository = courseRepository;
@@ -38,25 +35,14 @@ namespace ConstructEd.Controllers
         }
 
         public async Task<IActionResult> Details(int id)
-
         {
-            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var courseContent = await _courseContentRepository.GetByIdAsync(id);
             if (courseContent == null)
             {
                 return NotFound();
             }
-            //صاصا 
-            
-                
+            ;
             var viewModel = _mapper.Map<CourseContentViewModel>(courseContent);
-
-
-            //viewModel.IsEnrolled = await _enrollmentRepository.IsUserEnrolledInCourseAsync(userId, courseContent.CourseId);
-
-
-
-            //صاصا
 
             var courseName = await _courseContentRepository.GetCourseNameByIdAsync(courseContent.CourseId);
             ViewBag.CourseName = courseName;

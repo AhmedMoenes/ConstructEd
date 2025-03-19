@@ -1,8 +1,7 @@
-﻿@model ConstructEd.ViewModels.LoginViewModel
+﻿@model LoginViewModel
 
 @{
     ViewData["Title"] = "Sign In";
-    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <style>
@@ -101,7 +100,7 @@
             </div>
 
             <!-- Sign In Button -->
-            <button type="submit" class="btn-signin w-100">Sign in</button>
+            <button type="submit" class="btn-signin w-100">LogIn</button>
 
             <!-- Additional Options -->
             <div class="text-center mt-3">
@@ -120,8 +119,11 @@
             <a asp-action="Register" asp-controller="Account" class="btn-create-account">Create an account</a>
         </div>
     </div>
-</div>
 
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-}
+    <div>
+        <a asp-action="Register">Register</a>
+    </div>
+
+    @section Scripts {
+        <partial name="_ValidationScriptsPartial" />
+    }
