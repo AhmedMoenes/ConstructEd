@@ -7,6 +7,7 @@ namespace ConstructEd.Models
     {
         // Extended Properties
         public string FullName { get; set; }
+        public string? ProfilePicture { get; set; }
         public DateTime CreatedAt { get; set; }
 
         // HashSet: ------

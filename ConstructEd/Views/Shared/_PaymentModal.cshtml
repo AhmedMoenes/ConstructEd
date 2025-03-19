@@ -165,7 +165,7 @@
                     </div>
 
                     <!-- Payment Form -->
-                    <form asp-action="ProcessPayment" method="post" class="form text-white">
+                    <form asp-action="ProcessPayment" asp-controller="ShoppingCart" method="post" id="paymentForm" method="post" class="form text-white">
                         <!-- Card Number -->
                         <div class="mb-3">
                             <label asp-for="CardNumber" class="form-label">Card Number</label>

@@ -7,19 +7,21 @@ using ConstructEd.Repositories;
 
 public class AuthService : IAuthService
 {
+    private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly SignInManager<ApplicationUser> _signInManager;
     private readonly RoleManager<IdentityRole> _roleManager;
     private readonly IMapper _mapper;
     private readonly IInstructorRepository _instructorRepository;
 
-    public AuthService(
+    public AuthService(IHttpContextAccessor httpContextAccessor,
         UserManager<ApplicationUser> userManager,
         SignInManager<ApplicationUser> signInManager,
         RoleManager<IdentityRole> roleManager,
         IMapper mapper,
         IInstructorRepository instructorRepository)
     {
+        _httpContextAccessor = httpContextAccessor;
         _userManager = userManager;
         _signInManager = signInManager;
         _roleManager = roleManager;
@@ -71,7 +73,11 @@ public class AuthService : IAuthService
             isPersistent: false,
             lockoutOnFailure: false);
     }
-
+    public async Task<ApplicationUser?> GetCurrentUserAsync()
+    {
+        var user = await _userManager.GetUserAsync(_httpContextAccessor.HttpContext?.User);
+        return user;
+    }
     public async Task LogoutAsync()
     {
         await _signInManager.SignOutAsync();
