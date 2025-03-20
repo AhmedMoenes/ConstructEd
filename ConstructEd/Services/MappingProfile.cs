@@ -159,7 +159,6 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.Price, opt => opt.MapFrom(src => src.Price))
             .ForMember(dest => dest.Duration, opt => opt.MapFrom(src => src.Duration))
             .ForMember(dest => dest.Category, opt => opt.MapFrom(src => Enum.Parse<Category>(src.Category)))
-            .ForMember(dest => dest.InstructorId, opt => opt.MapFrom(src => src.Instructor.Id))
             .ForMember(dest => dest.CourseContents, opt => opt.MapFrom(src => src.CourseContents));
 
         // Map from Course to CourseDetailsViewModel
@@ -170,7 +169,6 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.Price, opt => opt.MapFrom(src => src.Price))
             .ForMember(dest => dest.Duration, opt => opt.MapFrom(src => src.Duration))
             .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Category.ToString()))
-            .ForMember(dest => dest.Instructor, opt => opt.MapFrom(src => src.Instructor))
             .ForMember(dest => dest.CourseContents, opt => opt.MapFrom(src => src.CourseContents));
         #endregion
     }

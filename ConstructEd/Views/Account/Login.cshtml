@@ -70,6 +70,19 @@
             color: #8E8E93;
             border-color: #8E8E93;
         }
+
+    /* Validation Error Styles */
+    .alert-danger {
+        background-color: #ff4444;
+        color: #fff;
+        border-radius: 5px;
+        padding: 10px;
+        margin-bottom: 15px;
+    }
+
+    .text-danger {
+        color: #ff4444;
+    }
 </style>
 
 <div class="d-flex justify-content-center align-items-center min-vh-100" style="background-color: #0c081f;">
@@ -78,6 +91,12 @@
         <h3 class="text-center mt-3">Sign in</h3>
 
         <form asp-action="Login" asp-controller="Account" method="post">
+
+            @if (!ViewData.ModelState.IsValid)
+            {
+                    <div asp-validation-summary="All" class="alert alert-danger"></div>
+            }
+
             <!-- Email Input -->
             <div class="mb-3">
                 <label asp-for="Email" class="form-label">Email</label>
@@ -94,19 +113,16 @@
 
             <!-- Remember Me Checkbox -->
             <div class="form-check mb-3">
-                <input type="checkbox" class="form-check-input" id="rememberMe">
+                <input asp-for="RememberMe" type="checkbox" class="form-check-input" id="rememberMe">
                 <label class="form-check-label" for="rememberMe">Remember me</label>
             </div>
 
             <!-- Sign In Button -->
-            <button type="submit" class="btn-signin w-100">LogIn</button>
+            <button type="submit" class="btn-create-account w-100">Log In</button>
 
             <!-- Additional Options -->
             <div class="text-center mt-3">
                 <a asp-action="ForgotPassword" asp-controller="Account" class="text-decoration-none" style="color: #5998ff;">Forgot password?</a>
-            </div>
-            <div class="text-center mt-1">
-                <a asp-action="SSOLogin" asp-controller="Account" class="text-decoration-none" style="color: #5998ff;">Sign in with company or school (SSO)</a>
             </div>
         </form>
 
@@ -118,9 +134,8 @@
             <a asp-action="Register" asp-controller="Account" class="btn-create-account">Create an account</a>
         </div>
     </div>
+</div>
 
-  
-
-    @section Scripts {
+@section Scripts {
         <partial name="_ValidationScriptsPartial" />
-    }
+}

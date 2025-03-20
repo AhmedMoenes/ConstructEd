@@ -32,10 +32,10 @@ namespace ConstructEd.ViewModels
         [StringLength(500, ErrorMessage = "Bio cannot exceed 500 characters")]
         public string? Bio { get; set; }
 
-        [Display(Name = "Profile Picture URL")]
+        [Display(Name = "Profile Picture")]
         [Url(ErrorMessage = "Invalid URL format")]
         public string? ProfilePicture { get; set; }
-        public IFormFile ImageFile { get; set; }
+        public IFormFile? ImageFile { get; set; }
         public int? Experience { get; set; }
         public List<CourseViewModel> Courses { get; set; } = new List<CourseViewModel>();
     }

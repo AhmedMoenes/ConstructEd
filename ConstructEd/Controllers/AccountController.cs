@@ -26,11 +26,6 @@ namespace ConstructEd.Controllers
             _mapper = mapper;
         }
 
-        public IActionResult Manage()
-        {
-            return View(nameof(Manage));
-        }
-
         [HttpGet]
         public IActionResult Register()
         {
@@ -56,7 +51,7 @@ namespace ConstructEd.Controllers
 
                     return RedirectToAction("Index","Home");
                 }
-
+               
                 foreach (var error in result.Errors)
                 {
                     ModelState.AddModelError(string.Empty, error.Description);
@@ -81,6 +76,7 @@ namespace ConstructEd.Controllers
 
                 if (result.Succeeded)
                 {
+
                     return RedirectToAction("Index", "Home");
                 }
 

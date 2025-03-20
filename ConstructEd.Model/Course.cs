@@ -27,9 +27,8 @@ namespace ConstructEd.Models
         [DataType(DataType.Currency)]
         public decimal Price { get; set; }
         public decimal Duration { get; set; }
-        public Category Category { get; set; }
+        public Category Category { get; set; } = new Category();
         public int InstructorId { get; set; }
-        public Instructor Instructor { get; set; }
         public string? Image { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;

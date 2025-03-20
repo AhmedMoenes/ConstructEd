@@ -4,71 +4,178 @@
     ViewData["Title"] = "Profile";
 }
 
+<!-- Custom Styles -->
+<style>
+    .profile-header {
+        background: linear-gradient(135deg, #6a11cb, #2575fc);
+        color: white;
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .profile-picture {
+        border: 4px solid white;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .card-custom {
+        border: none;
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+    }
+
+        .card-custom:hover {
+            transform: translateY(-5px);
+        }
+
+    .table-custom {
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+        .table-custom th {
+            background-color: #6a11cb;
+            color: white;
+        }
+
+        .table-custom td {
+            vertical-align: middle;
+        }
+
+    .progress-custom {
+        height: 20px;
+        border-radius: 10px;
+        background-color: #e9ecef;
+    }
+
+        .progress-custom .progress-bar {
+            background-color: #6a11cb;
+            border-radius: 10px;
+        }
+
+    .badge-custom {
+        font-size: 0.9rem;
+        padding: 0.5em 0.75em;
+    }
+</style>
+
 <div class="container mt-4">
     <!-- Profile Header -->
-    <div class="card mb-4">
+    <div class="card mb-4 profile-header">
         <div class="card-body text-center">
-           <img src="@Model.ProfilePicture" class="rounded-circle" width="120" height="120" />
-
+            <img src="@Model.ProfilePicture" class="rounded-circle profile-picture" width="120" height="120" />
             <h3 class="mt-3">@Model.FullName</h3>
-            <p>mail: @Model.Email</p>
+            <p class="mb-0">Email: @Model.Email</p>
         </div>
     </div>
 
-    <!-- Enrollments Section -->
-    <h4 class="mb-3">My Enrollments</h4>
-    @if (Model.Enrollments != null && Model.Enrollments.Any())
+    <!-- Role-Specific Sections -->
+    @if (User.IsInRole("User"))
     {
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>Course / Plugin</th>
-                    <th>Enrollment Date</th>
-                    <th>Progress</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var enrollment in Model.Enrollments)
+            <!-- Enrollments Section for Users -->
+            <div class="card card-custom mb-4">
+                <div class="card-body">
+                    <h4 class="mb-3">My Enrollments</h4>
+                @if (Model.Enrollments != null && Model.Enrollments.Any())
                 {
-                    <tr>
-                        <td>
-                            @if (enrollment.CourseId > 0)
+                            <table class="table table-custom">
+                                <thead>
+                                    <tr>
+                                        <th>Course / Plugin</th>
+                                        <th>Enrollment Date</th>
+                                        <th>Progress</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                            @foreach (var enrollment in Model.Enrollments)
                             {
-                                <span class="badge bg-success">Course</span> @enrollment.CourseTitle
+                                            <tr>
+                                                <td>
+                                        @if (enrollment.CourseId > 0)
+                                        {
+                                                            <span class="badge bg-success badge-custom">Course</span> @enrollment.CourseTitle
+                                        }
+                                        else if (enrollment.PluginId > 0)
+                                        {
+                                                            <span class="badge bg-info badge-custom">Plugin</span> @enrollment.PluginTitle
+                                        }
+                                                </td>
+                                                <td>@enrollment.EnrollmentDate.ToString()</td>
+                                                <td>
+                                        @if (enrollment.CourseId > 0)
+                                        {
+                                                            <div class="progress progress-custom">
+                                                                <div class="progress-bar" role="progressbar"
+                                                                     style="width: @enrollment.Progress%;"
+                                                                     aria-valuenow="@enrollment.Progress"
+                                                                     aria-valuemin="0"
+                                                                     aria-valuemax="100">
+                                                    @enrollment.Progress%
+                                                                </div>
+                                                            </div>
+                                        }
+                                        else
+                                        {
+                                                            <span class="text-muted">N/A</span>
+                                        }
+                                                </td>
+                                            </tr>
                             }
-                            else if (enrollment.PluginId > 0)
-                            {
-                                <span class="badge bg-info">Plugin</span> @enrollment.PluginTitle
-                            }
-                        </td>
-                        <td>@enrollment.EnrollmentDate</td>
-                        <td>
-                            @if (enrollment.CourseId > 0)
-                            {
-                                <div class="progress" style="height: 20px;">
-                                    <div class="progress-bar" role="progressbar"
-                                         style="width: @enrollment.Progress%;"
-                                         aria-valuenow="@enrollment.Progress"
-                                         aria-valuemin="0"
-                                         aria-valuemax="100">
-                                        @enrollment.Progress%
-                                    </div>
-                                </div>
-                            }
-                            else
-                            {
-                                <span class="text-muted">N/A</span>
-                            }
-                        </td>
-
-                    </tr>
+                                </tbody>
+                            </table>
                 }
-            </tbody>
-        </table>
+                else
+                {
+                            <p class="text-muted">You have no enrollments yet.</p>
+                }
+                </div>
+            </div>
     }
-    else
+    else if (User.IsInRole("Instructor"))
     {
-        <p class="text-muted">You have no enrollments yet.</p>
+            <!-- Instructor-Specific Section -->
+            <div class="card card-custom mb-4">
+                <div class="card-body">
+                    <h4 class="mb-3">Instructor Profile</h4>
+                    <p><strong>Bio:</strong> @Model.Bio</p>
+                    <p><strong>Experience:</strong> @Model.Experience years</p>
+                </div>
+            </div>
+
+            <!-- Courses Taught by Instructor -->
+            <div class="card card-custom mb-4">
+                <div class="card-body">
+                    <h4 class="mb-3">Courses Taught</h4>
+                @if (Model.Courses != null && Model.Courses.Any())
+                {
+                            <table class="table table-custom">
+                                <thead>
+                                    <tr>
+                                        <th>Course Title</th>
+                                        <th>Enrolled Students</th>
+                                        <th>Average Rating</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                            @foreach (var course in Model.Courses)
+                            {
+                                            <tr>
+                                                <td>@course.Title</td>
+                                               @*  <td>@course.EnrolledStudents</td>
+                                                <td>@course.AverageRating</td> *@
+                                            </tr>
+                            }
+                                </tbody>
+                            </table>
+                }
+                else
+                {
+                            <p class="text-muted">You are not teaching any courses yet.</p>
+                }
+                </div>
+            </div>
     }
 </div>
-

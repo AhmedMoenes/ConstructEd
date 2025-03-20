@@ -1,4 +1,4 @@
-﻿using ConstructEd.Data;
+﻿    using ConstructEd.Data;
 using ConstructEd.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -31,7 +31,6 @@ namespace ConstructEd.Repositories
         public async Task<Course> GetByIdAsync(int id)
         {
             return await _dataContext.Courses
-                             .Include(c => c.Instructor) // Include the Instructor
                              .FirstOrDefaultAsync(c => c.Id == id);
         }
 
