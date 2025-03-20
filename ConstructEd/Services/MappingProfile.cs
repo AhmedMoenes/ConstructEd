@@ -37,12 +37,14 @@ public class MappingProfile : Profile
            .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email))
            .ForMember(dest => dest.PhoneNumber, opt => opt.MapFrom(src => src.PhoneNumber))
            .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => src.FullName))
+           .ForMember(dest => dest.Bio, opt => opt.MapFrom(src => src.Bio))
+           .ForMember(dest => dest.Experience, opt => opt.MapFrom(src => src.Experience))
            .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(_ => DateTime.UtcNow))
            .ForSourceMember(src => src.Password, opt => opt.DoNotValidate())
            .ForSourceMember(src => src.ConfirmedPassword, opt => opt.DoNotValidate());
 
         // Mapping Between ProfileVM and ApplicationUser
-        //src             dest
+
         CreateMap<ApplicationUser, ProfileViewModel>()
             .ForMember(dest => dest.ProfilePicture, opt => opt.MapFrom(src =>
                 File.Exists(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/uploads", src.UserName + ".jpg"))
@@ -52,7 +54,7 @@ public class MappingProfile : Profile
         #endregion
 
 
-        #region Enrollments
+    #region Enrollments
 
         // Map Enrollment → EnrollmentViewModel
         CreateMap<Enrollment, EnrollmentViewModel>()
@@ -84,7 +86,7 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.Price, opt => opt.MapFrom(src => src.Price))
             .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(src => src.CreatedAt))
             .ForMember(dest => dest.UpdatedAt, opt => opt.MapFrom(src => src.UpdatedAt));
-        #endregion
+     #endregion
 
         #region Course
         CreateMap<CourseViewModel, Course>()
@@ -114,18 +116,18 @@ public class MappingProfile : Profile
 
         #region Instructor
         // Map from Instructor to InstructorViewModel
-        CreateMap<Instructor, InstructorViewModel>()
-            .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
-            .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => src.Name))
-            .ForMember(dest => dest.Bio, opt => opt.MapFrom(src => src.Bio))
-            .ForMember(dest => dest.ProfilePicture, opt => opt.MapFrom(src => src.ProfilePicture));
+        //CreateMap<Instructor, InstructorViewModel>()
+        //    .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+        //    .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => src.Name))
+        //    .ForMember(dest => dest.Bio, opt => opt.MapFrom(src => src.Bio))
+        //    .ForMember(dest => dest.ProfilePicture, opt => opt.MapFrom(src => src.ProfilePicture));
 
-        // Map from InstructorViewModel to Instructor
-        CreateMap<InstructorViewModel, Instructor>()
-            .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
-            .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.FullName))
-            .ForMember(dest => dest.Bio, opt => opt.MapFrom(src => src.Bio))
-            .ForMember(dest => dest.ProfilePicture, opt => opt.MapFrom(src => src.ProfilePicture));
+        //// Map from InstructorViewModel to Instructor
+        //CreateMap<InstructorViewModel, Instructor>()
+        //    .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+        //    .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.FullName))
+        //    .ForMember(dest => dest.Bio, opt => opt.MapFrom(src => src.Bio))
+        //    .ForMember(dest => dest.ProfilePicture, opt => opt.MapFrom(src => src.ProfilePicture));
         #endregion
 
         #region CourseContent

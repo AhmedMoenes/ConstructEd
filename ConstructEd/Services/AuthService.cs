@@ -36,7 +36,14 @@ public class AuthService : IAuthService
 
         if (result.Succeeded)
         {
-            await _userManager.AddToRoleAsync(user, Role.User.ToString());
+            if (user.Email == "admin000@gmail.com")
+            {
+                await _userManager.AddToRoleAsync(user, RoleNames.Admin);
+            }
+            else
+            {
+                await _userManager.AddToRoleAsync(user, RoleNames.User);
+            }
         }
         return result;
     }
@@ -49,7 +56,7 @@ public class AuthService : IAuthService
 
         if (result.Succeeded)
         {
-            await _userManager.AddToRoleAsync(user, Role.Instructor.ToString());
+            await _userManager.AddToRoleAsync(user, RoleNames.Instructor);
         }
         return result;
     }
@@ -71,9 +78,7 @@ public class AuthService : IAuthService
         await _signInManager.SignOutAsync();
     }
 
-    public async Task<IdentityResult> AddRoleAsync(RoleViewModel model)
-    {
-        return await _roleManager.CreateAsync(new IdentityRole(model.UserRole.ToString()));
-    }
-
+    //public async Task<IdentityResult> AddRoleAsync(RoleViewModel model)
+    //{
+    //}
 }

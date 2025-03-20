@@ -41,11 +41,19 @@ namespace ConstructEd
 
             //Seeding DataBase With Roles 
 
-            //using (var scope = app.Services.CreateScope())
-            //{
-            //    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-            //    await DbInitializer.SeedRolesAsync(roleManager);
-            //}
+            using (var scope = app.Services.CreateScope())
+            {
+                var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+                var roles = new[] { RoleNames.Admin, RoleNames.Instructor, RoleNames.User };
+
+                foreach (var role in roles)
+                {
+                    if (!await roleManager.RoleExistsAsync(role))
+                    {
+                        await roleManager.CreateAsync(new IdentityRole(role));
+                    }
+                }
+            }
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())

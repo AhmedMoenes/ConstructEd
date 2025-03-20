@@ -1,54 +1,114 @@
-﻿@model ConstructEd.ViewModels.InstructorViewModel
+﻿@model InstructorViewModel
 
 @{
-    ViewData["Title"] = "Add Instructor";
+	ViewData["Title"] = "Add Instructor";
+	Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card shadow">
-                <div class="card-header bg-primary text-white text-center">
-                    <h1 class="card-title">Create Instructor</h1>
-                    <h4 class="card-subtitle">Add a new instructor</h4>
-                </div>
-                <div class="card-body">
-                    <form asp-action="Create">
-                        <div asp-validation-summary="All" class="alert alert-danger"></div>
+<h1>AddInstructor</h1>
 
-                        <div class="form-group mb-3">
-                            <label asp-for="FullName" class="form-label">Name</label>
-                            <input asp-for="FullName" class="form-control" placeholder="Enter instructor name" />
-                            <span asp-validation-for="FullName" class="text-danger"></span>
-                        </div>
+<style>
+/* Input Fields */
+.input-custom {
+background-color: transparent;
+border: 1px solid #5b4b8a;
+color: #fff;
+border-radius: 5px;
+padding: 10px;
+}
 
-                        <div class="form-group mb-3">
-                            <label asp-for="Bio" class="form-label">Bio</label>
-                            <input asp-for="Bio" class="form-control" placeholder="Enter instructor bio" />
-                            <span asp-validation-for="Bio" class="text-danger"></span>
-                        </div>
+.input-custom:focus {
+border-color: #7663c1;
+box-shadow: none;
+outline: none;
+}
 
-                        <div class="form-group mb-3">
-                            <label asp-for="ProfilePicture" class="form-label">Profile Picture</label>
-                            <input asp-for="ProfilePicture" class="form-control" placeholder="Enter profile picture URL" />
-                            <span asp-validation-for="ProfilePicture" class="text-danger"></span>
-                        </div>
+/* Register Button */
+.btn-register {
+background: linear-gradient(90deg, #6f42c1, #aa2068);
+border: none;
+padding: 10px;
+color: #fff;
+font-weight: bold;
+border-radius: 5px;
+transition: 0.3s ease;
+}
 
-                        <div class="form-group d-grid">
-                            <button type="submit" class="btn btn-primary btn-lg">Create</button>
-                        </div>
-                    </form>
-                </div>
-                <div class="card-footer text-center">
-                    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
-                </div>
-            </div>
-        </div>
-    </div>
+.btn-register:hover {
+background: linear-gradient(90deg, #502ea7, #881856);
+transform: scale(1.02);
+}
+
+/* Alert Box */
+div.alert-danger {
+background-color: rgba(0, 0, 0, 0) !important;
+color: #fff !important;
+border: 1px solid #881856 !important;
+}
+</style>
+
+<div class="d-flex justify-content-center align-items-center min-vh-100" style="background-color: #0c081f;">
+<div class="card shadow-lg p-4 rounded-4" style="background-color: #1b1535; color: #fff; width: 420px;">
+<h3 class="text-center mb-4">Create a New Account</h3>
+
+<form asp-action="Create" asp-controller="Instructor" method="post">
+<div asp-validation-summary="All" class="alert alert-danger"></div>
+
+<div class="mb-3">
+<label asp-for="FullName" class="form-label">Full Name</label>
+<input asp-for="FullName" class="form-control input-custom" placeholder="Enter the full name" >
+<span asp-validation-for="FullName" class="text-danger"></span>
+</div>
+
+<div class="mb-3">
+<label asp-for="Email" class="form-label">Email</label>
+<input asp-for="Email" type="email" class="form-control input-custom" placeholder="Enter email" >
+<span asp-validation-for="Email" class="text-danger"></span>
+</div>
+
+<div class="mb-3">
+<label asp-for="PhoneNumber" class="form-label">Phone Number</label>
+<input asp-for="PhoneNumber" class="form-control input-custom" placeholder="Enter  phone number" >
+<span asp-validation-for="PhoneNumber" class="text-danger"></span>
+</div>
+
+<div class="mb-3">
+<label asp-for="Password" class="form-label">Password</label>
+<input asp-for="Password" type="password" class="form-control input-custom" placeholder="Enter password" />
+</div>
+
+<div class="mb-3">
+<label asp-for="ConfirmedPassword" class="form-label">Confirm Password</label>
+<input asp-for="ConfirmedPassword" type="password" class="form-control input-custom" placeholder="Confirm  password" >
+<span asp-validation-for="ConfirmedPassword" class="text-danger"></span>
+</div>
+<!-- Profile Information -->
+<div class="mb-3">
+<label asp-for="Bio" class="control-label"></label>
+<textarea asp-for="Bio" class="form-control"></textarea>
+<span asp-validation-for="Bio" class="text-danger"></span>
+</div>
+
+<div class="mb-3">
+<label asp-for="Experience" class="control-label"></label>
+<input asp-for="Experience" class="form-control"></input>
+<span asp-validation-for="Experience" class="text-danger"></span>
+</div>
+
+<div class="mb-3">
+<label class="form-label">Upload Image</label>
+<input name="ImageFile" type="file" class="form-control input-custom" />
+</div>
+
+
+<div class="d-grid">
+<button type="submit" class="btn-register">Add</button>
+</div>
+
+</form>
+</div>
 </div>
 
 @section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
+	<partial name="_ValidationScriptsPartial" />
 }

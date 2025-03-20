@@ -35,7 +35,8 @@ namespace ConstructEd.ViewModels
         [Display(Name = "Profile Picture URL")]
         [Url(ErrorMessage = "Invalid URL format")]
         public string? ProfilePicture { get; set; }
-
+        public IFormFile ImageFile { get; set; }
+        public int? Experience { get; set; }
         public List<CourseViewModel> Courses { get; set; } = new List<CourseViewModel>();
     }
 }

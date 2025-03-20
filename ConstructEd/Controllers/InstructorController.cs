@@ -1,34 +1,38 @@
 ﻿using AutoMapper;
 using ConstructEd.Models;
 using ConstructEd.Repositories;
+using ConstructEd.Services;
 using ConstructEd.ViewModels;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace ConstructEd.Controllers
 {
     public class InstructorController : Controller
     {
-        private readonly IInstructorRepository _instructorRepository;
+        private readonly IAuthService _authService;
+        private readonly IEnrollmentRepository _enrollmentRepository;
+        private readonly UserManager<ApplicationUser> _userManager;
         private readonly IMapper _mapper;
-
-        public InstructorController(IInstructorRepository instructorRepository, IMapper mapper)
+        private readonly IInstructorRepository _instructorRepository;
+        public InstructorController(UserManager<ApplicationUser> userManager,
+                                    IAuthService authService, IMapper mapper,
+                                    IEnrollmentRepository enrollmentRepository,
+                                    IInstructorRepository instructorRepository)
         {
-            _instructorRepository = instructorRepository;
+            _enrollmentRepository = enrollmentRepository;
+            _userManager = userManager;
+            _authService = authService;
             _mapper = mapper;
+            _instructorRepository = instructorRepository;
         }
 
         [HttpGet]
         public async Task<IActionResult> Index()
         {
             var instructors = await _instructorRepository.GetAllAsync();
-            var instructorVM = _mapper.Map<List<InstructorViewModel>>(instructors);
-            return View(nameof(Index), instructorVM);
+            return View(instructors);
         }
-
-        [HttpGet]
         public IActionResult Create()
         {
             return View(nameof(Create));
@@ -40,85 +44,43 @@ namespace ConstructEd.Controllers
         {
             if (ModelState.IsValid)
             {
-                try
+                if (viewModel.ImageFile != null && viewModel.ImageFile.Length > 0)
                 {
-                    var instructor = _mapper.Map<Instructor>(viewModel);
-                    await _instructorRepository.InsertAsync(instructor);
-                    return RedirectToAction(nameof(Index));
+                    // Define the folder to save the image
+                    var imagesFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Image");
+
+                    // Generate a unique file name
+                    var fileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(viewModel.ImageFile.FileName);
+                    var filePath = Path.Combine(imagesFolder, fileName);
+
+                    // Ensure the folder exists
+                    if (!Directory.Exists(imagesFolder))
+                    {
+                        Directory.CreateDirectory(imagesFolder);
+                    }
+
+                    // Save the file to the server
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await viewModel.ImageFile.CopyToAsync(stream);
+                    }
+
+                    // Save the file name to the Image property
+                    viewModel.ProfilePicture = fileName;
                 }
-                catch (Exception ex)
+                IdentityResult result = await _authService.RegisterInstructorAsync(viewModel);
+
+                if (result.Succeeded)
                 {
-                    ModelState.AddModelError(string.Empty, ex.InnerException.Message);
+                    return RedirectToAction("Manage", "Account");
+                }
+
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description);
                 }
             }
             return View(nameof(Create), viewModel);
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> Edit(int id)
-        {
-            var instructor = await _instructorRepository.GetByIdAsync(id);
-            if (instructor == null)
-            {
-                return NotFound();
-            }
-
-            var viewModel = _mapper.Map<InstructorViewModel>(instructor);
-            return View(nameof(Edit), viewModel);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, InstructorViewModel viewModel)
-        {
-            if (id != viewModel.Id)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    var instructor = _mapper.Map<Instructor>(viewModel);
-                    await _instructorRepository.UpdateAsync(instructor);
-                    return RedirectToAction(nameof(Index));
-                }
-                catch (Exception ex)
-                {
-                    ModelState.AddModelError(string.Empty, ex.InnerException.Message);
-                }
-            }
-            return View(nameof(Edit), viewModel);
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> Remove(int id)
-        {
-            var instructor = await _instructorRepository.GetByIdAsync(id);
-            if (instructor == null)
-            {
-                return NotFound();
-            }
-
-            var viewModel = _mapper.Map<InstructorViewModel>(instructor);
-            return View(nameof(Remove), viewModel);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> RemoveConfirmed(int id)
-        {
-            try
-            {
-                await _instructorRepository.DeleteAsync(id);
-                return RedirectToAction(nameof(Index));
-            }
-            catch (Exception ex)
-            {
-                ModelState.AddModelError(string.Empty, ex.InnerException.Message);
-                return View(nameof(Remove), await _instructorRepository.GetByIdAsync(id));
-            }
         }
     }
 }

@@ -1,7 +1,31 @@
-﻿    
-@{
-    ViewData["Title"] = "Index";
-}
+﻿@model IEnumerable<ApplicationUser>
 
-<h1>Index</h1>
+<h2>Instructors</h2>
 
+<table class="table">
+    <thead>
+        <tr>
+            <th>Full Name</th>
+            <th>Email</th>
+            <th>Bio</th>
+            <th>Experience(Years)</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var instructor in Model)
+        {
+                <tr>
+                    <td>@instructor.FullName</td>
+                    <td>@instructor.Email</td>
+                    <td>@instructor.Bio</td>
+                    <td>@instructor.Experience</td>
+                    <td>
+                        <a asp-action="Details" asp-route-id="@instructor.Id">Details</a> |
+                        <a asp-action="Edit" asp-route-id="@instructor.Id">Edit</a> |
+                        <a asp-action="Delete" asp-route-id="@instructor.Id">Delete</a>
+                    </td>
+                </tr>
+        }
+    </tbody>
+</table>

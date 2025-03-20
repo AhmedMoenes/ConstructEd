@@ -32,33 +32,6 @@ namespace ConstructEd.Controllers
         }
 
         [HttpGet]
-        public IActionResult AddInstructor()
-        {
-            return View(nameof(AddInstructor));
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddInstructor(InstructorViewModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                IdentityResult result = await _authService.RegisterInstructorAsync(model);
-
-                if (result.Succeeded)
-                {
-                    return RedirectToAction("Index", "nameof(HomeController");
-                }
-
-                foreach (var error in result.Errors)
-                {
-                    ModelState.AddModelError(string.Empty, error.Description);
-                }
-            }
-            return View(nameof(AddInstructor), model);
-        }
-
-        [HttpGet]
         public IActionResult Register()
         {
             return View(nameof(Register));
@@ -81,7 +54,7 @@ namespace ConstructEd.Controllers
                         Password = model.Password
                     });
 
-                    return RedirectToAction(nameof(HomeController.Index), nameof(HomeController));
+                    return RedirectToAction("Index","Home");
                 }
 
                 foreach (var error in result.Errors)
