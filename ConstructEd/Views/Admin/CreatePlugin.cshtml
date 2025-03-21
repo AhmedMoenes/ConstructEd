@@ -1,8 +1,7 @@
-﻿@model ConstructEd.ViewModels.CourseViewModel
+﻿@model ConstructEd.ViewModels.PluginViewModel
 
 @{
-    SelectList instructors = new SelectList(ViewBag.instructorList, "Id", "Name");
-    SelectList categories = new SelectList(ViewBag.categoryList);
+    ViewData["Title"] = "Add Plugin";
 }
 
 <style>
@@ -21,8 +20,8 @@
             outline: none;
         }
 
-    /* Create Course Button */
-    .btn-create-course {
+    /* Create Plugin Button */
+    .btn-create-plugin {
         background: linear-gradient(90deg, #6f42c1, #aa2068);
         border: none;
         padding: 10px;
@@ -32,7 +31,7 @@
         transition: 0.3s ease;
     }
 
-        .btn-create-course:hover {
+        .btn-create-plugin:hover {
             background: linear-gradient(90deg, #502ea7, #881856);
             transform: scale(1.02);
         }
@@ -71,53 +70,33 @@
 <div class="d-flex justify-content-center align-items-center min-vh-100" style="background-color: #0c081f;">
     <div class="card shadow-lg p-4 rounded-4" style="background-color: #1b1535; color: #fff; width: 380px;">
 
-        <h3 class="text-center mt-3">Create Course</h3>
+        <h3 class="text-center mt-3">Create Plugin</h3>
 
-        <form asp-action="Create" enctype="multipart/form-data">
+        <form asp-action="CreatePlugin" enctype="multipart/form-data">
+            @if (!ViewData.ModelState.IsValid)
+            {
+                    <div asp-validation-summary="All" class="alert alert-danger"></div>
+            }
+
             <!-- Title Input -->
             <div class="mb-3">
-                <label asp-for="Title" class="form-label">Course Title</label>
-                <input asp-for="Title" class="form-control input-custom" placeholder="Enter course title" />
+                <label asp-for="Title" class="form-label">Plugin Title</label>
+                <input asp-for="Title" class="form-control input-custom" placeholder="Enter plugin title" />
                 <span asp-validation-for="Title" class="text-danger"></span>
             </div>
 
             <!-- Description Input -->
             <div class="mb-3">
-                <label asp-for="Description" class="form-label">Course Description</label>
-                <textarea asp-for="Description" class="form-control input-custom" placeholder="Enter course description"></textarea>
+                <label asp-for="Description" class="form-label">Plugin Description</label>
+                <textarea asp-for="Description" class="form-control input-custom" placeholder="Enter plugin description"></textarea>
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
 
             <!-- Price Input -->
             <div class="mb-3">
                 <label asp-for="Price" class="form-label">Price</label>
-                <input asp-for="Price" class="form-control input-custom" placeholder="Enter course price" />
+                <input asp-for="Price" class="form-control input-custom" placeholder="Enter plugin price" />
                 <span asp-validation-for="Price" class="text-danger"></span>
-            </div>
-
-            <!-- Duration Input -->
-            <div class="mb-3">
-                <label asp-for="Duration" class="form-label">Duration</label>
-                <input asp-for="Duration" class="form-control input-custom" placeholder="Enter course duration" />
-                <span asp-validation-for="Duration" class="text-danger"></span>
-            </div>
-
-            <!-- Category Dropdown -->
-            <div class="mb-3">
-                <label asp-for="Category" class="form-label">Category</label>
-                <select asp-for="Category" class="form-control input-custom" asp-items="categories">
-                    <option value="0">--Select Category--</option>
-                </select>
-                <span asp-validation-for="Category" class="text-danger"></span>
-            </div>
-
-            <!-- Instructor Dropdown -->
-            <div class="mb-3">
-                <label asp-for="InstructorId" class="form-label">Instructor</label>
-                <select asp-for="InstructorId" class="form-control input-custom" asp-items="instructors">
-                    <option value="0">--Select Instructor--</option>
-                </select>
-                <span asp-validation-for="InstructorId" class="text-danger"></span>
             </div>
 
             <!-- Upload Image -->
@@ -126,17 +105,17 @@
                 <input name="ImageFile" type="file" class="form-control input-custom" />
             </div>
 
-            <!-- Create Course Button -->
-            <button type="submit" class="btn-create-course w-100">Create Course</button>
+            <!-- Create Plugin Button -->
+            <button type="submit" class="btn-create-plugin w-100">Add Plugin</button>
 
             <!-- Back to List Button -->
             <div class="text-center mt-3">
-                <a asp-action="Index" class="btn-back-to-list">Back to List</a>
+                <a asp-action="PluginIndex" class="btn-back-to-list">Back to List</a>
             </div>
         </form>
     </div>
 </div>
 
 @section Scripts {
-    <partial name="_ValidationScriptsPartial" />
+        <partial name="_ValidationScriptsPartial" />
 }

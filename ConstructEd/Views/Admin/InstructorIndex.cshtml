@@ -1,0 +1,131 @@
+﻿@model IEnumerable<ApplicationUser>
+
+@{
+    ViewData["Title"] = "InstructorIndex";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    /* Table Styling */
+    .table-custom {
+        background-color: #1b1535;
+        color: #fff;
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+        .table-custom th {
+            background-color: #5b4b8a;
+            color: #fff;
+            padding: 12px;
+            text-align: left;
+        }
+
+        .table-custom td {
+            padding: 12px;
+            border-bottom: 1px solid #3a356b;
+        }
+
+        .table-custom tr:hover {
+            background-color: #2a2753;
+        }
+
+    /* Button Styling */
+    .btn-edit {
+        background-color: #6f42c1;
+        color: #fff;
+        padding: 6px 12px;
+        border-radius: 4px;
+        text-decoration: none;
+        transition: background 0.3s ease;
+    }
+
+        .btn-edit:hover {
+            background-color: #502ea7;
+        }
+
+    .btn-remove {
+        background-color: #dc3545;
+        color: #fff;
+        padding: 6px 12px;
+        border-radius: 4px;
+        text-decoration: none;
+        transition: background 0.3s ease;
+    }
+
+        .btn-remove:hover {
+            background-color: #a71d2a;
+        }
+
+    /* Page Title */
+    .page-title {
+        color: #fff;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    /* Add Instructor Button */
+    .btn-add-instructor {
+        background-color: #28a745;
+        color: #fff;
+        padding: 10px 20px;
+        border-radius: 5px;
+        text-decoration: none;
+        transition: background 0.3s ease;
+    }
+
+        .btn-add-instructor:hover {
+            background-color: #218838;
+        }
+</style>
+
+<div class="container">
+    <h1 class="page-title">Instructors</h1>
+
+    <!-- Instructors Table -->
+    <div class="table-responsive">
+        <table class="table table-custom">
+            <thead>
+                <tr>
+                    <th>Full Name</th>
+                    <th>Email</th>
+                    <th>Bio</th>
+                    <th>Experience (Years)</th>
+                    <th>Profile Picture</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var instructor in Model)
+                {
+                        <tr>
+                            <td>@instructor.FullName</td>
+                            <td>@instructor.Email</td>
+                            <td>@instructor.Bio</td>
+                            <td>@instructor.Experience</td>
+                            <td>
+                            @if (!string.IsNullOrEmpty(instructor.ProfilePicture))
+                            {
+                                        <img src="~/Image/@instructor.ProfilePicture" alt="Profile Picture" class="img-thumbnail" style="max-width: 100px;" />
+                            }
+                            else
+                            {
+                                        <span>No Image</span>
+                            }
+                            </td>
+                            <td>
+                                <a asp-action="EditInstructor" asp-route-id="@instructor.Id" class="btn-edit">Edit</a>
+                                <a asp-action="RemoveInstructor" asp-route-id="@instructor.Id" class="btn-remove">Remove</a>
+                            </td>
+                        </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Add Instructor Button -->
+    <div class="text-center mt-4">
+        <a asp-action="CreateInstructor" class="btn-add-instructor">Create New Instructor</a>
+        <a asp-action="Dashboard" class="btn-add-instructor">Back To Dashboard</a>
+    </div>
+</div>

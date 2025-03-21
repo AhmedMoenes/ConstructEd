@@ -20,7 +20,6 @@ namespace ConstructEd.ViewModels
         public decimal Duration { get; set; }
         public string Category { get; set; }
 
-        public Instructor? Instructor { get; set; } 
         public List<CourseContentViewModel> CourseContents { get; set; } = new List<CourseContentViewModel>();
         
         public bool IsEnrolled { get; set; }

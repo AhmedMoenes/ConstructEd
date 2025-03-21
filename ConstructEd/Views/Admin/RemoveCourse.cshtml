@@ -1,4 +1,4 @@
-﻿@model ConstructEd.ViewModels.CourseViewModel
+﻿@model CourseViewModel
 
 @{
     ViewData["Title"] = "Remove";
@@ -66,9 +66,9 @@
             @Html.DisplayFor(model => model.UpdatedAt)
         </dd>
     </dl>
-    
-    <form asp-action="Remove">
+
+    <form asp-action="RemoveCourseConfirmed" asp-controller="Admin" asp-route-id="@Model.Id">
         <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
+        <a asp-action="CourseIndex">Back to List</a>
     </form>
 </div>

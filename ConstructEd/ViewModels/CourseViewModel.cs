@@ -20,7 +20,7 @@ namespace ConstructEd.ViewModels
 
         public decimal Duration { get; set; }
 
-        public Category Category { get; set; }
+        public Category? Category { get; set; }
 
         [Required]
         public int InstructorId { get; set; }

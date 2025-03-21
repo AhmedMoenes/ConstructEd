@@ -1,0 +1,145 @@
+﻿@{
+    ViewData["Title"] = "About Us";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    /* Custom Styles */
+    .about-section {
+        background-color: #1b1535;
+        color: #fff;
+        padding: 60px 0;
+    }
+
+    .about-section h2 {
+        color: #6f42c1;
+        font-weight: bold;
+        margin-bottom: 20px;
+    }
+
+    .about-section p {
+        font-size: 1.1rem;
+        line-height: 1.8;
+    }
+
+    .team-section {
+        background-color: #0c081f;
+        color: #fff;
+        padding: 60px 0;
+    }
+
+    .team-member {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .team-member img {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        border: 4px solid #6f42c1;
+        margin-bottom: 15px;
+    }
+
+    .team-member h4 {
+        color: #6f42c1;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+
+    .team-member p {
+        font-size: 1rem;
+        color: #ccc;
+    }
+
+    .mission-section {
+        background-color: #1b1535;
+        color: #fff;
+        padding: 60px 0;
+    }
+</style>
+
+<!-- About Section -->
+<div class="about-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center">
+                <h2>About Us</h2>
+                <p>
+                    Welcome to ConstructEd, your premier destination for online learning and professional development. 
+                    We are dedicated to providing high-quality courses and resources to help you achieve your goals. 
+                    Whether you're a beginner or an expert, our platform offers something for everyone.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Team Section -->
+<div class="team-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <h2>Our Team</h2>
+            </div>
+        </div>
+        <div class="row">
+            <!-- Team Member 1 -->
+            <div class="col-lg-4 col-md-6 team-member">
+                <img src="https://via.placeholder.com/150" alt="Team Member 1" />
+                <h4>John Doe</h4>
+                <p>CEO & Founder</p>
+            </div>
+            <!-- Team Member 2 -->
+            <div class="col-lg-4 col-md-6 team-member">
+                <img src="https://via.placeholder.com/150" alt="Team Member 2" />
+                <h4>Jane Smith</h4>
+                <p>Lead Instructor</p>
+            </div>
+            <!-- Team Member 3 -->
+            <div class="col-lg-4 col-md-6 team-member">
+                <img src="https://via.placeholder.com/150" alt="Team Member 3" />
+                <h4>Michael Johnson</h4>
+                <p>Content Developer</p>
+            </div>
+            <!-- Team Member 4 -->
+            <div class="col-lg-4 col-md-6 team-member">
+                <img src="https://via.placeholder.com/150" alt="Team Member 4" />
+                <h4>Emily Davis</h4>
+                <p>Marketing Specialist</p>
+            </div>
+            <!-- Team Member 5 -->
+            <div class="col-lg-4 col-md-6 team-member">
+                <img src="https://via.placeholder.com/150" alt="Team Member 5" />
+                <h4>David Wilson</h4>
+                <p>Software Engineer</p>
+            </div>
+            <!-- Team Member 6 -->
+            <div class="col-lg-4 col-md-6 team-member">
+                <img src="https://via.placeholder.com/150" alt="Team Member 6" />
+                <h4>Sarah Brown</h4>
+                <p>UX/UI Designer</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Mission Section -->
+<div class="mission-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center">
+                <h2>Our Mission</h2>
+                <p>
+                    Our mission is to empower individuals through education. We believe that everyone deserves access 
+                    to high-quality learning resources, regardless of their background or location. Join us on this 
+                    journey to unlock your full potential.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+        <partial name="_ValidationScriptsPartial" />
+}

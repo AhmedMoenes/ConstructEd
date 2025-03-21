@@ -1,7 +1,7 @@
 ﻿@model ConstructEd.ViewModels.CourseViewModel
 
 @{
-    SelectList instructors = new SelectList(ViewBag.instructorList, "Id", "Name");
+    SelectList instructors = new SelectList(ViewBag.instructorList, "Id", "FullName");
     SelectList categories = new SelectList(ViewBag.categoryList);
 }
 
@@ -73,7 +73,11 @@
 
         <h3 class="text-center mt-3">Create Course</h3>
 
-        <form asp-action="Create" enctype="multipart/form-data">
+        <form asp-action="CreateCourse" enctype="multipart/form-data">
+            @if (!ViewData.ModelState.IsValid)
+            {
+            <div asp-validation-summary="All" class="alert alert-danger"></div>
+            }
             <!-- Title Input -->
             <div class="mb-3">
                 <label asp-for="Title" class="form-label">Course Title</label>
@@ -106,7 +110,7 @@
             <div class="mb-3">
                 <label asp-for="Category" class="form-label">Category</label>
                 <select asp-for="Category" class="form-control input-custom" asp-items="categories">
-                    <option value="0">--Select Category--</option>
+                    <option value="100">--Select Category--</option>
                 </select>
                 <span asp-validation-for="Category" class="text-danger"></span>
             </div>
@@ -127,16 +131,16 @@
             </div>
 
             <!-- Create Course Button -->
-            <button type="submit" class="btn-create-course w-100">Create Course</button>
+            <button type="submit" class="btn-create-course w-100">Add Course</button>
 
             <!-- Back to List Button -->
             <div class="text-center mt-3">
-                <a asp-action="Index" class="btn-back-to-list">Back to List</a>
+                <a asp-action="CourseIndex" class="btn-back-to-list">Back to List</a>
             </div>
         </form>
     </div>
 </div>
 
 @section Scripts {
-    <partial name="_ValidationScriptsPartial" />
+        <partial name="_ValidationScriptsPartial" />
 }

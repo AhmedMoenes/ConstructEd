@@ -1,4 +1,4 @@
-﻿using ConstructEd.Data;
+﻿    using ConstructEd.Data;
 using ConstructEd.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,11 +15,15 @@ namespace ConstructEd.Repositories
 
         public async Task DeleteAsync(int id)
         {
-            var entity = await GetByIdAsync(id);
-            if (entity != null)
+            var course = _dataContext.Courses
+                .Include(c => c.CourseContents) // Ensure related data is loaded
+                .FirstOrDefault(c => c.Id == id);
+
+            if (course != null)
             {
-                _dataContext.Courses.Remove(entity);
-                await SaveAsync(); 
+                _dataContext.CourseContents.RemoveRange(course.CourseContents);
+                _dataContext.Courses.Remove(course);
+                _dataContext.SaveChanges();
             }
         }
 
@@ -31,7 +35,6 @@ namespace ConstructEd.Repositories
         public async Task<Course> GetByIdAsync(int id)
         {
             return await _dataContext.Courses
-                             .Include(c => c.Instructor) // Include the Instructor
                              .FirstOrDefaultAsync(c => c.Id == id);
         }
 

@@ -74,7 +74,7 @@ namespace ConstructEd.Controllers
             return View(nameof(Details), viewModel);
         }
 
-            [HttpGet]
+        [HttpGet]
         public async Task<IActionResult> Create()
         {
             var viewModel = new CourseViewModel();

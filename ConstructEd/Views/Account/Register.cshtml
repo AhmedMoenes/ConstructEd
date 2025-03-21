@@ -22,19 +22,40 @@
         }
 
     /* Register Button */
-    .btn-register {
-        background: linear-gradient(90deg, #6f42c1, #aa2068);
-        border: none;
-        padding: 10px;
-        color: #fff;
-        font-weight: bold;
-        border-radius: 5px;
-        transition: 0.3s ease;
+   /* Create Account Button (New Dark Purple Theme) */
+    .btn-create-account {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 15px 38px;
+        border-radius: 16px;
+        border: 1px solid transparent;
+        color: #ffffff;
+        background: linear-gradient(90deg, #5B4B8A, #7663C1);
+        font-size: 16px;
+        letter-spacing: 1px;
+        transition: all 0.2s ease-in-out;
+        text-decoration: none;
     }
 
-        .btn-register:hover {
-            background: linear-gradient(90deg, #502ea7, #881856);
-            transform: scale(1.02);
+        .btn-create-account:hover {
+            background: rgba(193, 158, 224, 0.1);
+            border-color: #C19EE0;
+            color: #C19EE0;
+            transform: translateY(-4px) scale(1.05);
+        }
+
+        .btn-create-account:active {
+            background-color: transparent;
+            border-color: #C19EE0;
+            color: #C19EE0;
+            transform: translateY(4px) scale(0.95);
+        }
+
+        .btn-create-account:disabled {
+            background-color: rgba(255, 255, 255, 0.16);
+            color: #8E8E93;
+            border-color: #8E8E93;
         }
 
     /* Alert Box */
@@ -45,12 +66,17 @@
     }
 </style>
 
+
 <div class="d-flex justify-content-center align-items-center min-vh-100" style="background-color: #0c081f;">
     <div class="card shadow-lg p-4 rounded-4" style="background-color: #1b1535; color: #fff; width: 420px;">
         <h3 class="text-center mb-4">Create a New Account</h3>
 
         <form asp-action="Register" asp-controller="Account" method="post">
-            <div asp-validation-summary="All" class="alert alert-danger"></div>
+
+            @if (!ViewData.ModelState.IsValid)
+            {
+                <div asp-validation-summary="All" class="alert alert-danger"></div>
+            }
 
             <div class="mb-3">
                 <label asp-for="FullName" class="form-label">Full Name</label>
@@ -82,9 +108,9 @@
                 <span asp-validation-for="ConfirmedPassword" class="text-danger"></span>
             </div>
 
-            <div class="d-grid">
-                <button type="submit" class="btn-register">Register</button>
-            </div>
+            <div class="text-center">
+            <a asp-action="Register" asp-controller="Account" class="btn-create-account">Register</a>
+        </div>
 
             <div class="text-center mt-4">
                 <p>Already have an account? <a asp-action="Login" class="text-decoration-none" style="color: #5998ff;">Login here</a></p>

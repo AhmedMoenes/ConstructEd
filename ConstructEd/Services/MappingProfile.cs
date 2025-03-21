@@ -33,15 +33,24 @@ public class MappingProfile : Profile
             .ForSourceMember(src => src.ConfirmedPassword, opt => opt.DoNotValidate());
 
         CreateMap<InstructorViewModel, ApplicationUser>()
-           .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.Email))
-           .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email))
-           .ForMember(dest => dest.PhoneNumber, opt => opt.MapFrom(src => src.PhoneNumber))
-           .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => src.FullName))
-           .ForMember(dest => dest.Bio, opt => opt.MapFrom(src => src.Bio))
-           .ForMember(dest => dest.Experience, opt => opt.MapFrom(src => src.Experience))
-           .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(_ => DateTime.UtcNow))
-           .ForSourceMember(src => src.Password, opt => opt.DoNotValidate())
-           .ForSourceMember(src => src.ConfirmedPassword, opt => opt.DoNotValidate());
+            .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+            .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.Email))
+            .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email))
+            .ForMember(dest => dest.PhoneNumber, opt => opt.MapFrom(src => src.PhoneNumber))
+            .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => src.FullName))
+            .ForMember(dest => dest.Bio, opt => opt.MapFrom(src => src.Bio))
+            .ForMember(dest => dest.Experience, opt => opt.MapFrom(src => src.Experience))
+            .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(_ => DateTime.UtcNow))
+            .ForSourceMember(src => src.Password, opt => opt.DoNotValidate())
+            .ForSourceMember(src => src.ConfirmedPassword, opt => opt.DoNotValidate());
+
+        CreateMap<ApplicationUser, InstructorViewModel>()
+            .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+            .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email))
+            .ForMember(dest => dest.PhoneNumber, opt => opt.MapFrom(src => src.PhoneNumber))
+            .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => src.FullName))
+            .ForMember(dest => dest.Bio, opt => opt.MapFrom(src => src.Bio))
+            .ForMember(dest => dest.Experience, opt => opt.MapFrom(src => src.Experience));
 
         // Mapping Between ProfileVM and ApplicationUser
 
@@ -159,7 +168,6 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.Price, opt => opt.MapFrom(src => src.Price))
             .ForMember(dest => dest.Duration, opt => opt.MapFrom(src => src.Duration))
             .ForMember(dest => dest.Category, opt => opt.MapFrom(src => Enum.Parse<Category>(src.Category)))
-            .ForMember(dest => dest.InstructorId, opt => opt.MapFrom(src => src.Instructor.Id))
             .ForMember(dest => dest.CourseContents, opt => opt.MapFrom(src => src.CourseContents));
 
         // Map from Course to CourseDetailsViewModel
@@ -170,7 +178,6 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.Price, opt => opt.MapFrom(src => src.Price))
             .ForMember(dest => dest.Duration, opt => opt.MapFrom(src => src.Duration))
             .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Category.ToString()))
-            .ForMember(dest => dest.Instructor, opt => opt.MapFrom(src => src.Instructor))
             .ForMember(dest => dest.CourseContents, opt => opt.MapFrom(src => src.CourseContents));
         #endregion
     }

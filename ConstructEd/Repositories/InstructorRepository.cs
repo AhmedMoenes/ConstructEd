@@ -55,10 +55,5 @@ namespace ConstructEd.Repositories
                 await _dataContext.SaveChangesAsync();
             }
         }
-
-        public async Task SaveAsync()
-        {
-            await _dataContext.SaveChangesAsync();
-        }
     }
 }

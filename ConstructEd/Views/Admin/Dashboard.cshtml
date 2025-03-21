@@ -1,0 +1,167 @@
+﻿@{
+    ViewData["Title"] = "Dashboard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    /* Dashboard Container */
+    .dashboard-container {
+        background-color: #0c081f;
+        color: #fff;
+        min-height: 100vh;
+        padding: 20px;
+    }
+
+    /* Sidebar Styling */
+    .sidebar {
+        background-color: #1b1535;
+        padding: 20px;
+        border-radius: 8px;
+        height: 100vh;
+        position: fixed;
+        width: 300px; /* Increased width */
+    }
+
+    .sidebar h3 {
+        color: #fff;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    /* Toggle Button Styling */
+    .toggle-button {
+        background-color: #2a2753;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        font-weight: bold;
+        width: 100%;
+        text-align: left;
+        margin-bottom: 10px;
+        cursor: pointer;
+        transition: background 0.3s ease;
+    }
+
+    .toggle-button:hover {
+        background-color: #3a356b;
+    }
+
+    .toggle-button.active {
+        background-color: #6f42c1;
+    }
+
+    /* Submenu Styling */
+    .submenu {
+        margin-left: 20px;
+        margin-top: 10px;
+        margin-bottom: 20px; /* Consistent margin */
+        display: none; /* Hidden by default */
+    }
+
+    .submenu a {
+        display: block;
+        color: #fff;
+        padding: 8px 16px;
+        text-decoration: none;
+        border-radius: 4px;
+        margin-bottom: 5px;
+        transition: background 0.3s ease;
+    }
+
+    .submenu a:hover {
+        background-color: #3a356b;
+    }
+
+    /* Main Content Styling */
+    .main-content {
+        margin-left: 320px; /* Adjust based on sidebar width */
+        padding: 20px;
+    }
+
+    /* Card Styling */
+    .card-dashboard {
+        background-color: #1b1535;
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 20px; /* Consistent margin */
+    }
+
+    /* Card Header */
+    .card-header-dashboard {
+        background-color: #5b4b8a;
+        color: #fff;
+        padding: 10px;
+        border-radius: 8px 8px 0 0;
+        margin-bottom: 15px; /* Consistent margin */
+    }
+
+    /* Section Title */
+    .card-title-dashboard {
+        font-size: 1.25rem;
+        font-weight: bold;
+        margin-bottom: 15px; /* Consistent margin */
+    }
+</style>
+
+<div class="container-fluid dashboard-container">
+    <div class="row">
+        <!-- Sidebar -->
+        <div class="col-md-3 sidebar">
+
+            <!-- Courses Section -->
+            <button class="toggle-button" onclick="toggleSubmenu('courses')">Courses</button>
+            <div id="courses" class="submenu">
+                <a asp-controller="Admin" asp-action="CourseIndex">List Of Courses</a>
+                <a asp-controller="Admin" asp-action="CreateCourse">Add Course</a>
+                <a asp-controller="CourseContent" asp-action="Create">Add Course Content</a>
+            </div>
+
+            <!-- Plugins Section -->
+            <button class="toggle-button" onclick="toggleSubmenu('plugins')">Plugins</button>
+            <div id="plugins" class="submenu">
+                <a asp-controller="Admin" asp-action="PluginIndex">List Of Plugins</a>
+                <a asp-controller="Admin" asp-action="CreatePlugin">Add Plugin</a>
+            </div>
+
+            <!-- Instructors Section -->
+            <button class="toggle-button" onclick="toggleSubmenu('instructors')">Instructors</button>
+            <div id="instructors" class="submenu">
+                <a asp-controller="Admin" asp-action="InstructorIndex">List Of Instructors</a>
+                <a asp-controller="Admin" asp-action="CreateInstructor">Add Instructor</a>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="col-md-9 main-content">
+
+            <!-- Statistics Section (Placeholder for Future Content) -->
+            <div class="row mb-4">
+                <div class="col-md-12">
+                    <div class="card card-dashboard shadow-lg">
+                        <div class="card-header card-header-dashboard">
+                            <h3 class="card-title-dashboard">Statistics</h3>
+                        </div>
+                        <div class="card-body">
+                            <p class="text-white">Statistics will be displayed here.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Toggle submenu visibility
+    function toggleSubmenu(id) {
+        const submenu = document.getElementById(id);
+        if (submenu.style.display === "block") {
+            submenu.style.display = "none";
+        } else {
+            submenu.style.display = "block";
+        }
+    }
+</script>

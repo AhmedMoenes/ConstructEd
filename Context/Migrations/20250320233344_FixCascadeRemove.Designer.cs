@@ -4,6 +4,7 @@ using ConstructEd.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ConstructEd.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20250320233344_FixCascadeRemove")]
+    partial class FixCascadeRemove
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -526,8 +529,7 @@ namespace ConstructEd.Data.Migrations
                 {
                     b.HasOne("ConstructEd.Models.Course", "Course")
                         .WithMany("Enrollments")
-                        .HasForeignKey("CourseId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("CourseId");
 
                     b.HasOne("ConstructEd.Models.Plugin", "Plugin")
                         .WithMany("Enrollments")
@@ -599,8 +601,7 @@ namespace ConstructEd.Data.Migrations
                 {
                     b.HasOne("ConstructEd.Models.Course", "Course")
                         .WithMany("ShoppingCarts")
-                        .HasForeignKey("CourseId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("CourseId");
 
                     b.HasOne("ConstructEd.Models.Plugin", "Plugin")
                         .WithMany("ShoppingCarts")
@@ -623,8 +624,7 @@ namespace ConstructEd.Data.Migrations
                 {
                     b.HasOne("ConstructEd.Models.Course", "Course")
                         .WithMany("Wishlists")
-                        .HasForeignKey("CourseId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("CourseId");
 
                     b.HasOne("ConstructEd.Models.Plugin", "Plugin")
                         .WithMany("Wishlists")
