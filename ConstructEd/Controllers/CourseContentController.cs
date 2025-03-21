@@ -44,8 +44,8 @@ namespace ConstructEd.Controllers
             ;
             var viewModel = _mapper.Map<CourseContentViewModel>(courseContent);
 
-            var courseName = await _courseContentRepository.GetCourseNameByIdAsync(courseContent.CourseId);
-            ViewBag.CourseName = courseName;
+            //var courseName = await _courseContentRepository.GetCourseNameByIdAsync(courseContent.CourseId);
+            ViewBag.CourseName = courseContent.Course?.Title;
 
             return View(viewModel);
         }
