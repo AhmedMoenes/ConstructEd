@@ -1,84 +1,4 @@
-﻿@model IEnumerable<PluginViewModel>
-@{
-    ViewData["Title"] = "Plugin Index";
-    Layout = "~/Views/Shared/_Layout.cshtml";
-}
-
-<style>
-    /* Table Styling */
-    .table-custom {
-        background-color: #1b1535;
-        color: #fff;
-        border-radius: 8px;
-        overflow: hidden;
-    }
-
-        .table-custom th {
-            background-color: #5b4b8a;
-            color: #fff;
-            padding: 12px;
-            text-align: left;
-        }
-
-        .table-custom td {
-            padding: 12px;
-            border-bottom: 1px solid #3a356b;
-        }
-
-        .table-custom tr:hover {
-            background-color: #2a2753;
-        }
-
-    /* Button Styling */
-    .btn-edit {
-        background-color: #6f42c1;
-        color: #fff;
-        padding: 6px 12px;
-        border-radius: 4px;
-        text-decoration: none;
-        transition: background 0.3s ease;
-    }
-
-        .btn-edit:hover {
-            background-color: #502ea7;
-        }
-
-    .btn-remove {
-        background-color: #dc3545;
-        color: #fff;
-        padding: 6px 12px;
-        border-radius: 4px;
-        text-decoration: none;
-        transition: background 0.3s ease;
-    }
-
-        .btn-remove:hover {
-            background-color: #a71d2a;
-        }
-
-    /* Page Title */
-    .page-title {
-        color: #fff;
-        text-align: center;
-        margin-bottom: 20px;
-    }
-
-    /* Add Plugin Button */
-    .btn-add-plugin {
-        background-color: #28a745;
-        color: #fff;
-        padding: 10px 20px;
-        border-radius: 5px;
-        text-decoration: none;
-        transition: background 0.3s ease;
-    }
-
-        .btn-add-plugin:hover {
-            background-color: #218838;
-        }
-</style>
-
-<div class="container">
+﻿<div class="container mt-5">
     <h1 class="page-title">Our Plugins</h1>
 
     <!-- Plugins Table -->
@@ -95,15 +15,15 @@
             <tbody>
                 @foreach (var plugin in Model)
                 {
-                        <tr>
-                            <td>@plugin.Title</td>
-                            <td>@plugin.Description</td>
-                            <td>@plugin.Price.ToString("C")</td>
-                            <td>
-                                <a asp-action="EditPlugin" asp-route-id="@plugin.Id" class="btn-edit">Edit</a>
-                                <a asp-action="RemovePlugin" asp-route-id="@plugin.Id" class="btn-remove">Remove</a>
-                            </td>
-                        </tr>
+                    <tr>
+                        <td>@plugin.Title</td>
+                        <td>@plugin.Description</td>
+                        <td>@plugin.Price.ToString("C")</td>
+                        <td>
+                            <a asp-action="EditPlugin" asp-route-id="@plugin.Id" class="btn-edit">Edit</a>
+                            <a asp-action="RemovePlugin" asp-route-id="@plugin.Id" class="btn-remove">Remove</a>
+                        </td>
+                    </tr>
                 }
             </tbody>
         </table>
@@ -113,3 +33,70 @@
         <a asp-action="Dashboard" class="btn-add-plugin">Back To Dashboard</a>
     </div>
 </div>
+
+<style>
+    body {
+        background-color: #0f0e17;
+    }
+
+    .table-custom {
+        background-color: rgba(255, 255, 255, 0.1);
+        color: #fff;
+        border-radius: 10px;
+        overflow: hidden;
+        backdrop-filter: blur(10px);
+        box-shadow: 0px 4px 10px rgba(255, 255, 255, 0.2);
+    }
+
+        .table-custom th {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: #fff;
+            padding: 12px;
+            text-align: left;
+        }
+
+        .table-custom td {
+            padding: 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .table-custom tr:hover {
+            background-color: rgba(255, 255, 255, 0.15);
+        }
+
+    .btn-edit, .btn-remove, .btn-add-plugin {
+        display: inline-block;
+        padding: 8px 16px;
+        border-radius: 5px;
+        text-decoration: none;
+        font-weight: bold;
+        transition: background 0.3s ease;
+    }
+
+    .btn-edit {
+        background-color: #6f42c1;
+        color: white;
+    }
+
+        .btn-edit:hover {
+            background-color: #502ea7;
+        }
+
+    .btn-remove {
+        background-color: #dc3545;
+        color: white;
+    }
+
+        .btn-remove:hover {
+            background-color: #a71d2a;
+        }
+
+    .btn-add-plugin {
+        background-color: #28a745;
+        color: white;
+    }
+
+        .btn-add-plugin:hover {
+            background-color: #218838;
+        }
+</style>

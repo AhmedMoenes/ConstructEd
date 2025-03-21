@@ -21,7 +21,7 @@
                         <h5 class="card-title text-white">@course.Title</h5>
                         <p class="card-text text-muted">Duration: @course.Duration</p>
                         <p class="card-text text-muted">Price: @course.Price</p>
-                        <p class="card-text text-muted">Instructor: @course.InstructorId</p>
+                        <p class="card-text text-muted">Instructor: @course.UserId</p>
 
                         <a asp-controller="Course" asp-action="Details" asp-route-id="@course.Id" class="btn btn-success btn-block">View Details</a>
 
@@ -161,7 +161,6 @@
             color: gray;
         }
 
-      
 
         .wish-button .fas {
             color: red !important;

@@ -17,18 +17,14 @@ namespace ConstructEd.ViewModels
         [Required(ErrorMessage = "Price is required")]
         [DataType(DataType.Currency)]
         public decimal Price { get; set; }
-
         public decimal Duration { get; set; }
-
         public Category? Category { get; set; }
+        public string? UserId { get; set; }
+        public ApplicationUser? User { get; set; }
 
         [Required]
-        public int InstructorId { get; set; }
         public IFormFile ImageFile { get; set; }
-
         public string? Image { get; set; }
-
-
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
         public DateTime EnrolledDate { get; set; } = DateTime.UtcNow;
