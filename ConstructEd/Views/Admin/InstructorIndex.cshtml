@@ -1,6 +1,7 @@
-﻿@model IEnumerable<PluginViewModel>
+﻿@model IEnumerable<ApplicationUser>
+
 @{
-    ViewData["Title"] = "Plugin Index";
+    ViewData["Title"] = "InstructorIndex";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -63,8 +64,8 @@
         margin-bottom: 20px;
     }
 
-    /* Add Plugin Button */
-    .btn-add-plugin {
+    /* Add Instructor Button */
+    .btn-add-instructor {
         background-color: #28a745;
         color: #fff;
         padding: 10px 20px;
@@ -73,43 +74,58 @@
         transition: background 0.3s ease;
     }
 
-        .btn-add-plugin:hover {
+        .btn-add-instructor:hover {
             background-color: #218838;
         }
 </style>
 
 <div class="container">
-    <h1 class="page-title">Our Plugins</h1>
+    <h1 class="page-title">Instructors</h1>
 
-    <!-- Plugins Table -->
+    <!-- Instructors Table -->
     <div class="table-responsive">
         <table class="table table-custom">
             <thead>
                 <tr>
-                    <th>Title</th>
-                    <th>Description</th>
-                    <th>Price</th>
+                    <th>Full Name</th>
+                    <th>Email</th>
+                    <th>Bio</th>
+                    <th>Experience (Years)</th>
+                    <th>Profile Picture</th>
                     <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach (var plugin in Model)
+                @foreach (var instructor in Model)
                 {
                         <tr>
-                            <td>@plugin.Title</td>
-                            <td>@plugin.Description</td>
-                            <td>@plugin.Price.ToString("C")</td>
+                            <td>@instructor.FullName</td>
+                            <td>@instructor.Email</td>
+                            <td>@instructor.Bio</td>
+                            <td>@instructor.Experience</td>
                             <td>
-                                <a asp-action="EditPlugin" asp-route-id="@plugin.Id" class="btn-edit">Edit</a>
-                                <a asp-action="RemovePlugin" asp-route-id="@plugin.Id" class="btn-remove">Remove</a>
+                            @if (!string.IsNullOrEmpty(instructor.ProfilePicture))
+                            {
+                                        <img src="~/Image/@instructor.ProfilePicture" alt="Profile Picture" class="img-thumbnail" style="max-width: 100px;" />
+                            }
+                            else
+                            {
+                                        <span>No Image</span>
+                            }
+                            </td>
+                            <td>
+                                <a asp-action="EditInstructor" asp-route-id="@instructor.Id" class="btn-edit">Edit</a>
+                                <a asp-action="RemoveInstructor" asp-route-id="@instructor.Id" class="btn-remove">Remove</a>
                             </td>
                         </tr>
                 }
             </tbody>
         </table>
     </div>
+
+    <!-- Add Instructor Button -->
     <div class="text-center mt-4">
-        <a asp-action="CreatePlugin" class="btn-add-plugin">Add New Plugin</a>
-        <a asp-action="Dashboard" class="btn-add-plugin">Back To Dashboard</a>
+        <a asp-action="CreateInstructor" class="btn-add-instructor">Create New Instructor</a>
+        <a asp-action="Dashboard" class="btn-add-instructor">Back To Dashboard</a>
     </div>
 </div>

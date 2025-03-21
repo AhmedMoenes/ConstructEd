@@ -1,25 +1,30 @@
 ﻿using AutoMapper;
 using ConstructEd.Models;
 using ConstructEd.Repositories;
+using ConstructEd.Services;
 using ConstructEd.ViewModels;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ConstructEd.Controllers
 {
     public class AdminController : Controller
     {
+        private readonly IAuthService _authService;
         private readonly ICourseRepository _courseRepository;
         private readonly IInstructorRepository _instructorRepository;
         private readonly ICourseContentRepository _courseContentRepository;
         private readonly IPluginRepository _pluginRepository;
         private readonly IMapper _mapper;
 
-        public AdminController(ICourseRepository courseRepository,
+        public AdminController( IAuthService authService,
+                                ICourseRepository courseRepository,
                                 IInstructorRepository instructorRepository,
                                 ICourseContentRepository courseContentRepository,
                                 IPluginRepository pluginRepository,
                                 IMapper mapper)
         {
+            _authService = authService;
             _courseRepository = courseRepository;
             _instructorRepository = instructorRepository;
             _courseContentRepository = courseContentRepository;
@@ -102,8 +107,8 @@ namespace ConstructEd.Controllers
 
             var viewModel = _mapper.Map<CourseViewModel>(course);
 
-            var instructors = await _instructorRepository.GetAllAsync();
-
+            ViewBag.instructorList = await _instructorRepository.GetAllAsync();
+            ViewBag.categoryList = _courseRepository.GetCategories();
             return View(nameof(EditCourse), viewModel);
         }
 
@@ -130,7 +135,8 @@ namespace ConstructEd.Controllers
                 }
             }
 
-            var instructors = await _instructorRepository.GetAllAsync();
+            ViewBag.instructorList = await _instructorRepository.GetAllAsync();
+            ViewBag.categoryList = _courseRepository.GetCategories();
 
             return View(nameof(EditCourse), viewModel);
         }
@@ -169,8 +175,8 @@ namespace ConstructEd.Controllers
         public async Task<IActionResult> PluginIndex()
         {
             var plugins = await _pluginRepository.GetAllAsync();
-            var viewModels = _mapper.Map<IEnumerable<PluginViewModel>>(plugins);
-            return View(nameof(PluginIndex), plugins);
+            var viewModel = _mapper.Map<IEnumerable<PluginViewModel>>(plugins);
+            return View(nameof(PluginIndex), viewModel);
         }
         [HttpGet]
         public IActionResult CreatePlugin()
@@ -283,6 +289,181 @@ namespace ConstructEd.Controllers
                 return View(nameof(RemoveConfirmed), await _pluginRepository.GetByIdAsync(id));
             }
         }
+        #endregion
+
+        #region Instructors Management
+        [HttpGet]
+        public async Task<IActionResult> InstructorIndex()
+        {
+            var instructors = await _instructorRepository.GetAllAsync();
+            return View(nameof(InstructorIndex), instructors);
+        }
+        public IActionResult CreateInstructor()
+        {
+            return View(nameof(CreateInstructor));
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateInstructor(InstructorViewModel viewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                if (viewModel.ImageFile != null && viewModel.ImageFile.Length > 0)
+                {
+                    // Define the folder to save the image
+                    var imagesFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Image");
+
+                    // Generate a unique file name
+                    var fileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(viewModel.ImageFile.FileName);
+                    var filePath = Path.Combine(imagesFolder, fileName);
+
+                    // Ensure the folder exists
+                    if (!Directory.Exists(imagesFolder))
+                    {
+                        Directory.CreateDirectory(imagesFolder);
+                    }
+
+                    // Save the file to the server
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await viewModel.ImageFile.CopyToAsync(stream);
+                    }
+
+                    // Save the file name to the Image property
+                    viewModel.ProfilePicture = fileName;
+                }
+                IdentityResult result = await _authService.RegisterInstructorAsync(viewModel);
+
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("Dashboard", "Admin");
+                }
+
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description);
+                }
+            }
+            return View(nameof(CreateInstructor), viewModel);
+        }
+
+        public async Task<IActionResult> EditInstructor(string id)
+        {
+
+            var instructor = await _instructorRepository.GetByIdAsync(id);
+            if (instructor == null)
+            {
+                return NotFound();
+            }
+
+            var viewModel = _mapper.Map<InstructorViewModel>(instructor);
+
+            if (viewModel.ImageFile != null && viewModel.ImageFile.Length > 0)
+            {
+                // Define the folder to save the image
+                var imagesFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Image");
+
+                // Generate a unique file name
+                var fileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(viewModel.ImageFile.FileName);
+                var filePath = Path.Combine(imagesFolder, fileName);
+
+                // Ensure the folder exists
+                if (!Directory.Exists(imagesFolder))
+                {
+                    Directory.CreateDirectory(imagesFolder);
+                }
+
+                // Save the file to the server
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await viewModel.ImageFile.CopyToAsync(stream);
+                }
+
+                // Save the file name to the Image property
+                viewModel.ProfilePicture = fileName;
+            }
+
+            return View(nameof(EditInstructor), viewModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditInstructor(string id, InstructorViewModel viewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                if (viewModel.ImageFile != null && viewModel.ImageFile.Length > 0)
+                {
+                    // Define the folder to save the image
+                    var imagesFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Image");
+
+                    // Generate a unique file name
+                    var fileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(viewModel.ImageFile.FileName);
+                    var filePath = Path.Combine(imagesFolder, fileName);
+
+                    // Ensure the folder exists
+                    if (!Directory.Exists(imagesFolder))
+                    {
+                        Directory.CreateDirectory(imagesFolder);
+                    }
+
+                    // Save the file to the server
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await viewModel.ImageFile.CopyToAsync(stream);
+                    }
+
+                    // Save the file name to the Image property
+                    viewModel.ProfilePicture = fileName;
+                }
+                try
+                {
+                    var instructor = _mapper.Map<ApplicationUser>(viewModel);
+                    await _instructorRepository.UpdateAsync(instructor);
+                    return RedirectToAction(nameof(InstructorIndex));
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError(string.Empty, ex.InnerException.Message);
+                }
+            }
+
+            var instructors = await _instructorRepository.GetAllAsync();
+            return View(nameof(EditInstructor), viewModel);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> RemoveInstructor(string id, InstructorViewModel Model)
+        {
+            var instructor = await _instructorRepository.GetByIdAsync(id);
+            if (instructor == null)
+            {
+                return NotFound();
+            }
+
+            var viewModel = _mapper.Map<ApplicationUser>(Model);
+            return View(nameof(RemoveInstructor), viewModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> RemoveInstructorConfirmed(string id)
+        {
+            try
+            {
+                await _instructorRepository.DeleteAsync(id);
+                return RedirectToAction(nameof(InstructorIndex));
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.InnerException?.Message ?? ex.Message);
+                var instructor = await _instructorRepository.GetByIdAsync(id);
+                var viewModel = _mapper.Map<InstructorViewModel>(instructor);
+                return View(nameof(RemoveInstructor), viewModel);
+            }
+        }
+
         #endregion
 
     }

@@ -218,7 +218,8 @@
                                                 <li class="nav-item"><a class="nav-link" asp-controller="Admin" asp-action="Dashboard">Dashboard</a></li>
                             }
                         }
-                        <li class="nav-item"><a class="nav-link" asp-controller="#" asp-action="#">About</a></li>
+                        <li class="nav-item"><a class="nav-link" asp-controller="About" asp-action="Index">About</a></li>
+                        <li class="nav-item"><a class="nav-link" asp-controller="ContactUs" asp-action="Index">Contact Us</a></li>
 
                         <!-- Cart Icon -->
                         @if (!User.IsInRole("Admin"))

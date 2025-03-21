@@ -4,6 +4,8 @@ namespace ConstructEd.ViewModels
 {
     public class InstructorViewModel
     {
+        public string Id {  get; set; }
+
         [Required(ErrorMessage = "Full Name is required")]
         [Display(Name = "Full Name")]
         public string FullName { get; set; }

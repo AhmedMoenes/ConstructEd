@@ -1,4 +1,4 @@
-﻿@* @model ConstructEd.ViewModels.InstructorViewModel
+﻿@model ConstructEd.ViewModels.InstructorViewModel
 
 @{
     ViewData["Title"] = "Remove";
@@ -36,10 +36,9 @@
             @Html.DisplayFor(model => model.ProfilePicture)
         </dd>
     </dl>
-    
+
     <form asp-action="Remove">
         <input type="submit" value="Delete" class="btn btn-danger" /> |
         <a asp-action="Index">Back to List</a>
     </form>
 </div>
- *@

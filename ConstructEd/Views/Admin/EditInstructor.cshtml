@@ -1,7 +1,7 @@
-﻿@model ConstructEd.ViewModels.PluginViewModel
+﻿@model ConstructEd.ViewModels.InstructorViewModel
 
 @{
-    ViewData["Title"] = "Add Plugin";
+    ViewData["Title"] = "Edit Instructor";
 }
 
 <style>
@@ -20,8 +20,8 @@
             outline: none;
         }
 
-    /* Create Plugin Button */
-    .btn-create-plugin {
+    /* Save Button */
+    .btn-save {
         background: linear-gradient(90deg, #6f42c1, #aa2068);
         border: none;
         padding: 10px;
@@ -31,7 +31,7 @@
         transition: 0.3s ease;
     }
 
-        .btn-create-plugin:hover {
+        .btn-save:hover {
             background: linear-gradient(90deg, #502ea7, #881856);
             transform: scale(1.02);
         }
@@ -70,47 +70,43 @@
 <div class="d-flex justify-content-center align-items-center min-vh-100" style="background-color: #0c081f;">
     <div class="card shadow-lg p-4 rounded-4" style="background-color: #1b1535; color: #fff; width: 380px;">
 
-        <h3 class="text-center mt-3">Create Plugin</h3>
+        <h3 class="text-center mt-3">Edit Instructor</h3>
 
-        <form asp-action="CreatePlugin" enctype="multipart/form-data">
+        <form asp-action="EditInstructor" enctype="multipart/form-data">
             @if (!ViewData.ModelState.IsValid)
             {
                     <div asp-validation-summary="All" class="alert alert-danger"></div>
             }
 
-            <!-- Title Input -->
+            <!-- Hidden ID Field -->
+            <input type="hidden" asp-for="Id" />
+
+            <!-- Full Name Input -->
             <div class="mb-3">
-                <label asp-for="Title" class="form-label">Plugin Title</label>
-                <input asp-for="Title" class="form-control input-custom" placeholder="Enter plugin title" />
-                <span asp-validation-for="Title" class="text-danger"></span>
+                <label asp-for="FullName" class="form-label">Full Name</label>
+                <input asp-for="FullName" class="form-control input-custom" placeholder="Enter full name" />
+                <span asp-validation-for="FullName" class="text-danger"></span>
             </div>
 
-            <!-- Description Input -->
+            <!-- Bio Input -->
             <div class="mb-3">
-                <label asp-for="Description" class="form-label">Plugin Description</label>
-                <textarea asp-for="Description" class="form-control input-custom" placeholder="Enter plugin description"></textarea>
-                <span asp-validation-for="Description" class="text-danger"></span>
+                <label asp-for="Bio" class="form-label">Bio</label>
+                <textarea asp-for="Bio" class="form-control input-custom" placeholder="Enter bio"></textarea>
+                <span asp-validation-for="Bio" class="text-danger"></span>
             </div>
 
-            <!-- Price Input -->
+            <!-- Profile Picture Input -->
             <div class="mb-3">
-                <label asp-for="Price" class="form-label">Price</label>
-                <input asp-for="Price" class="form-control input-custom" placeholder="Enter plugin price" />
-                <span asp-validation-for="Price" class="text-danger"></span>
+            <label class="form-label">Upload Image</label>
+            <input name="ImageFile" type="file" class="form-control input-custom" />
             </div>
 
-            <!-- Upload Image -->
-            <div class="mb-3">
-                <label class="form-label">Upload Image</label>
-                <input name="ImageFile" type="file" class="form-control input-custom" />
-            </div>
-
-            <!-- Create Plugin Button -->
-            <button type="submit" class="btn-create-plugin w-100">Add Plugin</button>
+            <!-- Save Button -->
+            <button type="submit" class="btn-save w-100">Save</button>
 
             <!-- Back to List Button -->
             <div class="text-center mt-3">
-                <a asp-action="PluginIndex" class="btn-back-to-list">Back to List</a>
+                <a asp-action="InstructorIndex" class="btn-back-to-list">Back to List</a>
             </div>
         </form>
     </div>
