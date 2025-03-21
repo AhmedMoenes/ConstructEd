@@ -105,8 +105,8 @@
                                 <td>@course.Duration hours</td>
                                 <td>@course.Category</td>
                                 <td>
-                                    <a asp-action="EditCourse" asp-route-id="@course.Id" class="btn-edit">Edit</a>
-                                    <a asp-action="RemoveCourse" asp-route-id="@course.Id" class="btn-remove">Remove</a>
+                                    <a asp-action="EditCourse"  asp-route-id="@course.Id" class="btn-edit">Edit</a>
+                                    <a asp-action="RemoveCourse" asp-controller="Admin" asp-route-id="@course.Id" class="btn-remove">Remove</a>
                                 </td>
                             </tr>
                     }

@@ -15,12 +15,12 @@ namespace ConstructEd.Repositories
 
         public async Task DeleteAsync(int id)
         {
-            var entity = await GetByIdAsync(id);
-            if (entity != null)
-            {
-                _dataContext.Courses.Remove(entity);
-                await SaveAsync(); 
-            }
+                var entity = await GetByIdAsync(id);
+                if (entity != null)
+                {
+                    _dataContext.Courses.Remove(entity);
+                    await SaveAsync(); 
+                }
         }
 
         public async Task<ICollection<Course>> GetAllAsync()

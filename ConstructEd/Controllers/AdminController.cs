@@ -155,7 +155,7 @@ namespace ConstructEd.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
         public async Task<IActionResult> RemoveCourseConfirmed(int id)
         {
             try
