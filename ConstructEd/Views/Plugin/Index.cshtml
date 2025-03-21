@@ -9,59 +9,113 @@
 <div class="row">
     @foreach (var plugin in Model)
     {
-            <div class="col-md-4 mb-4">
-                <div class="card shadow-sm">
-                @if (!string.IsNullOrEmpty(plugin.Image))
-                {
+        <div class="col-md-4 mb-4">
+            <div class="container">
+                <div class="box">
+                    @if (!string.IsNullOrEmpty(plugin.Image))
+                    {
                         <img src="/Image/@plugin.Image" class="card-img-top" alt="@plugin.Title" style="width: 100px; object-fit: cover;" />
-                }
-                    <div class="card-body">
-                        <h4 class="card-title">@plugin.Title</h4>
-                        <p class="card-text">Price: @plugin.Price.ToString("C")</p>
+                    }
+                    <div>
+                        <span class="title">@plugin.Title</span>
+                        <strong>Price: @plugin.Price.ToString("C")</strong>
+                    </div>
+                    <a asp-controller="Plugin" asp-action="Details" asp-route-id="@plugin.Id" class="btn btn-success">View Details</a>
+                    <div class="d-grid mt-2">
+                        @if (plugin.IsEnrolled)
+                        {
+                            <button class="btn btn-success" disabled>Enrolled</button>
+                        }
+                        else
+                        {
+                            <form class="cart-form" data-pluginid="@plugin.Id" data-incart="@(plugin.IsInCart ? "true" : "false" )">
+                                <input type="hidden" name="id" value="@plugin.Id" />
+                                <input type="hidden" name="type" value="Plugin" />
+                                <button type="submit" class="cart-button">
+                                    <i class="@(plugin.IsInCart ? "fas fa-shopping-cart" : "fas fa-cart-plus")"></i>
+                                </button>
+                            </form>
 
-                        <!-- View Details Button -->
-                        <a asp-controller="Plugin" asp-action="Details" asp-route-id="@plugin.Id" class="btn btn-success">View Details</a>
-
-                        <div class="d-grid mt-2">
-                @if (plugin.IsEnrolled)
-                {
-                    <button class="btn btn-success" disabled>Enrolled</button>
-                }
-                else
-                {
-                    <form class="cart-form" data-pluginid="@plugin.Id" data-incart="@(plugin.IsInCart ? "true" : "false" )">
-                        <input type="hidden" name="id" value="@plugin.Id" />
-                        <input type="hidden" name="type" value="Plugin" />
-                        <button type="submit" class="cart-button">
-                            <i class="@(plugin.IsInCart ? "fas fa-shopping-cart" : "fas fa-cart-plus")"></i>
-                        </button>
-                    </form>
-
-                    <form class="wish-form" data-pluginid="@plugin.Id" data-inwishlist="@(plugin.IsInWishlist ? "true" : "false")">
-                        <input type="hidden" name="id" value="@plugin.Id" />
-                        <input type="hidden" name="type" value="Plugin" />
-                        <button type="submit" class="wish-button">
+                            <form class="wish-form" data-pluginid="@plugin.Id" data-inwishlist="@(plugin.IsInWishlist ? "true" : "false")">
+                                <input type="hidden" name="id" value="@plugin.Id" />
+                                <input type="hidden" name="type" value="Plugin" />
+                                <button type="submit" class="wish-button">
                                     <i class="@(plugin.IsInWishlist ? "fas" : "far") fa-heart"></i>
-                        </button>
-                    </form>
-                }
-            </div>
+                                </button>
+                            </form>
+                        }
                     </div>
                 </div>
             </div>
+        </div>
     }
 </div>
 
 <style>
-    .cart-button {
+    .container {
+        color: white;
+        position: relative;
+        font-family: sans-serif;
+    }
+
+        .container::before,
+        .container::after {
+            content: "";
+            background-color: #fab5704c;
+            position: absolute;
+        }
+
+        .container::before {
+            border-radius: 50%;
+            width: 6rem;
+            height: 6rem;
+            top: 30%;
+            right: 7%;
+        }
+
+        .container::after {
+            content: "";
+            position: absolute;
+            height: 3rem;
+            top: 8%;
+            right: 5%;
+            border: 1px solid;
+        }
+
+    .box {
+        width: 100%;
+        padding: 1rem;
+        background-color: rgba(255, 255, 255, 0.074);
+        border: 1px solid rgba(255, 255, 255, 0.222);
+        -webkit-backdrop-filter: blur(20px);
+        backdrop-filter: blur(20px);
+        border-radius: 0.7rem;
+        transition: all ease 0.3s;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        text-align: center;
+    }
+
+        .box .title {
+            font-size: 1.5rem;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.5rem;
+        }
+
+        .box strong {
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+    .cart-button, .wish-button {
         font-size: 24px;
         background: none;
         border: none;
         cursor: pointer;
         transition: color 0.3s ease-in-out;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
     }
 
         .cart-button i {
@@ -73,14 +127,6 @@
             color: green !important;
         }
 
-    .wish-button {
-        font-size: 24px;
-        background: none;
-        border: none;
-        cursor: pointer;
-        transition: color 0.3s ease-in-out;
-    }
-
         .wish-button i {
             color: gray;
         }
@@ -88,78 +134,9 @@
         .wish-button .fas {
             color: red !important;
         }
+
+    .box:hover {
+        box-shadow: 0px 0px 20px 1px #ffbb763f;
+        border: 1px solid rgba(255, 255, 255, 0.454);
+    }
 </style>
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-<script>
-
-       $(document).ready(function () {
-        function handleUnauthorized(xhr) {
-            if (xhr.status === 401) {
-                window.location.href = "/Account/Login"; // Redirect to login if unauthorized
-            } else {
-                alert("An error occurred!");
-            }
-        }
-
-        $(".wish-form").on("submit", function (event) {
-            event.preventDefault();
-
-            let form = $(this);
-            let icon = form.find("i");
-            let inWishlist = form.data("inwishlist") === true; // Ensure boolean value
-
-            let actionUrl = inWishlist
-                ? "/WishList/RemoveFromCart"
-                : "/WishList/AddToWish";
-
-            $.post(actionUrl, form.serialize(), function (response) {
-                if (response.success) {
-                    let newStatus = !inWishlist;
-                    form.data("inwishlist", newStatus);  // ✅ Update flag correctly
-
-                    // Toggle heart icon style
-                    if (newStatus) {
-                        icon.removeClass("far").addClass("fas"); // Filled heart
-                    } else {
-                        icon.removeClass("fas").addClass("far"); // Empty heart
-                    }
-                } else {
-                    alert(response.message || "Failed to update wishlist!");
-                }
-            }).fail(handleUnauthorized);
-        });
-
-        $(".cart-form").on("submit", function (event) {
-            event.preventDefault();
-
-            let form = $(this);
-            let icon = form.find("i");
-            let inCart = form.data("incart") === true;
-
-            let actionUrl = inCart
-                ? "/ShoppingCart/RemoveFromCart"
-                : "/ShoppingCart/AddToCart";
-
-            $.post(actionUrl, form.serialize(), function (response) {
-                if (response.success) {
-                    let newStatus = !inCart;
-                    form.data("incart", newStatus);
-
-                    // Toggle shopping cart icon and color
-                    if (newStatus) {
-                        icon.removeClass("fa-cart-plus").addClass("fa-shopping-cart");
-                        icon.css("color", "green");
-                    } else {
-                        icon.removeClass("fa-shopping-cart").addClass("fa-cart-plus");
-                        icon.css("color", "gray");
-                    }
-                } else {
-                    alert(response.message || "Failed to update cart!");
-                }
-            }).fail(handleUnauthorized);
-        });
-    });
-
-</script>
