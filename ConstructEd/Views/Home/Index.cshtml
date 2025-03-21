@@ -1,15 +1,142 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
-    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome to ConstructEd</h1>
-    <p>Learn AEC courses and Revit plugins.</p>
+<style>
+    body {
+        background-color: #121212;
+        color: #E0E0E0;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
 
-    <!-- Button to redirect to Plugins -->
-    <a asp-controller="Plugin" asp-action="Index" class="btn btn-primary">View Plugins</a>
+    .hero-section {
+        padding: 30px;
+        text-align: center;
+    }
 
-    <!-- Button to redirect to Courses -->
-    <a asp-controller="Course" asp-action="Index" class="btn btn-success">View Courses</a>
+    .hero-title {
+        font-size: 3rem;
+        margin-bottom: 20px;
+    }
+
+    .hero-text {
+        margin-bottom: 40px;
+        font-size: 1.2rem;
+        color: #B0B0B0;
+    }
+
+    .btn-custom {
+        margin: 10px;
+        padding: 10px 30px;
+        border-radius: 10px;
+        border: 2px solid;
+        background: linear-gradient(45deg, #ff416c, #ff4b2b);
+        color: white;
+        transition: all 0.3s ease;
+    }
+
+        .btn-custom:hover {
+            transform: scale(1.05);
+            background: linear-gradient(45deg, #ff4b2b, #ff416c);
+        }
+
+    .cube-section {
+        margin-top: 150px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding-bottom:200px;
+    }
+
+    .cube-container {
+        width: 200px;
+        height: 200px;
+        perspective: 800px;
+        margin: auto;
+        transition: 0.8s ease-out;
+    }
+
+        .cube-container:hover {
+            transform: scale(1.5);
+        }
+
+    .cube {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        transform-style: preserve-3d;
+        animation: rotate 8s infinite linear;
+    }
+
+    .face {
+        position: absolute;
+        width: 200px;
+        height: 200px;
+        color: white;
+        font-size: 18px;
+        text-align: center;
+        line-height: 200px;
+        background: #000000cc;
+        border: 2px solid;
+    }
+
+    .front {
+        transform: translateZ(100px);
+    }
+
+    .back {
+        transform: rotateY(180deg) translateZ(100px);
+    }
+
+    .right {
+        transform: rotateY(90deg) translateZ(100px);
+    }
+
+    .left {
+        transform: rotateY(-90deg) translateZ(100px);
+    }
+
+    .top {
+        transform: rotateX(90deg) translateZ(100px);
+    }
+
+    .bottom {
+        transform: rotateX(-90deg) translateZ(100px);
+    }
+
+    @@keyframes rotate {
+        0%
+
+    {
+        transform: rotateX(0) rotateY(0) rotateZ(0);
+    }
+
+    100% {
+        transform: rotateX(360deg) rotateY(360deg) rotateZ(360deg);
+    }
+
+    }
+</style>
+
+<div class="hero-section">
+    <h1 class="hero-title">Welcome to ConstructEd</h1>
+    <p class="hero-text">Learn AEC courses and Revit plugins.</p>
+
+    <!-- Buttons -->
+    <a asp-controller="Plugin" asp-action="Index" class="btn-custom">View Plugins</a>
+    <a asp-controller="Course" asp-action="Index" class="btn-custom">View Courses</a>
+</div>
+
+<!-- 3D Cube Section -->
+<div class="cube-section">
+    <div class="cube-container">
+        <div class="cube">
+            <div class="face front"><span>Python</span></div>
+            <div class="face back">Dynamo</div>
+            <div class="face right">Revit API</div>
+            <div class="face left">C#</div>
+            <div class="face top">WPF</div>
+            <div class="face bottom">Civil 3D</div>
+        </div>
+    </div>
 </div>

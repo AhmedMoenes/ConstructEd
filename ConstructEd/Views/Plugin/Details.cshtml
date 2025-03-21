@@ -1,217 +1,94 @@
-﻿@model ConstructEd.ViewModels.PluginViewModel
+﻿@model PluginViewModel
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Plugin Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Details</h1>
-
+<!-- Plugin Details Page -->
 <div class="container mt-5">
-    <div class="row">
-        <!-- Main Content -->
-        <div class="col-md-8">
-            <!-- Course Title -->
-            <h1 class="display-4 mb-4">@Model.Title</h1>
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <div class="glass-card p-4 text-white">
+                <div class="row">
+                    <!-- Plugin Image (If available) -->
+                    <div class="col-md-4 text-center">
+                        @if (!string.IsNullOrEmpty(Model.Image))
+                        {
+                            <img src="/Image/@Model.Image" class="img-fluid rounded shadow" alt="@Model.Title" style="max-width: 250px;" />
+                        }
+                    </div>
 
-            <!-- Overview -->
-            <div class="card mb-4 shadow">
-                <div class="card-body">
-                    <h2 class="card-title text-primary mb-3">Overview</h2>
-                    <p class="card-text lead">@Model.Description</p>
+                    <!-- Plugin Information -->
+                    <div class="col-md-8">
+                        <h1 class="display-5 text-info mb-3">@Model.Title</h1>
+                        <p class="lead">@Model.Description</p>
+                        <h4 class="text-warning">Price: @Model.Price.ToString("C")</h4>
+
+                        <div class="d-grid gap-2 mt-4">
+                            @if (Model.IsEnrolled)
+                            {
+                                <button class="btn btn-success" disabled>Enrolled</button>
+                            }
+                            else
+                            {
+                                <button type="button" class="btn btn-primary" id="buyNowButton" data-id="@Model.Id">Buy Now</button>
+                            }
+
+                            <form class="cart-form" data-pluginid="@Model.Id" data-incart="@(Model.IsInCart ? "true" : "false")">
+                                <button type="submit" class="cart-button btn btn-outline-success">
+                                    <i class="@(Model.IsInCart ? "fas fa-shopping-cart" : "fas fa-cart-plus")"></i> Add to Cart
+                                </button>
+                            </form>
+
+                            <form class="wish-form" data-pluginid="@Model.Id" data-inwishlist="@(Model.IsInWishlist ? "true" : "false")">
+                                <button type="submit" class="wish-button btn btn-outline-danger">
+                                    <i class="@(Model.IsInWishlist ? "fas fa-heart" : "far fa-heart")"></i> Add to Wishlist
+                                </button>
+                            </form>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Sidebar -->
-<div class="col-md-4">
-    <div class="card shadow-lg">
-        <div class="card-body">
-            <h5 class="card-title text-primary mb-4">Course Details</h5>
-            <ul class="list-group list-group-flush">
-                <li class="list-group-item d-flex justify-content-between align-items-center">
-                    <strong>Title:</strong>
-                    <span class="badge bg-primary rounded-pill">@Model.Title</span>
-                </li>
-                <li class="list-group-item d-flex justify-content-between align-items-center">
-                    <strong>Description:</strong>
-                    <span class="badge bg-primary rounded-pill">@Model.Description</span>
-                </li>
-                <li class="list-group-item d-flex justify-content-between align-items-center">
-                    <strong>Price:</strong>
-                    <span class="badge bg-primary rounded-pill" id="totalPrice">@Model.Price.ToString("C")</span>
-                </li>
-            </ul>
-            <div class="d-grid mt-4">
-                @if (Model.IsEnrolled)
-                {
-
-                    <button class="btn btn-success" disabled>Enrolled</button>
-                }
-                else
-                {
-
-                    <button type="button" class="btn btn-primary" id="buyNowButton" data-id="@Model.Id">
-                        Buy Now
-                    </button>
-                    <form class="cart-form" data-pluginid="@Model.Id" data-incart="@(Model.IsInCart ? "true" : "false" )">
-                        <input type="hidden" name="id" value="@Model.Id" />
-                        <input type="hidden" name="type" value="Plugin" />
-                        <button type="submit" class="cart-button">
-                            <i class="@(Model.IsInCart ? "fas fa-shopping-cart" : "fas fa-cart-plus")"></i>
-                        </button>
-                    </form>
-
-                    <form class="wish-form" data-pluginid="@Model.Id" data-inwishlist="@(Model.IsInWishlist ? "true" : "false")">
-                        <input type="hidden" name="id" value="@Model.Id" />
-                        <input type="hidden" name="type" value="Plugin" />
-                        <button type="submit" class="wish-button">
-                            <i class="@(Model.IsInWishlist ? "fas" : "far") fa-heart"></i>
-                        </button>
-                    </form>
-                }
-            </div>
-        </div>
-    </div>
-</div>
-</div>
-
-
-<!-- Include the Payment Modal Partial View -->
-@{
-    var paymentViewModel = new PaymentViewModel { Amount = Model.Price };
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/paymentValidation.js"></script>
 }
-<partial name="_PaymentModal" model="paymentViewModel" />
 
 <style>
-    .cart-button, .wish-button {
-        font-size: 24px;
-        background: none;
-        border: none;
-        cursor: pointer;
-        transition: color 0.3s ease-in-out;
+    body {
+        background: linear-gradient(to right, #1e1e2f, #3a3a5a);
     }
 
-        .cart-button i, .wish-button i {
-            color: gray;
-            transition: color 0.3s ease-in-out;
+    .glass-card {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 15px;
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        padding: 20px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .btn-primary, .btn-outline-success, .btn-outline-danger {
+        transition: all 0.3s ease-in-out;
+    }
+
+        .btn-primary:hover {
+            background-color: #3a356b;
         }
 
-        .cart-button .fas {
-            color: green !important;
+        .btn-outline-success:hover {
+            background-color: #28a745;
+            color: white;
         }
 
-        .wish-button .fas {
-            color: red !important;
+        .btn-outline-danger:hover {
+            background-color: #dc3545;
+            color: white;
         }
 </style>
-
-
-@section Scripts {
-    <!-- Ensure jQuery is loaded -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-    <!-- Ensure Bootstrap JS is loaded -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-    <!-- Custom Validation Scripts -->
-    <script src="~/js/paymentValidation.js" asp-append-version="true"></script>
-
-    <partial name="_ValidationScriptsPartial" />
-
-    <script>
-                $(document).ready(function () {
-            function handleUnauthorized(xhr) {
-                if (xhr.status === 401) {
-                    window.location.href = "/Account/Login"; // Redirect if unauthorized
-                } else {
-                    alert("An error occurred!");
-                }
-            }
-
-            // Handle Buy Now Button
-            $(document).on("click", "#buyNowButton", function () {
-                let courseId = $(this).data("id"); // Get course ID from button attribute
-
-                if (!courseId) {
-                    alert("Plugin ID is missing!");
-                    return;
-                }
-
-                $.ajax({
-                    url: "/ShoppingCart/AddToCart",
-                    type: "POST",
-                    data: { id: courseId, type: "Plugin" },
-                    success: function (response) {
-                        console.log("Success:", response);
-
-                        if ($("#paymentModal").length) {
-                            $("#paymentModal").modal("show");
-                        } else {
-                            alert("Payment modal not found!");
-                        }
-                    },
-                    error: function (xhr) {
-                        handleUnauthorized(xhr);
-                    }
-                });
-            });
-
-            // Handle Wishlist Submission
-            $(".wish-form").on("submit", function (event) {
-                event.preventDefault();
-                let form = $(this);
-                let icon = form.find("i");
-                let inWishlist = form.data("inwishlist") === true;
-
-                let actionUrl = inWishlist ? "/WishList/RemoveFromCart" : "/WishList/AddToWish";
-
-                $.post(actionUrl, form.serialize(), function (response) {
-                    if (response.success) {
-                        let newStatus = !inWishlist;
-                        form.data("inwishlist", newStatus);
-
-                        // Toggle heart icon style
-                        if (newStatus) {
-                            icon.removeClass("far").addClass("fas"); // Filled heart
-                        } else {
-                            icon.removeClass("fas").addClass("far"); // Empty heart
-                        }
-                    } else {
-                        alert(response.message || "Failed to update wishlist!");
-                    }
-                }).fail(handleUnauthorized);
-            });
-
-            // Handle Cart Submission
-            $(".cart-form").on("submit", function (event) {
-                event.preventDefault();
-                let form = $(this);
-                let icon = form.find("i");
-                let inCart = form.data("incart") === true;
-
-                let actionUrl = inCart ? "/ShoppingCart/RemoveFromCart" : "/ShoppingCart/AddToCart";
-
-                $.post(actionUrl, form.serialize(), function (response) {
-                    if (response.success) {
-                        let newStatus = !inCart;
-                        form.data("incart", newStatus);
-
-                        // Toggle shopping cart icon and color
-                        if (newStatus) {
-                            icon.removeClass("fa-cart-plus").addClass("fa-shopping-cart");
-                            icon.css("color", "green");
-                        } else {
-                            icon.removeClass("fa-shopping-cart").addClass("fa-cart-plus");
-                            icon.css("color", "gray");
-                        }
-                    } else {
-                        alert(response.message || "Failed to update cart!");
-                    }
-                }).fail(handleUnauthorized);
-            });
-        });
-
-    </script>
-}
