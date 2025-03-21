@@ -28,8 +28,9 @@ namespace ConstructEd.Models
         public decimal Price { get; set; }
         public decimal Duration { get; set; }
         public Category Category { get; set; } = new Category();
-        public int InstructorId { get; set; }
         public string? Image { get; set; }
+        public string? UserId { get; set; }
+        public ApplicationUser? User { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
         public ICollection<Enrollment>? Enrollments { get; set; } = new HashSet<Enrollment>();
