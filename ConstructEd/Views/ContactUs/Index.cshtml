@@ -1,114 +1,147 @@
 ﻿@{
-    ViewData["Title"] = "Contact Us";
+    ViewData["Title"] = "About Us";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <style>
     /* Custom Styles */
-    .contact-section {
+    .about-section {
         background-color: #1b1535;
         color: #fff;
         padding: 60px 0;
     }
 
-    .contact-section h2 {
+    .about-section h2 {
         color: #6f42c1;
         font-weight: bold;
         margin-bottom: 20px;
     }
 
-    .contact-section p {
+    .about-section p {
         font-size: 1.1rem;
         line-height: 1.8;
     }
 
-    .contact-form {
+    .team-section {
         background-color: #0c081f;
-        padding: 30px;
-        border-radius: 10px;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        color: #fff;
+        padding: 60px 0;
     }
 
-    .form-control-custom {
-        background-color: transparent;
-        border: 1px solid #5b4b8a;
-        color: #fff;
-        border-radius: 5px;
-        padding: 10px;
+    .team-member {
+        text-align: center;
+        margin-bottom: 30px;
     }
 
-        .form-control-custom:focus {
-            border-color: #7663c1;
-            box-shadow: none;
-            outline: none;
-        }
+    .team-member img {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        border: 4px solid #6f42c1;
+        margin-bottom: 15px;
+    }
 
-    .btn-submit {
-        background: linear-gradient(90deg, #6f42c1, #aa2068);
-        border: none;
-        padding: 10px 20px;
-        color: #fff;
+    .team-member h4 {
+        color: #6f42c1;
         font-weight: bold;
-        border-radius: 5px;
-        transition: 0.3s ease;
+        margin-bottom: 10px;
     }
 
-        .btn-submit:hover {
-            background: linear-gradient(90deg, #502ea7, #881856);
-            transform: scale(1.02);
-        }
+    .team-member p {
+        font-size: 1rem;
+        color: #ccc;
+    }
+
+    .mission-section {
+        background-color: #1b1535;
+        color: #fff;
+        padding: 60px 0;
+    }
 </style>
 
-<!-- Contact Section -->
-<div class="contact-section">
+<!-- About Section -->
+<div class="about-section">
     <div class="container">
         <div class="row">
             <div class="col-lg-8 mx-auto text-center">
-                <h2>Contact Us</h2>
+                <h2>About Us</h2>
                 <p>
-                    Have questions or need assistance? We're here to help! Fill out the form below, and we'll get back to you as soon as possible.
+                    Welcome to ConstructEd, your premier destination for online learning and professional development. 
+                    We are dedicated to providing high-quality courses and resources to help you achieve your goals. 
+                    Whether you're a beginner or an expert, our platform offers something for everyone.
                 </p>
-            </div>
-        </div>
-        <div class="row mt-4">
-            <div class="col-lg-8 mx-auto">
-                <div class="contact-form">
-                    <form asp-action="Contact" method="post">
-                        <!-- Name Field -->
-                        <div class="mb-3">
-                            <label for="name" class="form-label">Your Name</label>
-                            <input type="text" class="form-control form-control-custom" id="name" name="name" placeholder="Enter your name" required />
-                        </div>
-
-                        <!-- Email Field -->
-                        <div class="mb-3">
-                            <label for="email" class="form-label">Your Email</label>
-                            <input type="email" class="form-control form-control-custom" id="email" name="email" placeholder="Enter your email" required />
-                        </div>
-
-                        <!-- Subject Field -->
-                        <div class="mb-3">
-                            <label for="subject" class="form-label">Subject</label>
-                            <input type="text" class="form-control form-control-custom" id="subject" name="subject" placeholder="Enter the subject" required />
-                        </div>
-
-                        <!-- Message Field -->
-                        <div class="mb-3">
-                            <label for="message" class="form-label">Your Message</label>
-                            <textarea class="form-control form-control-custom" id="message" name="message" rows="5" placeholder="Enter your message" required></textarea>
-                        </div>
-
-                        <!-- Submit Button -->
-                        <div class="text-center">
-                            <button type="submit" class="btn-submit">Send Message</button>
-                        </div>
-                    </form>
-                </div>
             </div>
         </div>
     </div>
 </div>
 
+<!-- Mission Section -->
+<div class="mission-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center">
+                <h2>Our Mission</h2>
+                <p>
+                    Our mission is to empower individuals through education. We believe that everyone deserves access 
+                    to high-quality learning resources, regardless of their background or location. Join us on this 
+                    journey to unlock your full potential.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Team Section -->
+<div class="team-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <h2>Our Team</h2>
+            </div>
+        </div>
+        <div class="row">
+            <!-- Team Member 1 -->
+            <div class="col-lg-4 col-md-6 team-member">
+                <img src="https://via.placeholder.com/150" alt="Team Member 1" />
+                <h4>John Doe</h4>
+                <p>CEO & Founder</p>
+            </div>
+            <!-- Team Member 2 -->
+            <div class="col-lg-4 col-md-6 team-member">
+                <img src="https://via.placeholder.com/150" alt="Team Member 2" />
+                <h4>Jane Smith</h4>
+                <p>Lead Instructor</p>
+            </div>
+            <!-- Team Member 3 -->
+            <div class="col-lg-4 col-md-6 team-member">
+                <img src="https://via.placeholder.com/150" alt="Team Member 3" />
+                <h4>Michael Johnson</h4>
+                <p>Content Developer</p>
+            </div>
+            <!-- Team Member 4 -->
+            <div class="col-lg-4 col-md-6 team-member">
+                <img src="https://via.placeholder.com/150" alt="Team Member 4" />
+                <h4>Emily Davis</h4>
+                <p>Marketing Specialist</p>
+            </div>
+            <!-- Team Member 5 -->
+            <div class="col-lg-4 col-md-6 team-member">
+                <img src="https://via.placeholder.com/150" alt="Team Member 5" />
+                <h4>David Wilson</h4>
+                <p>Software Engineer</p>
+            </div>
+            <!-- Team Member 6 -->
+            <div class="col-lg-4 col-md-6 team-member">
+                <img src="https://via.placeholder.com/150" alt="Team Member 6" />
+                <h4>Sarah Brown</h4>
+                <p>UX/UI Designer</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
 @section Scripts {
-        <partial name="_ValidationScriptsPartial" />
+            <partial name="_ValidationScriptsPartial" />
 }
