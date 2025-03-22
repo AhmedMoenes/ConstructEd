@@ -2,83 +2,6 @@
     ViewData["Title"] = "Home Page";
 }
 
-@* <style>
-    /* Cube-specific styles */
-    .cube-section {
-        margin-top: 150px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding-bottom: 200px;
-    }
-
-    .cube-container {
-        width: 200px;
-        height: 200px;
-        perspective: 800px;
-        margin: auto;
-        transition: 0.8s ease-out;
-    }
-
-        .cube-container:hover {
-            transform: scale(1.5);
-        }
-
-    .cube {
-        position: relative;
-        width: 100%;
-        height: 100%;
-        transform-style: preserve-3d;
-        animation: rotate 8s infinite linear;
-    }
-
-    .face {
-        position: absolute;
-        width: 200px;
-        height: 200px;
-        color: #00619e; /* Cream color for text */
-        font-size: 18px;
-        text-align: center;
-        line-height: 200px;
-        background: rgb(100,100,100,0.05); /* Main color for cube faces */
-        border: 2px solid #01a199; /* Secondary color for borders */
-    }
-
-    .front {
-        transform: translateZ(100px);
-    }
-
-    .back {
-        transform: rotateY(180deg) translateZ(100px);
-    }
-
-    .right {
-        transform: rotateY(90deg) translateZ(100px);
-    }
-
-    .left {
-        transform: rotateY(-90deg) translateZ(100px);
-    }
-
-    .top {
-        transform: rotateX(90deg) translateZ(100px);
-    }
-
-    .bottom {
-        transform: rotateX(-90deg) translateZ(100px);
-    }
-
-    @@keyframes rotate {
-        0% {
-            transform: rotateX(0) rotateY(0) rotateZ(0);
-        }
-
-        100% {
-            transform: rotateX(360deg) rotateY(360deg) rotateZ(360deg);
-        }
-    }
-</style> *@
-
 <!-- 3D Cube Section -->
 <section>
     <div class="cube-section">
@@ -92,5 +15,35 @@
                 <div class="face bottom">Civil 3D</div>
             </div>
         </div>
+    </div>
+</section>
+
+<!-- Courses Section -->
+<section class="courses" id="courses">
+    <div class="courses-img">
+        <img src="~/image/courses.png" alt="Courses">
+    </div>
+
+    <div class="courses-content">
+        <h2>Our <span>Courses</span></h2>
+        <p>
+            Dive into our comprehensive collection of <b>AEC courses</b> designed to enhance your skills in <b>BIM, Revit, Dynamo, and more</b>. Whether you're a beginner or an advanced user, our courses cater to all levels. Learn from industry experts and gain hands-on experience with real-world projects. Start your journey today and transform your career in the AEC industry!
+        </p>
+        <a asp-controller="Course" asp-action="Index" class="btn">Explore Our Courses</a>
+    </div>
+</section>
+
+<!-- Plugins Section -->
+<section class="plugins" id="plugins">
+    <div class="plugins-img">
+        <img src="~/image/plugins.png" alt="Plugins">
+    </div>
+
+    <div class="plugins-content">
+        <h2>Our <span>Plugins</span></h2>
+        <p>
+            Enhance your workflow with our powerful <b>Revit plugins</b>. From automation to advanced modeling tools, our plugins are designed to streamline your processes and boost productivity. Explore our collection of plugins, each crafted to solve specific challenges in the AEC industry. Download now and take your projects to the next level!
+        </p>
+        <a asp-controller="Plugin" asp-action="Index" class="btn">Discover Our Plugins</a>
     </div>
 </section>

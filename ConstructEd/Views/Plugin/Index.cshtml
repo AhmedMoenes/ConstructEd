@@ -3,147 +3,59 @@
     ViewData["Title"] = "Plugins";
 }
 
-<h2>Plugins</h2>
+<!-- Plugins Section -->
+<section class="plugins-section">
+    <div class="container">
+        <h2 class="text-center mb-5">Plugins</h2>
 
-<div class="row">
-    @foreach (var plugin in Model)
-    {
-        <div class="col-md-4 mb-4">
-            <div class="container">
-                <div class="box">
-                    @if (!string.IsNullOrEmpty(plugin.Image))
-                    {
-                        <img src="/Image/@plugin.Image" class="card-img-top" alt="@plugin.Title" style="width: 100px; object-fit: cover;" />
-                    }
-                    <div>
-                        <span class="title">@plugin.Title</span>
-                        <strong>Price: @plugin.Price.ToString("C")</strong>
-                    </div>
-                    <a asp-controller="Plugin" asp-action="Details" asp-route-id="@plugin.Id" class="btn btn-success">View Details</a>
-                    <div class="d-grid mt-2">
-                        @if (plugin.IsEnrolled)
-                        {
-                            <button class="btn btn-success" disabled>Enrolled</button>
-                        }
-                        else
-                        {
-                            <form class="cart-form" data-pluginid="@plugin.Id" data-incart="@(plugin.IsInCart ? "true" : "false" )">
-                                <input type="hidden" name="id" value="@plugin.Id" />
-                                <input type="hidden" name="type" value="Plugin" />
-                                <button type="submit" class="cart-button">
-                                    <i class="@(plugin.IsInCart ? "fas fa-shopping-cart" : "fas fa-cart-plus")"></i>
-                                </button>
-                            </form>
+        <div class="row justify-content-center">
+            @foreach (var plugin in Model)
+            {
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="plugin-card">
+                        <div class="card-body">
+                            @if (!string.IsNullOrEmpty(plugin.Image))
+                            {
+                                <img src="/Image/@plugin.Image" class="card-img-top" alt="@plugin.Title" />
+                            }
 
-                            <form class="wish-form" data-pluginid="@plugin.Id" data-inwishlist="@(plugin.IsInWishlist ? "true" : "false")">
-                                <input type="hidden" name="id" value="@plugin.Id" />
-                                <input type="hidden" name="type" value="Plugin" />
-                                <button type="submit" class="wish-button">
-                                    <i class="@(plugin.IsInWishlist ? "fas" : "far") fa-heart"></i>
-                                </button>
-                            </form>
-                        }
+                            <h5 class="card-title">@plugin.Title</h5>
+                            <p class="card-text">Price: @plugin.Price.ToString("C")</p>
+
+                            <a asp-controller="Plugin" asp-action="Details" asp-route-id="@plugin.Id" class="btn btn-primary btn-block">View Details</a>
+
+                            <div class="d-flex justify-content-between mt-3">
+                                @if (plugin.IsEnrolled)
+                                {
+                                    <button class="btn btn-success w-100" disabled>Enrolled</button>
+                                }
+                                else
+                                {
+                                    <form class="cart-form" data-pluginid="@plugin.Id" data-incart="@(plugin.IsInCart ? "true" : "false" )">
+                                        <input type="hidden" name="id" value="@plugin.Id" />
+                                        <input type="hidden" name="type" value="Plugin" />
+                                        <button type="submit" class="cart-button btn btn-outline-primary">
+                                            <i class="@(plugin.IsInCart ? "fas fa-shopping-cart" : "fas fa-cart-plus")"></i>
+                                        </button>
+                                    </form>
+
+                                    <form class="wish-form" data-pluginid="@plugin.Id" data-inwishlist="@(plugin.IsInWishlist ? "true" : "false")">
+                                        <input type="hidden" name="id" value="@plugin.Id" />
+                                        <input type="hidden" name="type" value="Plugin" />
+                                        <button type="submit" class="wish-button btn btn-outline-danger">
+                                            <i class="@(plugin.IsInWishlist ? "fas" : "far") fa-heart"></i>
+                                        </button>
+                                    </form>
+                                }
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
+            }
         </div>
-    }
-</div>
-
-<style>
-    .container {
-        color: white;
-        position: relative;
-        font-family: sans-serif;
-    }
-
-        .container::before,
-        .container::after {
-            content: "";
-            background-color: #fab5704c;
-            position: absolute;
-        }
-
-        .container::before {
-            border-radius: 50%;
-            width: 6rem;
-            height: 6rem;
-            top: 30%;
-            right: 7%;
-        }
-
-        .container::after {
-            content: "";
-            position: absolute;
-            height: 3rem;
-            top: 8%;
-            right: 5%;
-            border: 1px solid;
-        }
-
-    .box {
-        width: 100%;
-        padding: 1rem;
-        background-color: rgba(255, 255, 255, 0.074);
-        border: 1px solid rgba(255, 255, 255, 0.222);
-        -webkit-backdrop-filter: blur(20px);
-        backdrop-filter: blur(20px);
-        border-radius: 0.7rem;
-        transition: all ease 0.3s;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        align-items: center;
-        text-align: center;
-    }
-
-        .box .title {
-            font-size: 1.5rem;
-            font-weight: 500;
-            letter-spacing: 0.1em;
-            margin-bottom: 0.5rem;
-        }
-
-        .box strong {
-            display: block;
-            margin-bottom: 0.5rem;
-        }
-
-    .cart-button, .wish-button {
-        font-size: 24px;
-        background: none;
-        border: none;
-        cursor: pointer;
-        transition: color 0.3s ease-in-out;
-    }
-
-        .cart-button i {
-            color: gray;
-            transition: color 0.3s ease-in-out;
-        }
-
-        .cart-button .fas {
-            color: green !important;
-        }
-
-        .wish-button i {
-            color: gray;
-        }
-
-        .wish-button .fas {
-            color: red !important;
-        }
-
-    .box:hover {
-        box-shadow: 0px 0px 20px 1px #ffbb763f;
-        border: 1px solid rgba(255, 255, 255, 0.454);
-    }
-</style>
+    </div>
+</section>
 
 @section Scripts {
-
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    
     <script src="~/js/PluginIndexWishlistandshoppingcart.js"></script>
-
 }

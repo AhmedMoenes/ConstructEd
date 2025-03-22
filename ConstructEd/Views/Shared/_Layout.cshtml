@@ -8,8 +8,7 @@
     <!-- External Stylesheets -->
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" asp-append-version="true">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="icon" type="image/x-icon" href="@Url.Content("~/lib/logo.png")">
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true">
+    <link rel="icon" type="images/x-icon" href="/Image/logo.png">
     <link rel="stylesheet" href="~/ConstructEd.styles.css" asp-append-version="true">
     <link rel="stylesheet" href="~/css/custom.css" asp-append-version="true"> <!-- Custom CSS -->
 </head>
@@ -20,8 +19,8 @@
             <div class="container-fluid">
                 <!-- Logo -->
                 <a class="navbar-brand" asp-controller="Home" asp-action="Index">
-                    <img src="@Url.Content("~/logo.png")" alt="Logo" height="30">
-                    <img src="~/final web.png" alt="Logo" height="30">
+                    <img src="/Image/logo.png" alt="Logo" height="30">
+                    <img src="/Image/home.png" alt="Logo" height="30">
                 </a>
 
                 <!-- Responsive Navbar Toggle Button -->
@@ -37,13 +36,13 @@
                         <li class="nav-item"><a class="nav-link" asp-controller="Plugin" asp-action="Index">Plugins</a></li>
                         @if (User.Identity.IsAuthenticated)
                         {
-                            @if (!User.IsInRole("Admin"))
-                            {
-                                <li class="nav-item"><a class="nav-link" asp-controller="Enrollment" asp-action="Index">Enrollments</a></li>
-                            }
                             @if (User.IsInRole("Admin"))
                             {
                                 <li class="nav-item"><a class="nav-link" asp-controller="Admin" asp-action="Dashboard">Dashboard</a></li>
+                            }
+                            else
+                            {
+                                <li class="nav-item"><a class="nav-link" asp-controller="Enrollment" asp-action="Index">Enrollments</a></li>
                             }
                         }
                         <li class="nav-item"><a class="nav-link" asp-controller="About" asp-action="Index">About</a></li>
@@ -123,7 +122,7 @@
     <!-- Footer -->
     <footer class="footer py-3">
         <div class="container d-flex justify-content-between align-items-center">
-            <img src="@Url.Content("~/logo.png")" alt="Logo" height="30">
+            <img src="/Image/logo.png" alt="Logo" height="30">
 
             <!-- Social Media Links -->
             <div class="social-icons">
@@ -151,5 +150,3 @@
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
-
-
