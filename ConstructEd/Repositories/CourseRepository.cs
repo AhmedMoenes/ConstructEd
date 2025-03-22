@@ -61,5 +61,19 @@ namespace ConstructEd.Repositories
             return categories;
         }
 
+        public async Task<ICollection<Course>> GetByCategoryAsync(Category? category)
+        {
+            if (category == null)
+            {
+                // Return all courses if no category is selected
+                return await _dataContext.Courses.ToListAsync();
+            }
+
+            // Filter courses by the selected category
+            return await _dataContext.Courses
+                                     .Where(c => c.Category == category)
+                                     .ToListAsync();
+        }
+
     }
 }

@@ -797,6 +797,50 @@ main {
     }
 
 
+/* Dropdown Filter Styles */
+#categoryFilter {
+    background-color: var(--main-color); /* Use main color for background */
+    color: var(--bg-color); /* Use cream color for text */
+    border: 1px solid var(--secondary-color); /* Use secondary color for border */
+    border-radius: 5px;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    margin-bottom: 1.5rem; /* Space below the dropdown */
+    width: 100%; /* Full width */
+    max-width: 300px; /* Limit maximum width */
+    appearance: none; /* Remove default arrow */
+    -webkit-appearance: none; /* Remove default arrow for Safari */
+    -moz-appearance: none; /* Remove default arrow for Firefox */
+    background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='%23fff' d='M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592c.859 0 1.319 1.013.753 1.658l-4.796 5.48a1 1 0 01-1.506 0z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center; /* Position the arrow */
+    background-size: 12px; /* Size of the arrow */
+}
+
+    #categoryFilter:hover {
+        border-color: var(--bg-color); /* Change border color on hover */
+    }
+
+    #categoryFilter:focus {
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(1, 161, 153, 0.25); /* Focus ring using secondary color */
+        border-color: var(--secondary-color); /* Change border color on focus */
+    }
+
+    #categoryFilter option {
+        background-color: var(--main-color); /* Use main color for options */
+        color: var(--bg-color); /* Use cream color for text */
+    }
+
+/* Container for the Dropdown */
+.filter-container {
+    display: flex;
+    justify-content: flex-end; /* Align the dropdown to the right */
+    margin-bottom: 1.5rem; /* Space below the dropdown */
+}
+
 /*Coooooooooooooooooooooooooooooooooourse Detailssssssssssssssssssssssssssssssssssssssssssssssssssssssssss*/
 
 /* Course Details Page Styles */
@@ -1090,3 +1134,270 @@ main {
         background-color: var(--secondary-color);
         color: var(--bg-color);
     }
+
+
+/*Wishlistttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt*/
+
+/* Wishlist Container */
+.wishlist-container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 1rem;
+    background-color: var(--bg-color);
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Wishlist Title */
+.wishlist-title {
+    text-align: center;
+    font-size: 2rem;
+    color: var(--main-color);
+    margin-bottom: 1.5rem;
+}
+
+/* Wishlist Table */
+.wishlist-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: var(--bg-color);
+    color: var(--main-color);
+}
+
+    .wishlist-table th,
+    .wishlist-table td {
+        padding: 1rem;
+        border-bottom: 1px solid var(--secondary-color);
+        text-align: left;
+    }
+
+    .wishlist-table th {
+        background-color: var(--main-color);
+        color: var(--bg-color);
+        font-weight: bold;
+    }
+
+    .wishlist-table tbody tr:hover {
+        background-color: rgba(255, 255, 255, 0.05);
+    }
+
+/* Remove Button */
+.btn-remove {
+    background-color: var(--secondary-color);
+    color: var(--bg-color);
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    transition: background-color 0.3s ease;
+}
+
+    .btn-remove:hover {
+        background-color: var(--main-color);
+        color: var(--bg-color);
+    }
+
+    .btn-remove i {
+        margin-right: 0.5rem;
+    }
+
+/* Empty Wishlist Message */
+.wishlist-empty-message {
+    text-align: center;
+    color: var(--secondary-color);
+    font-size: 1.2rem;
+    margin-top: 2rem;
+}
+
+/*Shopping Carrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrt indexxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx*/
+
+/* Shopping Cart Container */
+.shopping-cart-container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 1rem;
+    background-color: var(--bg-color);
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Shopping Cart Title */
+.shopping-cart-title {
+    text-align: center;
+    font-size: 2rem;
+    color: var(--main-color);
+    margin-bottom: 1.5rem;
+}
+
+/* Shopping Cart Table */
+.shopping-cart-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: var(--bg-color);
+    color: var(--main-color);
+}
+
+    .shopping-cart-table th,
+    .shopping-cart-table td {
+        padding: 1rem;
+        border-bottom: 1px solid var(--secondary-color);
+        text-align: left;
+    }
+
+    .shopping-cart-table th {
+        background-color: var(--main-color);
+        color: var(--bg-color);
+        font-weight: bold;
+    }
+
+    .shopping-cart-table tbody tr:hover {
+        background-color: rgba(255, 255, 255, 0.05);
+    }
+
+/* Remove Button */
+.btn-remove {
+    background-color: var(--secondary-color);
+    color: var(--bg-color);
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    transition: background-color 0.3s ease;
+}
+
+    .btn-remove:hover {
+        background-color: var(--main-color);
+        color: var(--bg-color);
+    }
+
+    .btn-remove i {
+        margin-right: 0.5rem;
+    }
+
+/* Cart Summary */
+.cart-summary {
+    text-align: right;
+    margin-top: 2rem;
+}
+
+    .cart-summary h3 {
+        font-size: 1.5rem;
+        color: var(--main-color);
+        margin-bottom: 1rem;
+    }
+
+/* Checkout Button */
+.btn-checkout {
+    background-color: var(--main-color);
+    color: var(--bg-color);
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 4px;
+    font-size: 1rem;
+    transition: background 0.3s ease;
+}
+
+    .btn-checkout:hover {
+        background-color: var(--secondary-color);
+        color: var(--bg-color);
+        
+    }
+
+/* Empty Cart Message */
+.empty-cart-message {
+    text-align: center;
+    color: var(--secondary-color);
+    font-size: 1.2rem;
+    margin-top: 2rem;
+}
+
+
+/*Payment Sucess and failed styleeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee*/
+
+/* Payment Success and Failed Containers */
+.payment-success-container,
+.payment-failed-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: var(--bg-color);
+    padding: 1rem;
+}
+
+/* Payment Success and Failed Cards */
+.payment-success-card,
+.payment-failed-card {
+    background-color: var(--main-color);
+    color: var(--bg-color);
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    max-width: 500px;
+    width: 100%;
+}
+
+/* Titles */
+.payment-success-title,
+.payment-failed-title {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+/* Messages */
+.payment-success-message,
+.payment-failed-message {
+    font-size: 1.2rem;
+    margin-bottom: 1.5rem;
+}
+
+/* Transaction ID */
+.transaction-id {
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+/* Redirect Message */
+.redirect-message {
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+/* Buttons */
+.container.mt-5.text-center .btn {
+    padding: 0.75rem 1.5rem;
+    border-radius: 4px;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+}
+
+.container.mt-5.text-center .btn-primary {
+    background-color: var(--secondary-color);
+    color: var(--bg-color);
+    border: none;
+}
+
+    .container.mt-5.text-center .btn-primary:hover {
+        background-color: var(--main-color);
+    }
+
+.container.mt-5.text-center .btn-danger {
+    background-color: #dc3545;
+    color: var(--bg-color);
+    border: none;
+}
+
+    .container.mt-5.text-center .btn-danger:hover {
+        background-color: #c82333;
+    }
+
+/* Payment Failed Actions */
+.payment-failed-actions {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+

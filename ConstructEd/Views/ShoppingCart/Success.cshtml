@@ -2,13 +2,35 @@
     ViewData["Title"] = "Payment Successful";
 }
 
-<h2>Payment Successful!</h2>
+<div class="container mt-5 text-center">
+    <div class="card p-4 shadow" style="max-width: 500px; margin: 0 auto;">
+        <h2 class="card-title mb-4">Payment Successful!</h2>
+        <p class="card-text">Thank you for your payment.</p>
 
-<p>Thank you for your payment.</p>
+        @if (ViewBag.TransactionID != null)
+        {
+            <p class="mb-3"><strong>Transaction ID:</strong> @ViewBag.TransactionID</p>
+        }
 
-@if (ViewBag.TransactionID != null)
-{
-    <p><strong>Transaction ID:</strong> @ViewBag.TransactionID</p>
+        <p class="mb-3">You will be redirected to your profile in <span id="countdown">5</span> seconds.</p>
+        <a asp-controller="Account" asp-action="Profile" class="btn btn-primary">Go to Profile Now</a>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Countdown and redirect logic
+        let countdown = 5;
+        const countdownElement = document.getElementById("countdown");
+
+        const interval = setInterval(() => {
+            countdown--;
+            countdownElement.textContent = countdown;
+
+            if (countdown === 0) {
+                clearInterval(interval);
+                window.location.href = "@Url.Action("Profile", "Account")";
+            }
+        }, 1000);
+    </script>
 }
-
-<a href="@Url.Action("Index", "Home")" class="btn btn-primary">Return to Home</a>

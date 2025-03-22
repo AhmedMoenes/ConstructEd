@@ -19,8 +19,11 @@
                     Thank you for contacting us. We have received your message and will get back to you as soon as possible.
                 </p>
 
+                <!-- Countdown Message -->
+                <p>You will be redirected to the home page in <span id="countdown">5</span> seconds.</p>
+
                 <!-- Back to Home Button -->
-                <a href="/" class="btn-back">Back to Home</a>
+                <a asp-controller="Home" asp-action="Index" class="btn btn-primary">Back to Home</a>
             </div>
         </div>
     </div>
@@ -29,9 +32,18 @@
 @section Scripts {
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
     <script>
-        setTimeout(function () {
-            window.location.href = '@Url.Action("Index", "Home")';
-        }, 5000); 
-    </script>
+        // Countdown and redirect logic
+        let countdown = 5;
+        const countdownElement = document.getElementById("countdown");
 
+        const interval = setInterval(() => {
+            countdown--;
+            countdownElement.textContent = countdown;
+
+            if (countdown === 0) {
+                clearInterval(interval);
+                window.location.href = "@Url.Action("Index", "Home")";
+            }
+        }, 1000);
+    </script>
 }
