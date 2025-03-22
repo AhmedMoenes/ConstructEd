@@ -8,11 +8,10 @@ namespace ConstructEd.Data
     {
         public DataContext CreateDbContext(string[] args)
         {
-            // Set base path to the MVC project where appsettings.json is located
-            var basePath = Path.Combine(Directory.GetCurrentDirectory(), "..", "ConstructEd"); // Adjust project name if needed
+            var basePath = Path.Combine(Directory.GetCurrentDirectory(), "..", "ConstructEd"); 
 
             var config = new ConfigurationBuilder()
-                .SetBasePath(basePath) // Ensure it looks inside the MVC project
+                .SetBasePath(basePath)
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                 .Build();
 
