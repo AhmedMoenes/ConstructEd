@@ -4,6 +4,7 @@ using ConstructEd.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ConstructEd.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20250322225650_noteasy")]
+    partial class noteasy
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -577,8 +580,7 @@ namespace ConstructEd.Data.Migrations
 
                     b.HasOne("ConstructEd.Models.Plugin", "Plugin")
                         .WithMany("Enrollments")
-                        .HasForeignKey("PluginId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("PluginId");
 
                     b.HasOne("ConstructEd.Models.ApplicationUser", "User")
                         .WithMany("Enrollments")
