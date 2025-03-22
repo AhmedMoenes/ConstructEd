@@ -64,19 +64,6 @@
             margin-bottom: 20px;
         }
 
-        /* Add Course Button */
-        .btn-add-course {
-            background-color: #28a745;
-            color: #fff;
-            padding: 10px 20px;
-            border-radius: 5px;
-            text-decoration: none;
-            transition: background 0.3s ease;
-        }
-
-            .btn-add-course:hover {
-                background-color: #218838;
-            }
     </style>
 
     <div class="container">
@@ -114,8 +101,10 @@
             </table>
         </div>
         <div class="text-center mt-4">
-        <a asp-action="CreateCourse" class="btn-add-course">Add New Course</a>
-        <a asp-action="Dashboard" class="btn-add-course">Back To Dashboard</a>
+        <a asp-action="CreateCourse" class="btn btn-danger">Add New Course</a>
+        <a asp-action="Dashboard" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Back to Dashboard
+            </a>
     </div>
     </div>
 

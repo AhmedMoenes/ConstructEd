@@ -1,4 +1,4 @@
-@model CourseContentViewModel
+﻿@model CourseContentViewModel
 
 @{
     ViewData["Title"] = "Create";
@@ -42,17 +42,16 @@
 <div class="card shadow-lg p-4 rounded-4" style="background-color: #1b1535; color: #fff; width: 420px;">
 <h3 class="text-center mt-3">Create Course Content</h3>
 
-        <form asp-action="Create" class="mt-4">
+<form asp-action="CreateCourseContent" class="mt-4">
 <div asp-validation-summary="All" class="text-danger mb-3"></div>
 
-            <!-- Title Input -->
 <div class="mb-3">
 <label asp-for="Title" class="form-label">Title</label>
 <input asp-for="Title" class="form-control input-custom" />
 <span asp-validation-for="Title" class="text-danger"></span>
 </div>
 
-            <!-- Type Dropdown -->
+<!-- Type Dropdown -->
 <div class="mb-3">
 <label asp-for="Type" class="form-label">Type</label>
 <select asp-for="Type" asp-items="Model.ContentTypes" class="form-control input-custom">
@@ -61,21 +60,21 @@
 <span asp-validation-for="Type" class="text-danger"></span>
 </div>
 
-            <!-- File URL Input -->
+<!-- File URL Input -->
 <div class="mb-3">
 <label asp-for="FileUrl" class="form-label">File URL</label>
 <input asp-for="FileUrl" class="form-control input-custom" />
 <span asp-validation-for="FileUrl" class="text-danger"></span>
 </div>
 
-            <!-- Order Input -->
+<!-- Order Input -->
 <div class="mb-3">
 <label asp-for="Order" class="form-label">Order</label>
 <input asp-for="Order" class="form-control input-custom" />
 <span asp-validation-for="Order" class="text-danger"></span>
 </div>
 
-            <!-- Course Dropdown -->
+<!-- Course Dropdown -->
 <div class="mb-3">
 <label asp-for="CourseId" class="form-label">Course</label>
 <select asp-for="CourseId" asp-items="ViewBag.Courses" class="form-control input-custom">
@@ -84,14 +83,14 @@
 <span asp-validation-for="CourseId" class="text-danger"></span>
 </div>
 
-            <!-- Create Button -->
+ <!-- Create Button -->
 <div class="d-grid">
 <input type="submit" value="Create" class="btn-create w-100" />
 </div>
 </form>
 
-        <div class="text-center mt-4">
-<a asp-action="Index" class="text-decoration-none" style="color: #5998ff;">Back to List</a>
+<div class="text-center mt-4">
+<a asp-action="CourseContentIndex" class="text-decoration-none" style="color: #5998ff;">Back to List</a>
 </div>
 </div>
 </div>

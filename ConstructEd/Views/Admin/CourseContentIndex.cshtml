@@ -1,8 +1,7 @@
-﻿@model IEnumerable<ApplicationUser>
-
+﻿@model IEnumerable<CourseContentViewModel>
 @{
-    ViewData["Title"] = "InstructorIndex";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+	SelectList courses = new SelectList(ViewBag.Courses, "Id", "Title");
+	Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <style>
@@ -64,45 +63,56 @@
         margin-bottom: 20px;
     }
 
+    /* Add Course Content Button */
+    .btn-add-course-content {
+        background-color: #28a745;
+        color: #fff;
+        padding: 10px 20px;
+        border-radius: 5px;
+        text-decoration: none;
+        transition: background 0.3s ease;
+    }
+
+        .btn-add-course-content:hover {
+            background-color: #218838;
+        }
 </style>
 
 <div class="container">
-    <h1 class="page-title">Our Instructors</h1>
+    <h1 class="page-title">Course Content</h1>
 
-    <!-- Instructors Table -->
+    <!-- Course Content Table -->
     <div class="table-responsive">
         <table class="table table-custom">
             <thead>
                 <tr>
-                    <th>Full Name</th>
-                    <th>Email</th>
-                    <th>Bio</th>
-                    <th>Experience (Years)</th>
-                    <th>Profile Picture</th>
+                    <th>Title</th>
+                    <th>Type</th>
+                    <th>File URL</th>
+                    <th>Order</th>
                     <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach (var instructor in Model)
+                @foreach (var content in Model)
                 {
                         <tr>
-                            <td>@instructor.FullName</td>
-                            <td>@instructor.Email</td>
-                            <td>@instructor.Bio</td>
-                            <td>@instructor.Experience</td>
+                            <td>@content.Title</td>
+                            <td>@content.Type</td>
                             <td>
-                            @if (!string.IsNullOrEmpty(instructor.ProfilePicture))
+                            @if (!string.IsNullOrEmpty(content.FileUrl))
                             {
-                                        <img src="~/Image/@instructor.ProfilePicture" alt="Profile Picture" class="img-thumbnail" style="max-width: 100px;" />
+                                        <a href="@content.FileUrl" target="_blank">View File</a>
                             }
                             else
                             {
-                                        <span>No Image</span>
+                                        <span>No file available</span>
                             }
                             </td>
+                            <td>@content.Order</td>
                             <td>
-                                <a asp-action="EditInstructor" asp-route-id="@instructor.Id" class="btn-edit">Edit</a>
-                                <a asp-action="RemoveInstructor" asp-route-id="@instructor.Id" class="btn-remove">Remove</a>
+                                <a asp-controller="Admin" asp-action="EditCourseContent" asp-route-id="@content.Id" class="btn-edit">Edit</a>
+                                <a asp-controller="Admin" asp-action="RemoveCourseContent" asp-route-id="@content.Id" class="btn-remove">Remove</a>
                             </td>
                         </tr>
                 }
@@ -110,11 +120,8 @@
         </table>
     </div>
 
-    <!-- Add Instructor Button -->
     <div class="text-center mt-4">
-        <a asp-action="CreateInstructor" class="btn btn-danger">Add New Instructor</a>
-        <a asp-action="Dashboard" class="btn btn-secondary">
-            <i class="fas fa-arrow-left"></i> Back to Dashboard
-            </a>
+        <a asp-action="CreateCourseContent" class="btn-add-course-content">Add New Course Content</a>
+        <a asp-action="Dashboard" class="btn-add-course-content">Back To Dashboard</a>
     </div>
 </div>

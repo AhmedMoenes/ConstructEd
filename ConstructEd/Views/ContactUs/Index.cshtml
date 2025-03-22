@@ -1,4 +1,6 @@
-﻿@{
+﻿@model ConstructEd.ViewModels.ContactFormViewModel
+
+@{
     ViewData["Title"] = "Contact Us";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -17,29 +19,33 @@
         <div class="row mt-4">
             <div class="col-lg-8 mx-auto">
                 <div class="contact-form">
-                    <form asp-action="Contact" method="post">
+                    <form asp-action="Index" asp-controller="ContactUs" method="post">
                         <!-- Name Field -->
                         <div class="mb-3">
-                            <label for="name" class="form-label">Your Name</label>
-                            <input type="text" class="form-control form-control-custom" id="name" name="name" placeholder="Enter your name" required />
+                            <label asp-for="Name" class="form-label">Your Name</label>
+                            <input asp-for="Name" class="form-control form-control-custom" placeholder="Enter your name" />
+                            <span asp-validation-for="Name" class="text-danger"></span>
                         </div>
 
                         <!-- Email Field -->
                         <div class="mb-3">
-                            <label for="email" class="form-label">Your Email</label>
-                            <input type="email" class="form-control form-control-custom" id="email" name="email" placeholder="Enter your email" required />
+                            <label asp-for="Email" class="form-label">Your Email</label>
+                            <input asp-for="Email" class="form-control form-control-custom" placeholder="Enter your email" />
+                            <span asp-validation-for="Email" class="text-danger"></span>
                         </div>
 
                         <!-- Subject Field -->
                         <div class="mb-3">
-                            <label for="subject" class="form-label">Subject</label>
-                            <input type="text" class="form-control form-control-custom" id="subject" name="subject" placeholder="Enter the subject" required />
+                            <label asp-for="Subject" class="form-label">Subject</label>
+                            <input asp-for="Subject" class="form-control form-control-custom" placeholder="Enter the subject" />
+                            <span asp-validation-for="Subject" class="text-danger"></span>
                         </div>
 
                         <!-- Message Field -->
                         <div class="mb-3">
-                            <label for="message" class="form-label">Your Message</label>
-                            <textarea class="form-control form-control-custom" id="message" name="message" rows="5" placeholder="Enter your message" required></textarea>
+                            <label asp-for="Message" class="form-label">Your Message</label>
+                            <textarea asp-for="Message" class="form-control form-control-custom" rows="5" placeholder="Enter your message"></textarea>
+                            <span asp-validation-for="Message" class="text-danger"></span>
                         </div>
 
                         <!-- Submit Button -->
@@ -54,5 +60,6 @@
 </section>
 
 @section Scripts {
+        <partial name="_ValidationScriptsPartial" />
     <partial name="_ValidationScriptsPartial" />
 }

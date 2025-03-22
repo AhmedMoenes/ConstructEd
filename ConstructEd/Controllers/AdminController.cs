@@ -5,6 +5,7 @@ using ConstructEd.Services;
 using ConstructEd.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace ConstructEd.Controllers
 {
@@ -15,26 +16,43 @@ namespace ConstructEd.Controllers
         private readonly IInstructorRepository _instructorRepository;
         private readonly ICourseContentRepository _courseContentRepository;
         private readonly IPluginRepository _pluginRepository;
+        private readonly IStatisticsRepository _statisticsRepository; 
+        private readonly IContactFormRepository _contactFormRepository;
         private readonly IMapper _mapper;
 
-        public AdminController( IAuthService authService,
-                                ICourseRepository courseRepository,
-                                IInstructorRepository instructorRepository,
-                                ICourseContentRepository courseContentRepository,
-                                IPluginRepository pluginRepository,
-                                IMapper mapper)
+        #region Constructor
+        public AdminController(IAuthService authService,
+                               ICourseRepository courseRepository,
+                               IInstructorRepository instructorRepository,
+                               ICourseContentRepository courseContentRepository,
+                               IPluginRepository pluginRepository,
+                               IStatisticsRepository statisticsRepository,
+                               IContactFormRepository contactFormRepository,
+                               IMapper mapper)
+
         {
-            _authService = authService;
-            _courseRepository = courseRepository;
-            _instructorRepository = instructorRepository;
-            _courseContentRepository = courseContentRepository;
-            _pluginRepository = pluginRepository;
-            _mapper = mapper;
+                                _authService = authService;
+                                _courseRepository = courseRepository;
+                                _instructorRepository = instructorRepository;
+                                _courseContentRepository = courseContentRepository;
+                                _pluginRepository = pluginRepository;
+                                _statisticsRepository = statisticsRepository; 
+                                _contactFormRepository = contactFormRepository;
+                                _mapper = mapper;
         }
-        public IActionResult Dashboard ()
+        #endregion
+
+        #region Dashboard
+        public async Task<IActionResult> Dashboard()
         {
+            var statistics = await _statisticsRepository.GetStatisticsAsync();
+            var messages = await _contactFormRepository.GetAllContactFormsAsync();
+            ViewBag.Statistics = statistics;
+            ViewBag.Messages = messages;
             return View(nameof(Dashboard));
         }
+        #endregion
+
         #region Courses Management
         public async Task<IActionResult> CourseIndex()
         {
@@ -169,6 +187,122 @@ namespace ConstructEd.Controllers
                 return View(nameof(RemoveCourse), await _courseRepository.GetByIdAsync(id));
             }
         }
+        #endregion
+
+        #region CourseContents Management
+        public async Task<IActionResult> CourseContentIndex()
+        {
+            var courseContents = await _courseContentRepository.GetAllAsync();
+            var viewModels = _mapper.Map<List<CourseContentViewModel>>(courseContents);
+            var courses = await _courseContentRepository.GetCourseNamesAsync();
+            ViewBag.Courses = courses;
+            return View(viewModels);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> CreateCourseContent()
+        {
+            var viewModel = new CourseContentViewModel
+            {
+                ContentTypes = _courseContentRepository.GetContentTypesAsSelectList()
+            };
+
+            var courses = await _courseRepository.GetAllAsync();
+            ViewBag.Courses = new SelectList(courses, "Id", "Title");
+
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateCourseContent(CourseContentViewModel viewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var courseContent = _mapper.Map<CourseContent>(viewModel);
+                await _courseContentRepository.InsertAsync(courseContent);
+                return RedirectToAction(nameof(CourseContentIndex));
+            }
+
+            viewModel.ContentTypes = _courseContentRepository.GetContentTypesAsSelectList();
+
+            var courses = await _courseRepository.GetAllAsync();
+            ViewBag.Courses = new SelectList(courses, "Id", "Title");
+
+            return View(viewModel);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> EditCourseContent(int id)
+        {
+            var courseContent = await _courseContentRepository.GetByIdAsync(id);
+            if (courseContent == null)
+            {
+                return NotFound();
+            }
+
+            var viewModel = _mapper.Map<CourseContentViewModel>(courseContent);
+
+            viewModel.ContentTypes = _courseContentRepository.GetContentTypesAsSelectList();
+            var courses = await _courseRepository.GetAllAsync();
+            ViewBag.Courses = new SelectList(courses, "Id", "Title", courseContent.CourseId); 
+
+            return View(nameof(EditCourseContent),viewModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditCourseContent(int id, CourseContentViewModel viewModel)
+        {
+            if (id != viewModel.Id)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                var courseContent = _mapper.Map<CourseContent>(viewModel);
+                await _courseContentRepository.UpdateAsync(courseContent);
+                return RedirectToAction(nameof(CourseContentIndex));
+            }
+
+            viewModel.ContentTypes = _courseContentRepository.GetContentTypesAsSelectList();
+            var courses = await _courseRepository.GetAllAsync();
+            ViewBag.Courses = new SelectList(courses, "Id", "Title", viewModel.CourseId); 
+
+            return View(nameof(EditCourseContent),viewModel);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> RemoveCourseContent(int id)
+        {
+            var courseContent = await _courseContentRepository.GetByIdAsync(id);
+            if (courseContent == null)
+            {
+                return NotFound();
+            }
+
+            var viewModel = _mapper.Map<CourseContentViewModel>(courseContent);
+            return View(nameof(RemoveCourseContent), viewModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> RemoveCourseContentConfirmed(int id)
+        {
+            try
+            {
+                await _courseContentRepository.DeleteAsync(id);
+                return RedirectToAction(nameof(CourseContentIndex));
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.InnerException.Message);
+                return View(nameof(RemoveCourseContent), await _courseContentRepository.GetByIdAsync(id));
+
+            }
+        }
+
         #endregion
 
         #region Plugins Management
@@ -309,6 +443,9 @@ namespace ConstructEd.Controllers
         {
             if (ModelState.IsValid)
             {
+                var user = _mapper.Map<ApplicationUser>(viewModel);
+                user.IsInstructor = true;
+
                 if (viewModel.ImageFile != null && viewModel.ImageFile.Length > 0)
                 {
                     // Define the folder to save the image
@@ -434,7 +571,7 @@ namespace ConstructEd.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> RemoveInstructor(string id, InstructorViewModel Model)
+        public async Task<IActionResult> RemoveInstructor(string id)
         {
             var instructor = await _instructorRepository.GetByIdAsync(id);
             if (instructor == null)
@@ -442,7 +579,7 @@ namespace ConstructEd.Controllers
                 return NotFound();
             }
 
-            var viewModel = _mapper.Map<ApplicationUser>(Model);
+            var viewModel = _mapper.Map<InstructorViewModel>(instructor);
             return View(nameof(RemoveInstructor), viewModel);
         }
 
@@ -465,6 +602,8 @@ namespace ConstructEd.Controllers
         }
 
         #endregion
+
+       
 
     }
 }

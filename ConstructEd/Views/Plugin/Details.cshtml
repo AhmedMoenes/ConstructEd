@@ -33,19 +33,23 @@
                             else
                             {
                                 <button type="button" class="btn btn-primary" id="buyNowButton" data-id="@Model.Id">Buy Now</button>
-                            }
+                            
+                                <form class="cart-form" data-pluginid="@Model.Id" data-incart="@(Model.IsInCart ? "true" : "false")">
+                                    <input type="hidden" name="id" value="@Model.Id" />
+                                    <input type="hidden" name="type" value="Plugin" />
+                                    <button type="submit" class="cart-button btn btn-outline-success">
+                                        <i class="@(Model.IsInCart ? "fas fa-shopping-cart" : "fas fa-cart-plus")"></i> Add to Cart
+                                    </button>
+                                </form>
 
-                            <form class="cart-form" data-pluginid="@Model.Id" data-incart="@(Model.IsInCart ? "true" : "false")">
-                                <button type="submit" class="cart-button btn btn-outline-success">
-                                    <i class="@(Model.IsInCart ? "fas fa-shopping-cart" : "fas fa-cart-plus")"></i> Add to Cart
-                                </button>
-                            </form>
-
-                            <form class="wish-form" data-pluginid="@Model.Id" data-inwishlist="@(Model.IsInWishlist ? "true" : "false")">
-                                <button type="submit" class="wish-button btn btn-outline-danger">
+                                <form class="wish-form" data-pluginid="@Model.Id" data-inwishlist="@(Model.IsInWishlist ? "true" : "false")">
+                                    <input type="hidden" name="id" value="@Model.Id" />
+                                    <input type="hidden" name="type" value="Plugin" />
+                                    <button type="submit" class="wish-button btn btn-outline-danger">
                                     <i class="@(Model.IsInWishlist ? "fas fa-heart" : "far fa-heart")"></i> Add to Wishlist
-                                </button>
-                            </form>
+                                    </button>
+                                </form>
+                            }
                         </div>
                     </div>
                 </div>
@@ -54,11 +58,6 @@
     </div>
 </div>
 
-@section Scripts {
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/paymentValidation.js"></script>
-}
 
 <style>
     body {
@@ -92,3 +91,26 @@
             color: white;
         }
 </style>
+
+<!-- Include the Payment Modal Partial View -->
+@{
+    var paymentViewModel = new PaymentViewModel { Amount = Model.Price };
+}
+<partial name="_PaymentModal" model="paymentViewModel" />
+
+
+@section Scripts {
+    <!-- Ensure jQuery is loaded -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Ensure Bootstrap JS is loaded -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Custom Validation Scripts -->
+    <script src="~/js/paymentValidation.js" asp-append-version="true"></script>
+
+    <partial name="_ValidationScriptsPartial" />
+
+	<script src="~/js/PluginDetailsWishingListandShoppingCart.js"></script>
+    
+}

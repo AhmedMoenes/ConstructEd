@@ -78,7 +78,7 @@ namespace ConstructEd.Controllers
             viewModel.ContentTypes = _courseContentRepository.GetContentTypesAsSelectList();
 
             var courses = await _courseRepository.GetAllAsync();
-            ViewBag.Courses = new SelectList(courses, "Id", "Title"); 
+            ViewBag.Courses = new SelectList(courses, "Id", "Title");
 
             return View(viewModel);
         }
@@ -124,25 +124,5 @@ namespace ConstructEd.Controllers
             return View(viewModel);
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Delete(int id)
-        {
-            var courseContent = await _courseContentRepository.GetByIdAsync(id);
-            if (courseContent == null)
-            {
-                return NotFound();
-            }
-
-            var viewModel = _mapper.Map<CourseContentViewModel>(courseContent);
-            return View(viewModel);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            await _courseContentRepository.DeleteAsync(id);
-            return Json(new { success = true });
-        }
     }
 }

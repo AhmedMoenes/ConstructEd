@@ -1,74 +1,46 @@
 ﻿@model CourseViewModel
 
 @{
-    ViewData["Title"] = "Remove";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Remove</h1>
-
-<h3>Are you sure you want to delete this?</h3>
-<div>
-    <h4>CourseViewModel</h4>
+<div class="container mt-5">
+    <h2 class="text-danger">Delete Course</h2>
+    <p class="lead">Are you sure you want to delete this course? This action cannot be undone.</p>
     <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Id)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Id)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Title)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Title)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Price)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Price)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Duration)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Duration)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Category)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Category)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.UserId)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.UserId)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CreatedAt)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CreatedAt)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.UpdatedAt)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.UpdatedAt)
-        </dd>
-    </dl>
 
-    <form asp-action="RemoveCourseConfirmed" asp-controller="Admin" asp-route-id="@Model.Id">
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="CourseIndex">Back to List</a>
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <h4 class="card-title">@Model.Title</h4>
+            <dl class="row">
+                <dt class="col-sm-3">Description</dt>
+                <dd class="col-sm-9">@Model.Description</dd>
+
+                <dt class="col-sm-3">Price</dt>
+                <dd class="col-sm-9">@Model.Price.ToString("C")</dd>
+
+                <dt class="col-sm-3">Duration</dt>
+                <dd class="col-sm-9">@Model.Duration hours</dd>
+
+                <dt class="col-sm-3">Category</dt>
+                <dd class="col-sm-9">@Model.Category</dd>
+
+                <dt class="col-sm-3">Created At</dt>
+                <dd class="col-sm-9">@Model.CreatedAt.ToString("MM/dd/yyyy hh:mm tt")</dd>
+            </dl>
+        </div>
+    </div>
+
+    <form asp-action="RemoveCourseConfirmed" asp-controller="Admin" asp-route-id="@Model.Id" class="mt-4">
+        <button type="submit" class="btn btn-danger">
+            <i class="fas fa-trash"></i> Delete
+        </button>
+        <a asp-action="CourseIndex" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Back to List
+        </a>
     </form>
 </div>
+
+@section Scripts {
+        <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+}

@@ -26,6 +26,8 @@ namespace ConstructEd
             builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
             builder.Services.AddScoped<IShoppingCartRepository, ShoppingCartRepository>();
             builder.Services.AddScoped<IWishListRepository,WishListRepository>();
+            builder.Services.AddScoped<IStatisticsRepository, StatisticsRepository>();
+            builder.Services.AddScoped<IContactFormRepository, ContactFormRepository>();
 
             builder.Services.AddDbContext<DataContext>(options =>
                      options.UseSqlServer(builder.Configuration.GetConnectionString("CS")));
@@ -40,7 +42,6 @@ namespace ConstructEd
             var app = builder.Build();
 
             //Seeding DataBase With Roles 
-
             using (var scope = app.Services.CreateScope())
             {
                 var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
