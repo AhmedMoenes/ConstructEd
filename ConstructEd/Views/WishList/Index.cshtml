@@ -4,73 +4,70 @@
     ViewData["Title"] = "My Wishlist";
 }
 
-<h2 class="text-2xl font-bold mb-4">My Wishlist</h2>
+<div class="wishlist-container">
+    <h2 class="wishlist-title">Your Saved Items</h2>
 
-@if (Model.Courses.Any() || Model.Plugins.Any())
-{
-    <table class="table-auto w-full border-collapse border border-gray-300">
-        <thead>
-            <tr class="bg-gray-200">
-                <th class="border p-2 text-left">Title</th>
-                <th class="border p-2 text-left">Description</th>
-                <th class="border p-2 text-left">Category/Duration</th>
-                <th class="border p-2 text-left">Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var course in Model.Courses)
-            {
-                <tr>
-                    <td class="border p-2">@course.Title (Course)</td>
-                    <td class="border p-2">@course.Description</td>
-                    <td class="border p-2">@course.Category - @course.Duration</td>
-                    <td class="border p-2">
-                        <form asp-action="RemoveFromCart" asp-controller="WishList" method="post" class="remove-item-form">
-                            @Html.AntiForgeryToken()
-                            <input type="hidden" name="id" value="@course.Id" />
-                            <input type="hidden" name="type" value="Course" />
-                            <button type="button" class="btn btn-danger remove-item" data-id="@course.Id" data-type="Course">
-                                <i class="fas fa-trash-alt"></i>
-                            </button>
-                        </form>
-                    </td>
-                </tr>
-            }
+    @if (Model.Courses.Any() || Model.Plugins.Any())
+    {
+        <div class="table-responsive">
+            <table class="wishlist-table">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Description</th>
+                        <th>Category/Duration</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var course in Model.Courses)
+                    {
+                        <tr>
+                            <td>@course.Title (Course)</td>
+                            <td>@course.Description</td>
+                            <td>@course.Category - @course.Duration</td>
+                            <td>
+                                <form asp-action="RemoveFromCart" asp-controller="WishList" method="post" class="remove-item-form">
+                                    @Html.AntiForgeryToken()
+                                    <input type="hidden" name="id" value="@course.Id" />
+                                    <input type="hidden" name="type" value="Course" />
+                                    <button type="submit" class="btn btn-remove">
+                                        <i class="fas fa-trash-alt"></i> Remove
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
 
-            @foreach (var plugin in Model.Plugins)
-            {
-                <tr>
-                    <td class="border p-2">@plugin.Title (Plugin)</td>
-                    <td class="border p-2">@plugin.Description</td>
-                    <td class="border p-2">-</td>
-                    <td class="border p-2">
-                        <form asp-action="RemoveFromCart" asp-controller="WishList" method="post" class="remove-item-form">
-                            @Html.AntiForgeryToken()
-                            <input type="hidden" name="id" value="@plugin.Id" />
-                            <input type="hidden" name="type" value="Plugin" />
-                            <button type="button" class="btn btn-danger remove-item" data-id="@plugin.Id" data-type="Plugin">
-                                <i class="fas fa-trash-alt"></i>
-                            </button>
-                        </form>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-}
-else
-{
-    <p class="text-gray-600">Your wishlist is empty.</p>
-}
+                    @foreach (var plugin in Model.Plugins)
+                    {
+                        <tr>
+                            <td>@plugin.Title (Plugin)</td>
+                            <td>@plugin.Description</td>
+                            <td>-</td>
+                            <td>
+                                <form asp-action="RemoveFromCart" asp-controller="WishList" method="post" class="remove-item-form">
+                                    @Html.AntiForgeryToken()
+                                    <input type="hidden" name="id" value="@plugin.Id" />
+                                    <input type="hidden" name="type" value="Plugin" />
+                                    <button type="submit" class="btn btn-remove">
+                                        <i class="fas fa-trash-alt"></i> Remove
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <p class="wishlist-empty-message">Your wishlist is empty.</p>
+    }
+</div>
 
 @section Scripts {
-
-    <!-- FontAwesome for Icons -->
-    <script src="https://kit.fontawesome.com/your-kit-id.js" crossorigin="anonymous"></script>
-    
-    <!-- Load jQuery (Ensure it's included) -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    
+    <!-- Custom Wishlist Script -->
     <script src="~/js/Wishlistindexcounter.js"></script>
-
 }

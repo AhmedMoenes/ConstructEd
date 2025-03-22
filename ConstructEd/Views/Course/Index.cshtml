@@ -8,6 +8,17 @@
     <div class="container">
         <h2 class="text-center mb-5">Courses</h2>
 
+        <!-- Filter Dropdown -->
+        <div class="filter-container">
+            <select id="categoryFilter" class="form-control">
+                <option value="">All Categories</option>
+                @foreach (var category in Enum.GetValues(typeof(Category)))
+                {
+                    <option value="@category">@category.ToString().Replace("_", " ")</option>
+                }
+            </select>
+        </div>
+
         <div class="row justify-content-center">
             @foreach (var course in Model)
             {
@@ -58,8 +69,7 @@
 </section>
 
 @section Scripts {
-
     <partial name="_ValidationScriptsPartial" />
-
+    <script src="~/js/filterCourses.js"></script>
     <script src="~/js/CourseIndexWishingListandShoppingCart.js"></script>
 }

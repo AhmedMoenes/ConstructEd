@@ -4,71 +4,75 @@
     ViewData["Title"] = "Shopping Cart";
 }
 
-<h2 class="text-2xl font-bold mb-4">Shopping Cart</h2>
+<div class="shopping-cart-container">
+    <h2 class="shopping-cart-title">Your Shopping Cart</h2>
 
-@if (Model.Courses.Any() || Model.Plugins.Any())
-{
-    <table class="table-auto w-full border-collapse border border-gray-300" id="cartTable">
-        <thead>
-            <tr class="bg-gray-200">
-                <th class="border p-2 text-left">Item</th>
-                <th class="border p-2 text-left">Description</th>
-                <th class="border p-2 text-left">Price</th>
-                <th class="border p-2 text-left">Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var course in Model.Courses)
-            {
-                <tr class="border cart-item" data-id="@course.Id" data-type="Course">
-                    <td class="border p-2">@course.Title (Course)</td>
-                    <td class="border p-2">@course.Description</td>
-                    <td class="border p-2 price">$@course.Price</td>
-                    <td class="border p-2">
-                        <form asp-action="RemoveFromCart" asp-controller="ShoppingCart" method="post" class="remove-item-form">
-                            @Html.AntiForgeryToken()
-                            <input type="hidden" name="id" value="@course.Id" />
-                            <input type="hidden" name="type" value="Course" />
-                            <button type="button" class="btn btn-danger remove-item">
-                                <i class="fas fa-trash-alt"></i> Remove
-                            </button>
-                        </form>
-                    </td>
-                </tr>
-            }
+    @if (Model.Courses.Any() || Model.Plugins.Any())
+    {
+        <div class="table-responsive">
+            <table class="shopping-cart-table" id="cartTable">
+                <thead>
+                    <tr>
+                        <th>Item</th>
+                        <th>Description</th>
+                        <th>Price</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var course in Model.Courses)
+                    {
+                        <tr class="cart-item" data-id="@course.Id" data-type="Course">
+                            <td>@course.Title (Course)</td>
+                            <td>@course.Description</td>
+                            <td class="price">$@course.Price</td>
+                            <td>
+                                <form asp-action="RemoveFromCart" asp-controller="ShoppingCart" method="post" class="remove-item-form">
+                                    @Html.AntiForgeryToken()
+                                    <input type="hidden" name="id" value="@course.Id" />
+                                    <input type="hidden" name="type" value="Course" />
+                                    <button type="button" class="btn btn-remove">
+                                        <i class="fas fa-trash-alt"></i> Remove
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
 
-            @foreach (var plugin in Model.Plugins)
-            {
-                <tr class="border cart-item" data-id="@plugin.Id" data-type="Plugin">
-                    <td class="border p-2">@plugin.Title (Plugin)</td>
-                    <td class="border p-2">@plugin.Description</td>
-                    <td class="border p-2 price">$@plugin.Price</td>
-                    <td class="border p-2">
-                        <form asp-action="RemoveFromCart" asp-controller="ShoppingCart" method="post" class="remove-item-form">
-                            @Html.AntiForgeryToken()
-                            <input type="hidden" name="id" value="@plugin.Id" />
-                            <input type="hidden" name="type" value="Plugin" />
-                            <button type="button" class="btn btn-danger remove-item">
-                                <i class="fas fa-trash-alt"></i> Remove
-                            </button>
-                        </form>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
+                    @foreach (var plugin in Model.Plugins)
+                    {
+                        <tr class="cart-item" data-id="@plugin.Id" data-type="Plugin">
+                            <td>@plugin.Title (Plugin)</td>
+                            <td>@plugin.Description</td>
+                            <td class="price">$@plugin.Price</td>
+                            <td>
+                                <form asp-action="RemoveFromCart" asp-controller="ShoppingCart" method="post" class="remove-item-form">
+                                    @Html.AntiForgeryToken()
+                                    <input type="hidden" name="id" value="@plugin.Id" />
+                                    <input type="hidden" name="type" value="Plugin" />
+                                    <button type="button" class="btn btn-remove">
+                                        <i class="fas fa-trash-alt"></i> Remove
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
 
-    <div class="mt-4 text-right" id="cartSummary">
-        <h3 class="text-xl font-semibold">Total: $<span id="totalPrice">@Model.TotalPrice</span></h3>
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#paymentModal">
-            Proceed to Checkout
-        </button>
-    </div>
-}
-else
-{
-    <p class="text-gray-600" id="emptyCartMessage">Your shopping cart is empty.</p>
-}
+        <div class="cart-summary">
+            <h3>Total: $<span id="totalPrice">@Model.TotalPrice</span></h3>
+            <button type="button" class="btn btn-checkout" data-bs-toggle="modal" data-bs-target="#paymentModal">
+                Proceed to Checkout
+            </button>
+        </div>
+    }
+    else
+    {
+        <p class="empty-cart-message">Your shopping cart is empty.</p>
+    }
+</div>
 
 <!-- Include the Payment Modal Partial View -->
 @{
@@ -76,52 +80,13 @@ else
 }
 <partial name="_PaymentModal" model="paymentViewModel" />
 
-<style>
-    body {
-        background-color: #171717;
-        color: white;
-        margin: 0; /* Removes body margin */
-        padding: 0; /* Removes body padding */
-    }
-
-    .main-content {
-        margin: 0; /* Removes any margin applied by layout */
-        padding: 0; /* Removes padding */
-    }
-
-    h2 {
-        margin: 0; /* Removes default margin of the heading */
-        padding-top: 0; /* Ensures no padding is added */
-    }
-
-    .btn-primary {
-        background: linear-gradient(90deg, #ff2288, #FF7700);
-        border: none;
-        padding: 10px 20px;
-        border-radius: 5px;
-        transition: background 0.3s;
-    }
-
-        .btn-primary:hover {
-            background: linear-gradient(90deg, #FF7700, #ff2288);
-        }
-
-    .table-auto th, .table-auto td {
-        padding: 12px;
-    }
-</style>
-
 @section Scripts {
-
     <!-- Custom Validation Scripts -->
     <script src="~/js/paymentValidation.js" asp-append-version="true"></script>
-
-    <!-- Load jQuery (Ensure it's included) -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <!-- FontAwesome for Icons -->
     <script src="https://kit.fontawesome.com/your-kit-id.js" crossorigin="anonymous"></script>
 
+    <!-- Custom Shopping Cart Script -->
     <script src="~/js/ShopingCartindexcounter.js"></script>
-
 }
