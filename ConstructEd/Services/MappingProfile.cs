@@ -124,6 +124,7 @@ public class MappingProfile : Profile
 
         #region CourseContent Mappings
 
+        // Mapping from CourseContent to CourseContentViewModel
         CreateMap<CourseContent, CourseContentViewModel>()
             .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
             .ForMember(dest => dest.Title, opt => opt.MapFrom(src => src.Title))
@@ -132,7 +133,9 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.Order, opt => opt.MapFrom(src => src.Order))
             .ForMember(dest => dest.CourseId, opt => opt.MapFrom(src => src.CourseId));
 
+        // Mapping from CourseContentViewModel to CourseContent
         CreateMap<CourseContentViewModel, CourseContent>()
+            .ForMember(dest => dest.Id, opt => opt.Ignore()) 
             .ForMember(dest => dest.Title, opt => opt.MapFrom(src => src.Title))
             .ForMember(dest => dest.Type, opt => opt.MapFrom(src => src.Type))
             .ForMember(dest => dest.FileUrl, opt => opt.MapFrom(src => src.FileUrl))
