@@ -31,8 +31,8 @@
                                     @Html.AntiForgeryToken()
                                     <input type="hidden" name="id" value="@course.Id" />
                                     <input type="hidden" name="type" value="Course" />
-                                    <button type="submit" class="btn btn-remove">
-                                        <i class="fas fa-trash-alt"></i> Remove
+                                    <button type="button" class="btn remove-item" data-id="@course.Id" data-type="Course">
+                                        <i class="fas fa-trash-alt"></i>Remove
                                     </button>
                                 </form>
                             </td>
@@ -50,8 +50,8 @@
                                     @Html.AntiForgeryToken()
                                     <input type="hidden" name="id" value="@plugin.Id" />
                                     <input type="hidden" name="type" value="Plugin" />
-                                    <button type="submit" class="btn btn-remove">
-                                        <i class="fas fa-trash-alt"></i> Remove
+                                    <button type="button" class="btn remove-item" data-id="@plugin.Id" data-type="Plugin">
+                                        <i class="fas fa-trash-alt"></i>Remove
                                     </button>
                                 </form>
                             </td>
@@ -68,6 +68,12 @@
 </div>
 
 @section Scripts {
+
+    <!-- FontAwesome for Icons -->
+    <script src="https://kit.fontawesome.com/your-kit-id.js" crossorigin="anonymous"></script>
+
+    <!-- Load jQuery (Ensure it's included) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-- Custom Wishlist Script -->
     <script src="~/js/Wishlistindexcounter.js"></script>
 }
