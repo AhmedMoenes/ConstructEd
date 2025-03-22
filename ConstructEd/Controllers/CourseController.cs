@@ -74,5 +74,13 @@ namespace ConstructEd.Controllers
             return View(nameof(Details), viewModel);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetCoursesByCategory(Category? category)
+        {
+            var courses = await _courseRepository.GetByCategoryAsync(category);
+            var courseViewModels = _mapper.Map<List<CourseViewModel>>(courses);
+            return Json(new { success = true, courses = courseViewModels });
+        }
+
     }
 }

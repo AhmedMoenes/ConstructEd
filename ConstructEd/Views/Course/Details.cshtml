@@ -5,115 +5,127 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="container py-5">
-    <div class="row g-5">
-        <!-- Main Content -->
-        <div class="col-lg-8">
-            <!-- Course Header -->
-@*             <div class="mb-5">
-                <h1 class="display-4 fw-bold text-main mb-3">@Model.Title</h1>
-                <div class="d-flex gap-3 mb-4">
-                    <span class="badge bg-secondary rounded-pill fs-6">@Model.Category</span>
-                    <span class="badge bg-success rounded-pill fs-6">@Model.Duration hours</span>
+<div class="course-details-section">
+    <div class="container py-5">
+        <div class="row g-5">
+            <!-- Main Content -->
+            <div class="col-lg-8">
+                <!-- Course Image -->
+                <div class="card border-0 shadow-lg mb-5">
+                    @* <img src="/Image/@course.Image" class="card-img-top" alt="@course.Title" /> *@
                 </div>
-            </div> *@
 
-            <!-- Overview Section -->
-            <section class="card border-0 shadow-lg mb-5">
-                <div class="card-body p-4 p-lg-5">
-                    <h2 class="h3 fw-bold text-main mb-4">Course Overview</h2>
-                    <p class="lead text-muted mb-0">@Model.Title</p>
-                    <p class="lead text-muted mb-0">@Model.Description</p>
-                    <p class="lead text-muted mb-0">@Model.Category</p>
-                </div>
-            </section>
+                <!-- Overview Section -->
+                <section class="card border-0 shadow-lg mb-5">
+                    <div class="card-body p-4 p-lg-5">
+                        <h2 class="h3 fw-bold mb-4">Course Overview</h2>
 
-            <!-- Course Content -->
-            <section class="card border-0 shadow-lg">
-                <div class="card-body p-4 p-lg-5">
-                    <h2 class="h3 fw-bold text-main mb-4">Curriculum</h2>
-                    <div class="accordion" id="contentAccordion">
-                        @if (ViewBag.courseContents != null)
-                        {
-                            foreach (var content in ViewBag.courseContents)
+                        <div class="d-inline">
+                            <label asp-for="Title" class="fw-bold"></label>:
+                            <p class="lead d-inline mb-0">@Model.Title</p>
+                        </div>
+                        <br>
+
+                        <div class="d-inline">
+                            <label asp-for="Category" class="fw-bold"></label>:
+                            <p class="lead d-inline mb-0">@Model.Category.ToString().Replace("_", " ")</p>
+                        </div>
+                        <br>
+
+                        <div class="d-inline">
+                            <label asp-for="Description" class="fw-bold"></label>:
+                            <p class="lead d-inline mb-0">@Model.Description</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Course Content -->
+                <section class="card border-0 shadow-lg">
+                    <div class="card-body p-4 p-lg-5">
+                        <h2 class="h3 fw-bold mb-4">Curriculum</h2>
+                        <div class="accordion" id="contentAccordion">
+                            @if (ViewBag.courseContents != null)
                             {
-                                <div class="accordion-item border-0 mb-3">
-                                    <div class="accordion-header bg-light rounded-3">
-                                        <a asp-controller="CourseContent" asp-action="Details" asp-route-id="@content.Id"
-                                           class="d-flex justify-content-between align-items-center text-decoration-none p-3">
-                                            <span class="fw-medium text-dark">@content.Title</span>
-                                            <span class="badge bg-secondary rounded-pill">@content.Type</span>
-                                        </a>
+                                foreach (var content in ViewBag.courseContents)
+                                {
+                                    <div class="accordion-item border-0 mb-3">
+                                        <div class="accordion-header bg-light rounded-3">
+                                            <a asp-controller="CourseContent" asp-action="Details" asp-route-id="@content.Id"
+                                               class="d-flex justify-content-between align-items-center text-decoration-none p-3">
+                                                <span class="fw-medium text-dark">@content.Title</span>
+                                                <span class="badge bg-secondary rounded-pill">@content.Type</span>
+                                            </a>
+                                        </div>
                                     </div>
+                                }
+                            }
+                            else
+                            {
+                                <div class="text-center py-4">
+                                    <p>No content available for this course</p>
                                 </div>
                             }
-                        }
-                        else
-                        {
-                            <div class="text-center py-4">
-                                <p class="text-muted">No content available for this course</p>
-                            </div>
-                        }
-                    </div>
-                </div>
-            </section>
-        </div>
-
-        <!-- Sidebar -->
-        <div class="col-lg-4">
-            <div class="card border-0 shadow-lg sticky-top" style="top: 2rem;">
-                <div class="card-body p-4">
-                    <h3 class="h4 fw-bold text-main mb-4">Enroll Now</h3>
-
-                    <div class="d-flex flex-column gap-3 mb-4">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <span class="text-muted">Price:</span>
-                            <span class="h4 fw-bold text-main">@Model.Price.ToString("C")</span>
-                        </div>
-
-                        <div class="d-flex justify-content-between align-items-center">
-                            <span class="text-muted">Duration:</span>
-                            <span class="text-main">@Model.Duration hours</span>
                         </div>
                     </div>
+                </section>
+            </div>
 
-                    <div class="d-grid gap-3">
-                        @if (Model.IsEnrolled)
-                        {
-                            <button class="btn btn-success btn-lg py-3" disabled>
-                                <i class="fas fa-check-circle me-2"></i>Enrolled
-                            </button>
-                        }
-                        else
-                        {
-                            <!-- Buy Now Button -->
-                            <button type="button" class="btn btn-main btn-lg py-3" id="buyNowButton" data-id="@Model.Id">
-                                <i class="fas fa-credit-card me-2"></i>Enroll Now
-                            </button>
+            <!-- Sidebar -->
+            <div class="col-lg-4">
+                <div class="card border-0 shadow-lg sticky-top" style="top: 2rem;">
+                    <div class="card-body p-4">
+                        <h3 class="h4 fw-bold mb-4">Enroll Now</h3>
 
-                            <!-- Action Buttons -->
-                            <div class="d-flex gap-3 justify-content-center">
-                                <!-- Cart Button -->
-                                <form class="cart-form" data-courseid="@Model.Id" data-incart="@(Model.IsInCart ? "true" : "false" )">
-                                    <input type="hidden" name="id" value="@Model.Id" />
-                                    <input type="hidden" name="type" value="Course" />
-                                    <button type="submit" class="btn btn-icon rounded-circle p-3"
-                                            title="@(Model.IsInCart ? "Remove from Cart" : "Add to Cart")">
-                                        <i class="@(Model.IsInCart ? "fas fa-shopping-cart" : "fas fa-cart-plus") fa-lg"></i>
-                                    </button>
-                                </form>
-
-                                <!-- Wishlist Button -->
-                                <form class="wish-form" data-courseid="@Model.Id" data-inwishlist="@(Model.IsInWishlist ? "true" : "false")">
-                                    <input type="hidden" name="id" value="@Model.Id" />
-                                    <input type="hidden" name="type" value="Course" />
-                                    <button type="submit" class="btn btn-icon rounded-circle p-3"
-                                            title="@(Model.IsInWishlist ? "Remove from Wishlist" : "Add to Wishlist")">
-                                        <i class="@(Model.IsInWishlist ? "fas" : "far") fa-heart fa-lg"></i>
-                                    </button>
-                                </form>
+                        <div class="d-flex flex-column gap-3 mb-4">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span>Price:</span>
+                                <span class="h4 fw-bold">@Model.Price.ToString("C")</span>
                             </div>
-                        }
+
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span>Duration:</span>
+                                <span>@Model.Duration hours</span>
+                            </div>
+                        </div>
+
+                        <div class="d-grid gap-3">
+                            @if (Model.IsEnrolled)
+                            {
+                                <button class="btn btn-success btn-lg py-3" disabled>
+                                    <i class="fas fa-check-circle me-2"></i>Enrolled
+                                </button>
+                            }
+                            else
+                            {
+                                <!-- Buy Now Button -->
+                                <button type="button" class="btn btn-main btn-lg py-3" id="buyNowButton" data-id="@Model.Id">
+                                    <i class="fas fa-credit-card me-2"></i>Enroll Now
+                                </button>
+
+                                <!-- Action Buttons -->
+                                <div class="d-flex gap-3 justify-content-center">
+                                    <!-- Cart Button -->
+                                    <form class="cart-form" data-courseid="@Model.Id" data-incart="@(Model.IsInCart ? "true" : "false" )">
+                                        <input type="hidden" name="id" value="@Model.Id" />
+                                        <input type="hidden" name="type" value="Course" />
+                                        <button type="submit" class="btn btn-icon rounded-circle p-3"
+                                                title="@(Model.IsInCart ? "Remove from Cart" : "Add to Cart")">
+                                            <i class="@(Model.IsInCart ? "fas fa-shopping-cart" : "fas fa-cart-plus") fa-lg"></i>
+                                        </button>
+                                    </form>
+
+                                    <!-- Wishlist Button -->
+                                    <form class="wish-form" data-courseid="@Model.Id" data-inwishlist="@(Model.IsInWishlist ? "true" : "false")">
+                                        <input type="hidden" name="id" value="@Model.Id" />
+                                        <input type="hidden" name="type" value="Course" />
+                                        <button type="submit" class="btn btn-icon rounded-circle p-3"
+                                                title="@(Model.IsInWishlist ? "Remove from Wishlist" : "Add to Wishlist")">
+                                            <i class="@(Model.IsInWishlist ? "fas" : "far") fa-heart fa-lg"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            }
+                        </div>
                     </div>
                 </div>
             </div>
