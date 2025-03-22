@@ -133,7 +133,6 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.CourseId, opt => opt.MapFrom(src => src.CourseId));
 
         CreateMap<CourseContentViewModel, CourseContent>()
-            .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
             .ForMember(dest => dest.Title, opt => opt.MapFrom(src => src.Title))
             .ForMember(dest => dest.Type, opt => opt.MapFrom(src => src.Type))
             .ForMember(dest => dest.FileUrl, opt => opt.MapFrom(src => src.FileUrl))

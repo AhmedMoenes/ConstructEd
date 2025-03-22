@@ -198,6 +198,13 @@ namespace ConstructEd.Controllers
             ViewBag.Courses = courses;
             return View(viewModels);
         }
+         public async Task<IActionResult> CourseContentDetails(int id)
+        {
+            var courseContents = await _courseContentRepository.GetCourseContent(id);
+            var viewModels = _mapper.Map<List<CourseContentViewModel>>(courseContents);
+            ViewBag.CourseId = id;
+            return View(viewModels);
+        }
 
         [HttpGet]
         public async Task<IActionResult> CreateCourseContent(int id)
@@ -208,8 +215,6 @@ namespace ConstructEd.Controllers
             };
 
             ViewBag.ContentTypes = _courseContentRepository.GetCategories();
-            var courses = await _courseRepository.GetAllAsync();
-            ViewBag.Courses = new SelectList(courses, "Id", "Title");
 
             return View(viewModel);
         }
@@ -222,23 +227,16 @@ namespace ConstructEd.Controllers
             {
                 var courseContent = _mapper.Map<CourseContent>(viewModel);
                 await _courseContentRepository.InsertAsync(courseContent);
+                await _courseContentRepository.SaveAsync();
                 return RedirectToAction(nameof(CourseIndex));
             }
 
             ViewBag.ContentTypes = _courseContentRepository.GetCategories();
-            var courses = await _courseRepository.GetAllAsync();
-            ViewBag.Courses = new SelectList(courses, "Id", "Title");
 
             return View(viewModel);
         }
 
-        public async Task<IActionResult> CourseContentDetails(int id)
-        {
-            var courseContents = await _courseContentRepository.GetCourseContent(id);
-            var viewModels = _mapper.Map<List<CourseContentViewModel>>(courseContents);
-            ViewBag.CourseId = id;
-            return View(viewModels);
-        }
+       
 
         [HttpGet]
         public async Task<IActionResult> EditCourseContent(int id)

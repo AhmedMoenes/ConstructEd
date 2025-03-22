@@ -53,7 +53,6 @@ namespace ConstructEd.Repositories
         public async Task InsertAsync(CourseContent obj)
         {
             await _dataContext.CourseContents.AddAsync(obj);
-            await SaveAsync();
         }
         public async Task SaveAsync()
         {
