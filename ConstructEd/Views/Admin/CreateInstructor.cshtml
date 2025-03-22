@@ -1,7 +1,6 @@
 ﻿@model InstructorViewModel
 
 @{
-	ViewData["Title"] = "Add Instructor";
 	Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -49,13 +48,16 @@ border: 1px solid #881856 !important;
 
 <div class="d-flex justify-content-center align-items-center min-vh-100" style="background-color: #0c081f;">
 <div class="card shadow-lg p-4 rounded-4" style="background-color: #1b1535; color: #fff; width: 420px;">
-<h3 class="text-center mb-4">Create a New Account</h3>
+<h3 class="text-center mb-4">Add New Instructor</h3>
 
 <form asp-action="Create" asp-controller="Instructor" method="post">
 @if (!ViewData.ModelState.IsValid)
 {
 	<div asp-validation-summary="All" class="alert alert-danger"></div>
 }
+
+<input type="hidden" asp-for="IsInstructor" value="true" />
+
 <div class="mb-3">
 <label asp-for="FullName" class="form-label">Full Name</label>
 <input asp-for="FullName" class="form-control input-custom" placeholder="Enter the full name" >

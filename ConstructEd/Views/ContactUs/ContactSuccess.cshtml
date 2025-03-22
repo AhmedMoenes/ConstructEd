@@ -1,0 +1,90 @@
+﻿@{
+    ViewData["Title"] = "Message Sent Successfully";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .success-section {
+        background-color: #1b1535;
+        color: #fff;
+        padding: 100px 0; 
+        text-align: center;
+        height : 100vh;
+    }
+
+    .success-section h2 {
+        color: #6f42c1;
+        font-weight: bold;
+        margin-bottom: 20px;
+        font-size: 2.5rem;
+    }
+
+    .success-section p {
+        font-size: 1.8rem; 
+        line-height: 1.8;
+        margin-bottom: 30px; 
+    }
+
+    .success-icon {
+        font-size: 4rem; 
+        color: #6f42c1;
+        margin-bottom: 20px;
+        animation: bounce 1.5s infinite;
+    }
+
+    .btn-back {
+        background: linear-gradient(90deg, #6f42c1, #aa2068);
+        border: none;
+        padding: 12px 30px; 
+        color: #fff;
+        font-weight: bold;
+        border-radius: 5px;
+        transition: 0.3s ease;
+        text-decoration: none;
+        font-size: 1.1rem; 
+    }
+
+        .btn-back:hover {
+            background: linear-gradient(90deg, #502ea7, #881856);
+            transform: scale(1.05); 
+        }
+
+   
+    @@keyframes bounce {
+        0%, 20%, 50%, 80%, 100% {
+            transform: translateY(0);
+        }
+        40% {
+            transform: translateY(-20px);
+        }
+        60% {
+            transform: translateY(-10px);
+        }
+    }
+</style>
+
+<div class="success-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                
+                <div class="success-icon">
+                    <i class="fas fa-check-circle"></i> 
+                </div>
+
+               
+                <h2>Message Sent Successfully!</h2>
+                <p>
+                    Thank you for contacting us. We have received your message and will get back to you as soon as possible.
+                </p>
+
+             
+                <a href="/" class="btn-back">Back to Home</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+        <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+}

@@ -1,4 +1,6 @@
-﻿@{
+﻿@model ConstructEd.ViewModels.ContactFormViewModel
+
+@{
     ViewData["Title"] = "Contact Us";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -6,13 +8,13 @@
 <style>
     /* Custom Styles */
     .contact-section {
-        background-color: #1b1535;
-        color: #fff;
+        background-color: #1b1535; /* Dark background for the section */
+        color: #fff; /* White text for contrast */
         padding: 60px 0;
     }
 
     .contact-section h2 {
-        color: #6f42c1;
+        color: #6f42c1; /* Purple header */
         font-weight: bold;
         margin-bottom: 20px;
     }
@@ -23,39 +25,45 @@
     }
 
     .contact-form {
-        background-color: #0c081f;
+        background-color: #ffffff; /* White background for the form */
         padding: 30px;
         border-radius: 10px;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Shadow for depth */
+        margin-bottom: 40px;
     }
 
     .form-control-custom {
-        background-color: transparent;
-        border: 1px solid #5b4b8a;
-        color: #fff;
+        background-color: #ffffff; /* White background for input fields */
+        border: 1px solid #ced4da; /* Light gray border */
+        color: #333; /* Dark text color */
         border-radius: 5px;
         padding: 10px;
     }
 
         .form-control-custom:focus {
-            border-color: #7663c1;
-            box-shadow: none;
+            border-color: #6f42c1; /* Purple border on focus */
+            box-shadow: 0 0 5px rgba(111, 66, 193, 0.5); /* Purple shadow on focus */
             outline: none;
         }
 
     .btn-submit {
-        background: linear-gradient(90deg, #6f42c1, #aa2068);
+        background: linear-gradient(90deg, #6f42c1, #aa2068); /* Purple gradient */
         border: none;
         padding: 10px 20px;
-        color: #fff;
-        font-weight: bold;
-        border-radius: 5px;
-        transition: 0.3s ease;
+        padding: 15px 38px;
+        border-radius: 16px;
+        border: 1px solid transparent;
+        color: #ffffff;
+        background: linear-gradient(90deg, #5B4B8A, #7663C1);
+        font-size: 16px;
+        letter-spacing: 1px;
+        transition: all 0.2s ease-in-out;
+        text-decoration: none;
     }
 
         .btn-submit:hover {
-            background: linear-gradient(90deg, #502ea7, #881856);
-            transform: scale(1.02);
+            background: linear-gradient(90deg, #502ea7, #881856); /* Darker gradient on hover */
+            transform: scale(1.02); /* Slight scale effect on hover */
         }
 </style>
 
@@ -73,29 +81,33 @@
         <div class="row mt-4">
             <div class="col-lg-8 mx-auto">
                 <div class="contact-form">
-                    <form asp-action="Contact" method="post">
+                    <form asp-action="Index" asp-controller="ContactUs" method="post">
                         <!-- Name Field -->
                         <div class="mb-3">
-                            <label for="name" class="form-label">Your Name</label>
-                            <input type="text" class="form-control form-control-custom" id="name" name="name" placeholder="Enter your name" required />
+                            <label asp-for="Name" class="form-label">Your Name</label>
+                            <input asp-for="Name" class="form-control form-control-custom" placeholder="Enter your name" />
+                            <span asp-validation-for="Name" class="text-danger"></span>
                         </div>
 
                         <!-- Email Field -->
                         <div class="mb-3">
-                            <label for="email" class="form-label">Your Email</label>
-                            <input type="email" class="form-control form-control-custom" id="email" name="email" placeholder="Enter your email" required />
+                            <label asp-for="Email" class="form-label">Your Email</label>
+                            <input asp-for="Email" class="form-control form-control-custom" placeholder="Enter your email" />
+                            <span asp-validation-for="Email" class="text-danger"></span>
                         </div>
 
                         <!-- Subject Field -->
                         <div class="mb-3">
-                            <label for="subject" class="form-label">Subject</label>
-                            <input type="text" class="form-control form-control-custom" id="subject" name="subject" placeholder="Enter the subject" required />
+                            <label asp-for="Subject" class="form-label">Subject</label>
+                            <input asp-for="Subject" class="form-control form-control-custom" placeholder="Enter the subject" />
+                            <span asp-validation-for="Subject" class="text-danger"></span>
                         </div>
 
                         <!-- Message Field -->
                         <div class="mb-3">
-                            <label for="message" class="form-label">Your Message</label>
-                            <textarea class="form-control form-control-custom" id="message" name="message" rows="5" placeholder="Enter your message" required></textarea>
+                            <label asp-for="Message" class="form-label">Your Message</label>
+                            <textarea asp-for="Message" class="form-control form-control-custom" rows="5" placeholder="Enter your message"></textarea>
+                            <span asp-validation-for="Message" class="text-danger"></span>
                         </div>
 
                         <!-- Submit Button -->
@@ -110,5 +122,5 @@
 </div>
 
 @section Scripts {
-            <partial name="_ValidationScriptsPartial" />
+        <partial name="_ValidationScriptsPartial" />
 }

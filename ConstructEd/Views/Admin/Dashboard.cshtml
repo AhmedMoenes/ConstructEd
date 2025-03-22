@@ -1,6 +1,8 @@
 ﻿@{
     ViewData["Title"] = "Dashboard";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var statistics = ViewBag.Statistics;
+    var messages = ViewBag.Messages;
 }
 
 <style>
@@ -19,7 +21,7 @@
         border-radius: 8px;
         height: 100vh;
         position: fixed;
-        width: 300px; /* Increased width */
+        width: 340px; /* Increased width */
     }
 
     .sidebar h3 {
@@ -41,6 +43,7 @@
         margin-bottom: 10px;
         cursor: pointer;
         transition: background 0.3s ease;
+        font-size: 24px;
     }
 
     .toggle-button:hover {
@@ -53,10 +56,11 @@
 
     /* Submenu Styling */
     .submenu {
-        margin-left: 20px;
+        margin-left: 15px;
         margin-top: 10px;
-        margin-bottom: 20px; /* Consistent margin */
-        display: none; /* Hidden by default */
+        margin-bottom: 10px; 
+        display: none; 
+        font-size: 24px;
     }
 
     .submenu a {
@@ -75,34 +79,102 @@
 
     /* Main Content Styling */
     .main-content {
-        margin-left: 320px; /* Adjust based on sidebar width */
+        margin-left: 420px; /* Adjust based on sidebar width */
         padding: 20px;
     }
 
-    /* Card Styling */
-    .card-dashboard {
+    /* Metric Grid Layout */
+    .metric-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+    }
+
+    .metric-card {
         background-color: #1b1535;
-        color: #fff;
-        border: none;
-        border-radius: 8px;
         padding: 20px;
-        margin-bottom: 20px; /* Consistent margin */
+        border-radius: 8px;
+        text-align: center;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
 
-    /* Card Header */
-    .card-header-dashboard {
-        background-color: #5b4b8a;
-        color: #fff;
-        padding: 10px;
-        border-radius: 8px 8px 0 0;
-        margin-bottom: 15px; /* Consistent margin */
+    .metric-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     }
 
-    /* Section Title */
-    .card-title-dashboard {
-        font-size: 1.25rem;
+    .metric-icon {
+        font-size: 2rem;
+        color: #6f42c1;
+        margin-bottom: 10px;
+    }
+
+    .metric-value {
+        font-size: 1.5rem;
         font-weight: bold;
-        margin-bottom: 15px; /* Consistent margin */
+        color: #fff;
+        margin-bottom: 5px;
+    }
+
+    .metric-label {
+        font-size: 1rem;
+        color: #ccc;
+    }
+    /* Messages Section Styling */
+    .messages-section {
+        margin-top: 40px;
+    }
+
+    .messages-card {
+        background-color: #fff; /* White background */
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .messages-card h3 {
+        color: #6f42c1; /* Purple header */
+        font-weight: bold;
+        margin-bottom: 20px;
+    }
+
+    .messages-list {
+        list-style-type: none;
+        padding: 0;
+    }
+
+    .messages-list li {
+        background-color: #f8f9fa; /* Light gray background for each message */
+        padding: 15px;
+        border-radius: 5px;
+        margin-bottom: 10px;
+        color: #333; /* Dark text color */
+        font-size: 1rem;
+    }
+
+    .message-header {
+        font-weight: bold;
+        color: #6f42c1; /* Purple for the sender's name */
+        margin-bottom: 5px;
+    }
+
+    .message-email {
+        font-weight: bold; /* Bold */
+        font-style: italic; /* Italic */
+        color: #333; /* Dark text color */
+    }
+
+    .message-date {
+        color: #6c757d; /* Gray for the date */
+        margin-left: 10px; /* Space between email and date */
+    }
+
+    .message-details {
+        margin-left: 10px;
+    }
+
+    .message-details p {
+        margin: 5px 0;
     }
 </style>
 
@@ -110,13 +182,12 @@
     <div class="row">
         <!-- Sidebar -->
         <div class="col-md-3 sidebar">
-
             <!-- Courses Section -->
             <button class="toggle-button" onclick="toggleSubmenu('courses')">Courses</button>
             <div id="courses" class="submenu">
                 <a asp-controller="Admin" asp-action="CourseIndex">List Of Courses</a>
                 <a asp-controller="Admin" asp-action="CreateCourse">Add Course</a>
-                <a asp-controller="CourseContent" asp-action="Create">Add Course Content</a>
+                <a asp-controller="Admin" asp-action="CreateCourseContent">Add Course Content</a>
             </div>
 
             <!-- Plugins Section -->
@@ -137,7 +208,7 @@
         <!-- Main Content -->
         <div class="col-md-9 main-content">
 
-            <!-- Statistics Section (Placeholder for Future Content) -->
+            <!-- Statistics Section -->
             <div class="row mb-4">
                 <div class="col-md-12">
                     <div class="card card-dashboard shadow-lg">
@@ -145,14 +216,132 @@
                             <h3 class="card-title-dashboard">Statistics</h3>
                         </div>
                         <div class="card-body">
-                            <p class="text-white">Statistics will be displayed here.</p>
+                            <div class="metric-grid">
+                                <!-- Course Statistics -->
+                                <div class="metric-card">
+                                    <div class="metric-icon">📚</div>
+                                    <div class="metric-value">@statistics.TotalCourses</div>
+                                    <div class="metric-label">Total Courses</div>
+                                </div>
+                                <div class="metric-card">
+                                    <div class="metric-icon">✅</div>
+                                    <div class="metric-value">@statistics.ActiveCourses</div>
+                                    <div class="metric-label">Active Courses</div>
+                                </div>
+                                <div class="metric-card">
+                                    <div class="metric-icon">🏆</div>
+                                    <div class="metric-value">@statistics.MostPopularCourse</div>
+                                    <div class="metric-label">Most Popular Course</div>
+                                </div>
+
+                                <!-- Plugin Statistics -->
+                                <div class="metric-card">
+                                    <div class="metric-icon">🧩</div>
+                                    <div class="metric-value">@statistics.TotalPlugins</div>
+                                    <div class="metric-label">Total Plugins</div>
+                                </div>
+                                <div class="metric-card">
+                                    <div class="metric-icon">✅</div>
+                                    <div class="metric-value">@statistics.ActivePlugins</div>
+                                    <div class="metric-label">Active Plugins</div>
+                                </div>
+                                <div class="metric-card">
+                                    <div class="metric-icon">🏆</div>
+                                    <div class="metric-value">@statistics.MostPopularPlugin</div>
+                                    <div class="metric-label">Most Popular Plugin</div>
+                                </div>
+
+                                <!-- Enrollment Statistics -->
+                                <div class="metric-card">
+                                    <div class="metric-icon">🎓</div>
+                                    <div class="metric-value">@statistics.TotalEnrollments</div>
+                                    <div class="metric-label">Total Enrollments</div>
+                                </div>
+                                <div class="metric-card">
+                                    <div class="metric-icon">📖</div>
+                                    <div class="metric-value">@statistics.CourseEnrollments</div>
+                                    <div class="metric-label">Course Enrollments</div>
+                                </div>
+                                <div class="metric-card">
+                                    <div class="metric-icon">🧩</div>
+                                    <div class="metric-value">@statistics.PluginEnrollments</div>
+                                    <div class="metric-label">Plugin Enrollments</div>
+                                </div>
+
+                                <!-- User Statistics -->
+                                <div class="metric-card">
+                                    <div class="metric-icon">👤</div>
+                                    <div class="metric-value">@statistics.TotalUsers</div>
+                                    <div class="metric-label">Total Users</div>
+                                </div>
+                                <div class="metric-card">
+                                    <div class="metric-icon">✅</div>
+                                    <div class="metric-value">@statistics.ActiveUsers</div>
+                                    <div class="metric-label">Active Users</div>
+                                </div>
+                                <div class="metric-card">
+                                    <div class="metric-icon">👨‍🏫</div>
+                                    <div class="metric-value">@statistics.TotalInstructors</div>
+                                    <div class="metric-label">Total Instructors</div>
+                                </div>
+
+                                <!-- Payment Statistics -->
+                                <div class="metric-card">
+                                    <div class="metric-icon">💳</div>
+                                    <div class="metric-value">@statistics.TotalPayments</div>
+                                    <div class="metric-label">Total Payments</div>
+                                </div>
+                                <div class="metric-card">
+                                    <div class="metric-icon">💰</div>
+                                    <div class="metric-value">@statistics.TotalRevenue.ToString("C")</div>
+                                    <div class="metric-label">Total Revenue</div>
+                                </div>
+                            </div>
                         </div>
+                    </div>
+                </div>
+                 <!-- Messages Section -->
+   <div class="row messages-section">
+    <div class="col-md-12">
+        <div class="messages-card">
+            <h3>Messages</h3>
+                            @if (messages != null)
+                            {
+                    <ul class="messages-list">
+                                    @foreach (var message in messages)
+                                    {
+                                <li>
+                                    <div class="message-header">From: @message.Name</div>
+                                    <div>
+                                        <span class="message-email">@message.Email</span>
+                                        <span class="message-date">@message.CreatedAt.ToString("MM/dd/yyyy hh:mm tt")</span>
+                                    </div>
+                                    <div class="message-details">
+                                        <p><strong>Subject:</strong> @message.Subject</p>
+                                        <p><strong>Message:</strong> @message.Message</p>
+                                    </div>
+                                </li>
+                                    }
+                    </ul>
+                            }
+                            else
+                            {
+                    <p>No messages to display.</p>
+                            }
+        </div>
+    </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+ 
 
 <script>
     // Toggle submenu visibility
