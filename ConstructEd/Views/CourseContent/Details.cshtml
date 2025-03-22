@@ -1,50 +1,50 @@
 ﻿@model ConstructEd.ViewModels.CourseContentViewModel
-
 @{
     ViewData["Title"] = "Details";
+    Layout = "_Layout"; // Ensure layout is explicitly set
 }
 
 <h1>Details</h1>
 
 <div>
-    <h4>CourseContentViewModel</h4>
+    <h4>CourseContent</h4>
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
             <label asp-for="Id"></label>
         </dt>
         <dd class="col-sm-10">
-            <span asp-for="Id">@Model.Id</span>
+            <span>@Model.Id</span>
         </dd>
         <dt class="col-sm-2">
             <label asp-for="Title"></label>
         </dt>
         <dd class="col-sm-10">
-            <span asp-for="Title">@Model.Title</span>
+            <span>@Model.Title</span>
         </dd>
         <dt class="col-sm-2">
             <label asp-for="Type"></label>
         </dt>
         <dd class="col-sm-10">
-            <span asp-for="Type">@Model.Type</span>
+            <span>@Model.Type</span>
         </dd>
         <dt class="col-sm-2">
             <label asp-for="FileUrl"></label>
         </dt>
         <dd class="col-sm-10">
-            <span asp-for="FileUrl">@Model.FileUrl</span>
+            <span>@Model.FileUrl</span>
         </dd>
         <dt class="col-sm-2">
             <label asp-for="Order"></label>
         </dt>
         <dd class="col-sm-10">
-            <span asp-for="Order">@Model.Order</span>
+            <span>@Model.Order</span>
         </dd>
         <dt class="col-sm-2">
             Course Name
         </dt>
         <dd class="col-sm-10">
-            <span>@ViewBag.CourseName</span>
+            <span>@ViewBag.CourseName</span> <!-- Using ViewBag -->
         </dd>
     </dl>
 </div>

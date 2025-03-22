@@ -11,180 +11,7 @@
     <link rel="icon" type="image/x-icon" href="@Url.Content("~/lib/logo.png")">
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true">
     <link rel="stylesheet" href="~/ConstructEd.styles.css" asp-append-version="true">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-
-    <!-- External Scripts -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js"></script>
-
-    <!-- Custom Styles -->
-    <style>
-        /* General Body Styles */
-        body {
-            background-color: #130f25;
-            color: white;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            padding-top: 70px; /* Adjust for fixed navbar */
-        }
-
-        /* Navbar Styles */
-        .custom-nav {
-            background-color: #322D5B;
-            position: fixed;
-            top: 0;
-            width: 100%;
-            z-index: 1000;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-        }
-
-        .navbar-nav .nav-link i {
-            color: white;
-            transition: color 0.3s ease;
-        }
-
-        .navbar-nav .nav-link i:hover {
-            color: #ff4757;
-        }
-
-        .navbar-brand img {
-            vertical-align: middle;
-            margin-top: -12px;
-        }
-
-        .navbar-nav {
-            gap: 1.5rem;
-        }
-
-        .navbar-collapse {
-            justify-content: space-between;
-        }
-
-        .auth-buttons {
-            display: flex;
-            gap: 1rem;
-        }
-
-        .navbar-nav .nav-link {
-            font-size: 1.1rem;
-            padding: 0.5rem 1rem;
-        }
-
-        /* Footer Styles */
-        .footer {
-            background-color: #2a2753;
-            color: white;
-            margin-top: auto;
-            padding: 15px;
-            text-align: center;
-            padding-top: 30px;
-        }
-
-        .footer .d-flex {
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 15px;
-        }
-
-        .footer .social-icons a {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 40px;
-            height: 40px;
-            margin: 0 8px;
-            border-radius: 50%;
-            background-color: rgba(255, 255, 255, 0.2);
-            transition: all 0.3s ease;
-            text-decoration: none;
-        }
-
-        .footer .social-icons a i {
-            font-size: 18px;
-            color: white;
-            transition: color 0.3s ease;
-        }
-
-        .footer .social-icons a:hover {
-            background-color: #aa2068;
-            transform: scale(1.1);
-        }
-
-        .footer .social-icons a:hover i {
-            color: #130f25;
-        }
-
-        /* Button Styles */
-        .btn-signin {
-            text-decoration: none;
-            position: relative;
-            margin: 7px;
-            font-size: 1rem;
-            font-family: inherit;
-            cursor: pointer;
-            color: #fff;
-            width: 7em;
-            height: 1.75em;
-            line-height: 2.0em;
-            text-align: center;
-            background: linear-gradient(90deg, #FF7700, #f441a5, #ffeb3b, #FC1871);
-            background-size: 300%;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease-in-out;
-            padding: 0.5rem 1rem;
-        }
-
-        .btn-signin:hover {
-            animation: ani 8s linear infinite;
-            border: none;
-        }
-
-        @@keyframes ani {
-            0% {
-                background-position: 0%;
-            }
-
-            100% {
-                background-position: 400%;
-            }
-        }
-
-        .btn-signin:before {
-            content: "";
-            position: absolute;
-            top: -5px;
-            left: -5px;
-            right: -5px;
-            bottom: -5px;
-            z-index: -1;
-            background: linear-gradient(90deg, #FF7700, #f441a5, #ffeb3b, #FC1871);
-            background-size: 400%;
-            transition: 1s;
-        }
-
-        .btn-signin:hover::before {
-            filter: blur(20px);
-        }
-
-        .btn-signin:active {
-            background: linear-gradient(32deg, #FF7700, #f441a5, #ffeb3b, #FC1871);
-        }
-
-        /* Badge Styles */
-        .badge {
-            font-size: 0.75rem;
-            padding: 0.25em 0.5em;
-            margin-left: 0.25em;
-            vertical-align: middle;
-        }
-
-        /* Main Content Styles */
-        .flex-grow-1 {
-            margin-bottom: 50px;
-        }
-    </style>
+    <link rel="stylesheet" href="~/css/custom.css" asp-append-version="true"> <!-- Custom CSS -->
 </head>
 <body>
     <!-- Navbar -->
@@ -212,11 +39,11 @@
                         {
                             @if (!User.IsInRole("Admin"))
                             {
-                                        <li class="nav-item"><a class="nav-link" asp-controller="Enrollment" asp-action="Index">Enrollments</a></li>
+                                <li class="nav-item"><a class="nav-link" asp-controller="Enrollment" asp-action="Index">Enrollments</a></li>
                             }
                             @if (User.IsInRole("Admin"))
                             {
-                                                <li class="nav-item"><a class="nav-link" asp-controller="Admin" asp-action="Dashboard">Dashboard</a></li>
+                                <li class="nav-item"><a class="nav-link" asp-controller="Admin" asp-action="Dashboard">Dashboard</a></li>
                             }
                         }
                         <li class="nav-item"><a class="nav-link" asp-controller="About" asp-action="Index">About</a></li>
@@ -225,23 +52,23 @@
                         <!-- Cart Icon -->
                         @if (!User.IsInRole("Admin"))
                         {
-                                <li class="nav-item">
-                                    <a class="nav-link" href="/ShoppingCart">
-                                        <i class="fa-solid fa-cart-shopping fa-lg"></i>
-                                        <span class="badge bg-danger" id="cart-count">0</span>
-                                    </a>
-                                </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/ShoppingCart">
+                                    <i class="fa-solid fa-cart-shopping fa-lg"></i>
+                                    <span class="badge bg-danger" id="cart-count">0</span>
+                                </a>
+                            </li>
                         }
 
                         <!-- Heart Icon (Wishlist) -->
                         @if (!User.IsInRole("Admin"))
                         {
-                                <li class="nav-item">
-                                    <a class="nav-link" asp-controller="WishList" asp-action="Index">
-                                        <i class="fa-solid fa-heart fa-lg"></i>
-                                        <span class="badge bg-danger" id="wishlist-count">0</span>
-                                    </a>
-                                </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="WishList" asp-action="Index">
+                                    <i class="fa-solid fa-heart fa-lg"></i>
+                                    <span class="badge bg-danger" id="wishlist-count">0</span>
+                                </a>
+                            </li>
                         }
                     </ul>
 
@@ -250,8 +77,8 @@
 
                     @if (User.Identity.IsAuthenticated)
                     {
-                            <div class="dropdown">
-                                <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <div class="dropdown">
+                            <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 @{
                                     string profilePicPath = "uploads/" + User.Identity.Name + ".jpg"; // Relative path from wwwroot
                                     string defaultPic = "Image/default-user.jpg"; // Relative path from wwwroot
@@ -265,23 +92,23 @@
                                     ? Url.Content("~/" + profilePicPath) // Use ~/ to resolve the path correctly
                                     : Url.Content("~/" + defaultPic);
 
-                                            <img src="@profilePic" class="rounded-circle" alt="User Profile" width="40" height="40">
+                                    <img src="@profilePic" class="rounded-circle" alt="User Profile" width="40" height="40">
                                 }
-                                </a>
-                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                                    <li><a class="dropdown-item" asp-controller="Account" asp-action="Profile">Profile</a></li>
-                                    <li>
-                                        <form method="post" asp-controller="Account" asp-action="Logout">
-                                            <button type="submit" class="dropdown-item">Logout</button>
-                                        </form>
-                                    </li>
-                                </ul>
-                            </div>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                                <li><a class="dropdown-item" asp-controller="Account" asp-action="Profile">Profile</a></li>
+                                <li>
+                                    <form method="post" asp-controller="Account" asp-action="Logout">
+                                        <button type="submit" class="dropdown-item">Logout</button>
+                                    </form>
+                                </li>
+                            </ul>
+                        </div>
                     }
                     else
                     {
-                            <a class="btn-signin ms-2" asp-controller="Account" asp-action="Register">Register</a>
-                            <a class="btn-signin ms-2" asp-controller="Account" asp-action="Login">Log In</a>
+                        <a class="btn btn-primary ms-2" asp-controller="Account" asp-action="Register">Register</a>
+                        <a class="btn btn-primary ms-2" asp-controller="Account" asp-action="Login">Log In</a>
                     }
                 </div>
             </div>
@@ -320,69 +147,9 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/CartandWishingListatHeader.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
 
-<script>
-    $(document).ready(function () {
-        // Fetch wishlist count on page load
-        updateWishlistCount();
 
-        $(".wish-form").on("submit", function (event) {
-            event.preventDefault(); // Prevent form submission from reloading the page
-
-            let icon = $(this).find("i");
-
-            // Toggle UI instantly after form submission
-            icon.toggleClass("far fas text-danger");
-
-            // Add a small animation for visual feedback
-            icon.css("transform", "scale(1.2)");
-            setTimeout(() => icon.css("transform", "scale(1)"), 300);
-
-            // Update wishlist count dynamically
-            setTimeout(updateWishlistCount, 500); // Delay to ensure DB update
-        });
-
-        function updateWishlistCount() {
-            $.get("/WishList/GetWishlistCount", function (data) {
-                $("#wishlist-count").text(data);
-            }).fail(function () {
-                console.error("Failed to fetch wishlist count.");
-                alert("Something went wrong while updating the wishlist count.");
-            });
-        }
-    });
-</script>
-
-<script>
-    $(document).ready(function () {
-        updateCartCount();
-
-        $(".cart-form").on("submit", function (event) {
-            event.preventDefault(); // Prevent form submission from reloading the page
-
-            let icon = $(this).find("i");
-
-            // Toggle UI instantly after form submission
-            icon.toggleClass("fa-thin fa-solid text-success");
-
-            // Add a small animation for visual feedback
-            icon.css("transform", "scale(1.2)");
-            setTimeout(() => icon.css("transform", "scale(1)"), 300);
-
-            // Update cart count dynamically
-            setTimeout(updateCartCount, 500); // Delay to ensure DB update
-        });
-
-        function updateCartCount() {
-            $.get("/ShoppingCart/GetCartCount", function (data) {
-                $("#cart-count").text(data);
-            }).fail(function () {
-                console.error("Failed to fetch cart count.");
-                alert("Something went wrong while updating the cart count.");
-            });
-        }
-    });
-</script>

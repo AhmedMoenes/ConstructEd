@@ -2,50 +2,14 @@
     ViewData["Title"] = "Home Page";
 }
 
-<style>
-    body {
-        background-color: #121212;
-        color: #E0E0E0;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
-
-    .hero-section {
-        padding: 30px;
-        text-align: center;
-    }
-
-    .hero-title {
-        font-size: 3rem;
-        margin-bottom: 20px;
-    }
-
-    .hero-text {
-        margin-bottom: 40px;
-        font-size: 1.2rem;
-        color: #B0B0B0;
-    }
-
-    .btn-custom {
-        margin: 10px;
-        padding: 10px 30px;
-        border-radius: 10px;
-        border: 2px solid;
-        background: linear-gradient(45deg, #ff416c, #ff4b2b);
-        color: white;
-        transition: all 0.3s ease;
-    }
-
-        .btn-custom:hover {
-            transform: scale(1.05);
-            background: linear-gradient(45deg, #ff4b2b, #ff416c);
-        }
-
+@* <style>
+    /* Cube-specific styles */
     .cube-section {
         margin-top: 150px;
         display: flex;
         justify-content: center;
         align-items: center;
-        padding-bottom:200px;
+        padding-bottom: 200px;
     }
 
     .cube-container {
@@ -72,12 +36,12 @@
         position: absolute;
         width: 200px;
         height: 200px;
-        color: white;
+        color: #00619e; /* Cream color for text */
         font-size: 18px;
         text-align: center;
         line-height: 200px;
-        background: #000000cc;
-        border: 2px solid;
+        background: rgb(100,100,100,0.05); /* Main color for cube faces */
+        border: 2px solid #01a199; /* Secondary color for borders */
     }
 
     .front {
@@ -105,38 +69,28 @@
     }
 
     @@keyframes rotate {
-        0%
+        0% {
+            transform: rotateX(0) rotateY(0) rotateZ(0);
+        }
 
-    {
-        transform: rotateX(0) rotateY(0) rotateZ(0);
+        100% {
+            transform: rotateX(360deg) rotateY(360deg) rotateZ(360deg);
+        }
     }
-
-    100% {
-        transform: rotateX(360deg) rotateY(360deg) rotateZ(360deg);
-    }
-
-    }
-</style>
-
-<div class="hero-section">
-    <h1 class="hero-title">Welcome to ConstructEd</h1>
-    <p class="hero-text">Learn AEC courses and Revit plugins.</p>
-
-    <!-- Buttons -->
-    <a asp-controller="Plugin" asp-action="Index" class="btn-custom">View Plugins</a>
-    <a asp-controller="Course" asp-action="Index" class="btn-custom">View Courses</a>
-</div>
+</style> *@
 
 <!-- 3D Cube Section -->
-<div class="cube-section">
-    <div class="cube-container">
-        <div class="cube">
-            <div class="face front"><span>Python</span></div>
-            <div class="face back">Dynamo</div>
-            <div class="face right">Revit API</div>
-            <div class="face left">C#</div>
-            <div class="face top">WPF</div>
-            <div class="face bottom">Civil 3D</div>
+<section>
+    <div class="cube-section">
+        <div class="cube-container">
+            <div class="cube">
+                <div class="face front"><span>Python</span></div>
+                <div class="face back">Dynamo</div>
+                <div class="face right">Revit API</div>
+                <div class="face left">C#</div>
+                <div class="face top">WPF</div>
+                <div class="face bottom">Civil 3D</div>
+            </div>
         </div>
     </div>
-</div>
+</section>

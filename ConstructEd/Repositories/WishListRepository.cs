@@ -83,7 +83,7 @@ namespace ConstructEd.Repositories
         public async Task<int> GetCountByUserIdAsync(string userId)
         {
             return await _context.Wishlists
-                .Where(w => w.UserId == userId)
+                .Where(w => w.UserId == userId && (w.CourseId>0 || w.PluginId > 0))
                 .CountAsync();
         }
         public async Task<bool> IsCourseInWishlistAsync(string userId, int courseId)
