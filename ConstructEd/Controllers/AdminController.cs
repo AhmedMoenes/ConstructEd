@@ -200,13 +200,14 @@ namespace ConstructEd.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> CreateCourseContent()
+        public async Task<IActionResult> CreateCourseContent(int id)
         {
             var viewModel = new CourseContentViewModel
             {
-                ContentTypes = _courseContentRepository.GetContentTypesAsSelectList()
+                CourseId = id
             };
 
+            ViewBag.ContentTypes = _courseContentRepository.GetCategories();
             var courses = await _courseRepository.GetAllAsync();
             ViewBag.Courses = new SelectList(courses, "Id", "Title");
 
@@ -221,15 +222,22 @@ namespace ConstructEd.Controllers
             {
                 var courseContent = _mapper.Map<CourseContent>(viewModel);
                 await _courseContentRepository.InsertAsync(courseContent);
-                return RedirectToAction(nameof(CourseContentIndex));
+                return RedirectToAction(nameof(CourseIndex));
             }
 
-            viewModel.ContentTypes = _courseContentRepository.GetContentTypesAsSelectList();
-
+            ViewBag.ContentTypes = _courseContentRepository.GetCategories();
             var courses = await _courseRepository.GetAllAsync();
             ViewBag.Courses = new SelectList(courses, "Id", "Title");
 
             return View(viewModel);
+        }
+
+        public async Task<IActionResult> CourseContentDetails(int id)
+        {
+            var courseContents = await _courseContentRepository.GetCourseContent(id);
+            var viewModels = _mapper.Map<List<CourseContentViewModel>>(courseContents);
+            ViewBag.CourseId = id;
+            return View(viewModels);
         }
 
         [HttpGet]
@@ -242,33 +250,22 @@ namespace ConstructEd.Controllers
             }
 
             var viewModel = _mapper.Map<CourseContentViewModel>(courseContent);
-
-            viewModel.ContentTypes = _courseContentRepository.GetContentTypesAsSelectList();
-            var courses = await _courseRepository.GetAllAsync();
-            ViewBag.Courses = new SelectList(courses, "Id", "Title", courseContent.CourseId); 
+            ViewBag.ContentTypes = _courseContentRepository.GetCategories();
 
             return View(nameof(EditCourseContent),viewModel);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditCourseContent(int id, CourseContentViewModel viewModel)
+        public async Task<IActionResult> EditCourseContent(CourseContentViewModel viewModel)
         {
-            if (id != viewModel.Id)
-            {
-                return NotFound();
-            }
-
             if (ModelState.IsValid)
             {
                 var courseContent = _mapper.Map<CourseContent>(viewModel);
                 await _courseContentRepository.UpdateAsync(courseContent);
                 return RedirectToAction(nameof(CourseContentIndex));
             }
-
-            viewModel.ContentTypes = _courseContentRepository.GetContentTypesAsSelectList();
-            var courses = await _courseRepository.GetAllAsync();
-            ViewBag.Courses = new SelectList(courses, "Id", "Title", viewModel.CourseId); 
+            ViewBag.ContentTypes = _courseContentRepository.GetCategories();
 
             return View(nameof(EditCourseContent),viewModel);
         }
@@ -293,13 +290,12 @@ namespace ConstructEd.Controllers
             try
             {
                 await _courseContentRepository.DeleteAsync(id);
-                return RedirectToAction(nameof(CourseContentIndex));
+                return RedirectToAction(nameof(CourseContentDetails));
             }
             catch (Exception ex)
             {
                 ModelState.AddModelError(string.Empty, ex.InnerException.Message);
                 return View(nameof(RemoveCourseContent), await _courseContentRepository.GetByIdAsync(id));
-
             }
         }
 
