@@ -53,7 +53,7 @@ namespace ConstructEd.Controllers
 			// Get logged-in user ID
 			string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (string.IsNullOrEmpty(userId))
-                return Unauthorized(new { message = "User not logged in" });
+                if (string.IsNullOrEmpty(userId)) return RedirectToAction("Login", "Account");
 
             // Get shopping cart items for the user
             var wish = await _wishlistRepository.GetByUserIdAsync(userId);
