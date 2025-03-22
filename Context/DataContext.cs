@@ -56,7 +56,37 @@ namespace ConstructEd.Data
                 .WithOne(pc => pc.Course)
                 .HasForeignKey(pc => pc.CourseId)
                 .OnDelete(DeleteBehavior.Cascade); // Cascade delete payment courses when a course is deleted
-        }
+            
+            /*******************************/
 
+           // Configure cascade delete for User -> Enrollments
+            modelBuilder.Entity<Enrollment>()
+                .HasOne(e => e.User)
+                .WithMany(u => u.Enrollments)
+                .HasForeignKey(e => e.UserId)
+                .OnDelete(DeleteBehavior.Cascade); // Cascade delete enrollments when a user is deleted
+
+            // Configure cascade delete for User -> Payments
+            modelBuilder.Entity<Payment>()
+                .HasOne(p => p.User)
+                .WithMany(u => u.Payments)
+                .HasForeignKey(p => p.UserId)
+                .OnDelete(DeleteBehavior.Cascade); // Cascade delete payments when a user is deleted
+
+            // Configure cascade delete for User -> ShoppingCart
+            modelBuilder.Entity<ShoppingCart>()
+                .HasOne(sc => sc.User)
+                .WithMany(u => u.ShoppingCarts)
+                .HasForeignKey(sc => sc.UserId)
+                .OnDelete(DeleteBehavior.Cascade); // Cascade delete shopping cart when a user is deleted
+
+            // Configure cascade delete for User -> Wishlist
+            modelBuilder.Entity<Wishlist>()
+                .HasOne(w => w.User)
+                .WithMany(u => u.Wishlists)
+                .HasForeignKey(w => w.UserId)
+                .OnDelete(DeleteBehavior.Cascade); // Cascade delete wishlist when a user is deleted
+            
+        }
     }
 }
