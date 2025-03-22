@@ -58,6 +58,11 @@ body {
     gap: 1rem;
 }
 
+.dropdown {
+    z-index: 9999;
+    position: relative;
+}
+
 /* Main Content Styles */
 main {
     flex-grow: 1; /* Allow the main content to grow and fill the available space */
@@ -845,88 +850,84 @@ main {
 
 /* Course Details Page Styles */
 .course-details-section {
-    background-color: var(--bg-color); /* Use cream color for background */
-    padding: 4rem 0; /* Adjusted padding */
+    background-color: var(--bg-color);
+    padding: 4rem 0;
 }
 
-    .course-details-section h1 {
-        font-size: 2.5rem; /* Reduced font size */
-        color: var(--main-color); /* Use main color for headings */
-        margin-bottom: 1.5rem; /* Reduced margin */
-    }
-
-    .course-details-section h2 {
-        font-size: 2rem; /* Reduced font size */
-        color: var(--main-color); /* Use main color for headings */
-        margin-bottom: 1.5rem; /* Reduced margin */
-    }
-
-    .course-details-section h3 {
-        font-size: 1.75rem; /* Reduced font size */
-        color: var(--main-color); /* Use main color for headings */
-        margin-bottom: 1.5rem; /* Reduced margin */
+    .course-details-section h1,
+    .course-details-section h2,
+    .course-details-section h3,
+    .course-details-section h4 {
+        color: var(--bg-color);
     }
 
     .course-details-section .card {
-        background-color: var(--main-color); /* Use main color for card background */
-        border: 1px solid var(--secondary-color); /* Use secondary color for border */
+        background-color: var(--main-color);
+        color: var(--bg-color);
+        border: 1px solid var(--secondary-color);
         border-radius: 10px;
         padding: 16px;
         transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
 
         .course-details-section .card:hover {
-            transform: translateY(-5px); /* Slight lift on hover */
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Subtle shadow on hover */
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
         }
 
     .course-details-section .card-img-top {
-        max-height: 180px; /* Adjusted for better image size */
-        width: 100%; /* Ensure it takes the full width of the card */
-        object-fit: cover; /* Maintain the aspect ratio without stretching */
+        max-height: 300px;
+        width: 100%;
+        object-fit: cover;
         border-radius: 8px;
-        margin-bottom: 12px; /* Space between image and text */
+        margin-bottom: 12px;
+    }
+
+    .course-details-section .card-body {
+        background-color: var(--main-color);
+        color: var(--bg-color);
     }
 
     .course-details-section .card-title {
-        font-size: 1.5rem; /* Adjusted font size */
-        color: var(--bg-color); /* Use cream color for text */
+        font-size: 1.5rem;
+        color: var(--bg-color);
         font-weight: 600;
-        margin-bottom: 0.5rem; /* Space below title */
+        margin-bottom: 0.5rem;
     }
 
     .course-details-section .card-text {
-        font-size: 1rem; /* Adjusted font size */
-        color: var(--secondary-color); /* Use secondary color for text */
-        margin-bottom: 0.5rem; /* Space below text */
+        font-size: 1rem;
+        color: var(--bg-color);
+        margin-bottom: 0.5rem;
     }
 
     .course-details-section .btn-main {
-        background-color: var(--secondary-color); /* Use secondary color for button */
+        background-color: var(--secondary-color);
         border: none;
-        padding: 0.75rem 1.5rem; /* Adjusted padding */
-        color: var(--bg-color); /* Use cream color for text */
+        padding: 0.75rem 1.5rem;
+        color: var(--bg-color);
         font-weight: bold;
         border-radius: 5px;
         transition: all 0.3s ease;
     }
 
         .course-details-section .btn-main:hover {
-            background-color: var(--bg-color); /* Use cream color for background on hover */
-            color: var(--main-color); /* Use main color for text on hover */
-            border: 1px solid var(--main-color); /* Add border on hover */
+            background-color: var(--bg-color);
+            color: var(--main-color);
+            border: 1px solid var(--main-color);
         }
 
     .course-details-section .btn-icon {
-        font-size: 1.25rem; /* Adjusted icon size */
+        font-size: 1.25rem;
         background: none;
         border: none;
         cursor: pointer;
         transition: color 0.3s ease-in-out;
+        color: var(--bg-color);
     }
 
         .course-details-section .btn-icon:hover {
-            color: var(--bg-color); /* Use cream color on hover */
+            color: var(--secondary-color);
         }
 
     .course-details-section .accordion-item {
@@ -935,14 +936,14 @@ main {
     }
 
     .course-details-section .accordion-header {
-        background-color: rgba(255, 255, 255, 0.1); /* Semi-transparent background */
+        background-color: rgba(255, 255, 255, 0.1);
         border-radius: 5px;
         padding: 0.75rem 1rem;
         transition: background-color 0.3s ease;
     }
 
         .course-details-section .accordion-header:hover {
-            background-color: rgba(255, 255, 255, 0.2); /* Slightly darker on hover */
+            background-color: rgba(255, 255, 255, 0.2);
         }
 
     .course-details-section .sticky-top {
@@ -951,7 +952,6 @@ main {
         top: 2rem;
         z-index: 1000;
     }
-
 
 /*Plugins Indexxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx*/
 
@@ -1300,7 +1300,6 @@ main {
     .btn-checkout:hover {
         background-color: var(--secondary-color);
         color: var(--bg-color);
-        
     }
 
 /* Empty Cart Message */
@@ -1399,5 +1398,3 @@ main {
     gap: 1rem;
     margin-top: 1.5rem;
 }
-
-
