@@ -2,8 +2,7 @@
 
 @{
     ViewData["Title"] = "Edit Course Content";
-    SelectList courses = new SelectList(ViewBag.Courses, "Id", "Title", Model.CourseId); // Preselect the current course
-    SelectList contentTypes = new SelectList(ViewBag.ContentTypes, Model.Type); // Preselect the current content type
+    SelectList contentTypes = new SelectList(ViewBag.ContentTypes);
 }
 
 <style>
@@ -77,7 +76,7 @@
         <form asp-action="EditCourseContent" enctype="multipart/form-data">
             @if (!ViewData.ModelState.IsValid)
             {
-                    <div asp-validation-summary="All" class="alert alert-danger"></div>
+                <div asp-validation-summary="All" class="alert alert-danger"></div>
             }
 
             <!-- Hidden ID Field -->
@@ -94,7 +93,6 @@
             <div class="mb-3">
                 <label asp-for="Type" class="form-label">Content Type</label>
                 <select asp-for="Type" class="form-control input-custom" asp-items="contentTypes">
-                    <option value="">-- Select Content Type --</option>
                 </select>
                 <span asp-validation-for="Type" class="text-danger"></span>
             </div>
@@ -113,21 +111,12 @@
                 <span asp-validation-for="Order" class="text-danger"></span>
             </div>
 
-            <!-- Course Dropdown -->
-            <div class="mb-3">
-                <label asp-for="CourseId" class="form-label">Course</label>
-                <select asp-for="CourseId" class="form-control input-custom" asp-items="courses">
-                    <option value="">-- Select Course --</option>
-                </select>
-                <span asp-validation-for="CourseId" class="text-danger"></span>
-            </div>
-
             <!-- Save Button -->
             <button type="submit" class="btn-save w-100">Save</button>
 
             <!-- Back to List Button -->
             <div class="text-center mt-3">
-                <a asp-action="CourseContentIndex" class="btn-back-to-list">Back to List</a>
+                <a asp-action="CourseContentDetails" asp-controller="Admin" asp-route-id="" class="btn-back-to-list">Back to List</a>
             </div>
         </form>
     </div>

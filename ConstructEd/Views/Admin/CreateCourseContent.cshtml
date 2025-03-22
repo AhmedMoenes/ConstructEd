@@ -1,100 +1,126 @@
-﻿@model CourseContentViewModel
+﻿@model ConstructEd.ViewModels.CourseContentViewModel
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Create Course Content";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    SelectList contentTypes = new SelectList(ViewBag.ContentTypes);
 }
 
 <style>
+    /* Card and Container */
+    .create-container {
+        background-color: #ffffff;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .create-card {
+        background-color: #ffffff;
+        color: #333;
+        border: 1px solid #00bcd4; /* Cyan border */
+        border-radius: 8px;
+        padding: 20px;
+        width: 420px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
     /* Input Fields */
     .input-custom {
-        background-color: transparent;
-        border: 1px solid #5b4b8a;
-        color: #fff;
+        background-color: #ffffff;
+        border: 1px solid #00bcd4; /* Cyan */
+        color: #333;
         border-radius: 5px;
         padding: 10px;
     }
 
         .input-custom:focus {
-            border-color: #7663c1;
-            box-shadow: none;
+            border-color: #0097a7; /* Darker cyan */
+            box-shadow: 0 0 5px rgba(0, 188, 212, 0.5);
             outline: none;
         }
 
+    /* Labels */
+    .form-label {
+        color: #00bcd4; /* Cyan */
+        font-weight: 500;
+    }
+
     /* Create Button */
     .btn-create {
-        background: linear-gradient(90deg, #6f42c1, #aa2068);
+        background: #00bcd4; /* Cyan */
         border: none;
         padding: 10px;
-        color: #fff;
+        color: #ffffff;
         font-weight: bold;
         border-radius: 5px;
-        transition: 0.3s ease;
+        transition: all 0.3s ease;
     }
 
         .btn-create:hover {
-            background: linear-gradient(90deg, #502ea7, #881856);
+            background: #0097a7; /* Darker cyan */
             transform: scale(1.02);
+        }
+
+    /* Back Link */
+    .back-link {
+        color: #00bcd4; /* Cyan */
+        text-decoration: none;
+    }
+
+        .back-link:hover {
+            color: #0097a7; /* Darker cyan */
+            text-decoration: underline;
         }
 </style>
 
-<div class="d-flex justify-content-center align-items-center min-vh-100" style="background-color: #0c081f;">
-<div class="card shadow-lg p-4 rounded-4" style="background-color: #1b1535; color: #fff; width: 420px;">
-<h3 class="text-center mt-3">Create Course Content</h3>
+<div class="create-container">
+    <div class="create-card shadow-lg">
+        <h3 class="text-center mb-4" style="color: #00bcd4;">Create Course Content</h3>
 
-<form asp-action="CreateCourseContent" class="mt-4">
-<div asp-validation-summary="All" class="text-danger mb-3"></div>
+        <form asp-action="CreateCourseContent" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
-<div class="mb-3">
-<label asp-for="Title" class="form-label">Title</label>
-<input asp-for="Title" class="form-control input-custom" />
-<span asp-validation-for="Title" class="text-danger"></span>
-</div>
+            <input asp-for="CourseId" type="hidden" />
 
-<!-- Type Dropdown -->
-<div class="mb-3">
-<label asp-for="Type" class="form-label">Type</label>
-<select asp-for="Type" asp-items="Model.ContentTypes" class="form-control input-custom">
-<option value="">-- Select Content Type --</option>
-</select>
-<span asp-validation-for="Type" class="text-danger"></span>
-</div>
+            <div class="mb-3">
+                <label asp-for="Title" class="form-label"></label>
+                <input asp-for="Title" class="form-control input-custom" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
 
-<!-- File URL Input -->
-<div class="mb-3">
-<label asp-for="FileUrl" class="form-label">File URL</label>
-<input asp-for="FileUrl" class="form-control input-custom" />
-<span asp-validation-for="FileUrl" class="text-danger"></span>
-</div>
+            <div class="mb-3">
+                <label asp-for="Type" class="form-label"></label>
+                <select asp-for="Type" class="form-control input-custom" asp-items="contentTypes">
+                    <option value="-1">-- Select Content Type --</option>
+                </select>
+                <span asp-validation-for="Type" class="text-danger"></span>
+            </div>
 
-<!-- Order Input -->
-<div class="mb-3">
-<label asp-for="Order" class="form-label">Order</label>
-<input asp-for="Order" class="form-control input-custom" />
-<span asp-validation-for="Order" class="text-danger"></span>
-</div>
+            <div class="mb-3">
+                <label asp-for="FileUrl" class="form-label"></label>
+                <input asp-for="FileUrl" class="form-control input-custom" />
+                <span asp-validation-for="FileUrl" class="text-danger"></span>
+            </div>
 
-<!-- Course Dropdown -->
-<div class="mb-3">
-<label asp-for="CourseId" class="form-label">Course</label>
-<select asp-for="CourseId" asp-items="ViewBag.Courses" class="form-control input-custom">
-<option value="">-- Select Course --</option>
-</select>
-<span asp-validation-for="CourseId" class="text-danger"></span>
-</div>
+            <div class="mb-3">
+                <label asp-for="Order" class="form-label"></label>
+                <input asp-for="Order" class="form-control input-custom" />
+                <span asp-validation-for="Order" class="text-danger"></span>
+            </div>
 
- <!-- Create Button -->
-<div class="d-grid">
-<input type="submit" value="Create" class="btn-create w-100" />
-</div>
-</form>
+            <div class="d-grid">
+                <button type="submit" class="btn-create w-100">Create</button>
+            </div>
+        </form>
 
-<div class="text-center mt-4">
-<a asp-action="CourseContentIndex" class="text-decoration-none" style="color: #5998ff;">Back to List</a>
-</div>
-</div>
+        <div class="text-center mt-4">
+            <a asp-action="CourseIndex" class="back-link">Back to List</a>
+        </div>
+    </div>
 </div>
 
 @section Scripts {
-    <partial name="_ValidationScriptsPartial" />
+        <partial name="_ValidationScriptsPartial" />
 }

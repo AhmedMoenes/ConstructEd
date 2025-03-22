@@ -44,32 +44,25 @@ namespace ConstructEd.Repositories
                 .Include(m => m.Course).Where(m => m.CourseId == id).ToListAsync();
         }
 
+        public ICollection<string> GetCategories()
+        {
+            var categories = Enum.GetNames(typeof(ContentType));
+            return categories;
+        }
+
         public async Task InsertAsync(CourseContent obj)
         {
             await _dataContext.CourseContents.AddAsync(obj);
             await SaveAsync();
         }
-
         public async Task SaveAsync()
         {
             await _dataContext.SaveChangesAsync();
         }
-
         public async Task UpdateAsync(CourseContent obj)
         {
             _dataContext.CourseContents.Update(obj);
             await SaveAsync();
-        }
-
-        public IEnumerable<SelectListItem> GetContentTypesAsSelectList()
-        {
-            return Enum.GetValues(typeof(ContentType))
-                      .Cast<ContentType>()
-                      .Select(t => new SelectListItem
-                      {
-                          Value = t.ToString(),
-                          Text = t.ToString()
-                      });
         }
 
         public async Task<Dictionary<int, string>> GetCourseNamesAsync()
@@ -77,7 +70,6 @@ namespace ConstructEd.Repositories
             return await _dataContext.Courses
                 .ToDictionaryAsync(c => c.Id, c => c.Title);
         }
-
         public async Task<string> GetCourseNameByIdAsync(int courseId)
         {
             var course = await _dataContext.Courses

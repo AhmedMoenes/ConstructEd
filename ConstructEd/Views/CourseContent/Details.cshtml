@@ -1,54 +1,107 @@
 ﻿@model ConstructEd.ViewModels.CourseContentViewModel
+
 @{
-    ViewData["Title"] = "Details";
-    Layout = "_Layout"; // Ensure layout is explicitly set
+    ViewData["Title"] = "Course Content Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Details</h1>
+<style>
+   
+    .details-card {
+        background-color: #ffffff;
+        color: #333;
+        border-radius: 8px;
+        padding: 20px;
+        margin: 20px 0;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
 
-<div>
-    <h4>CourseContent</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            <label asp-for="Id"></label>
-        </dt>
-        <dd class="col-sm-10">
-            <span>@Model.Id</span>
-        </dd>
-        <dt class="col-sm-2">
-            <label asp-for="Title"></label>
-        </dt>
-        <dd class="col-sm-10">
-            <span>@Model.Title</span>
-        </dd>
-        <dt class="col-sm-2">
-            <label asp-for="Type"></label>
-        </dt>
-        <dd class="col-sm-10">
-            <span>@Model.Type</span>
-        </dd>
-        <dt class="col-sm-2">
-            <label asp-for="FileUrl"></label>
-        </dt>
-        <dd class="col-sm-10">
-            <span>@Model.FileUrl</span>
-        </dd>
-        <dt class="col-sm-2">
-            <label asp-for="Order"></label>
-        </dt>
-        <dd class="col-sm-10">
-            <span>@Model.Order</span>
-        </dd>
-        <dt class="col-sm-2">
-            Course Name
-        </dt>
-        <dd class="col-sm-10">
-            <span>@ViewBag.CourseName</span> <!-- Using ViewBag -->
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    .details-header {
+        color: #00bcd4; 
+        text-align: center;
+        margin-bottom: 30px;
+        font-size: 2rem;
+        font-weight: 600;
+    }
+
+    .details-grid {
+        display: grid;
+        grid-template-columns: 1fr 3fr;
+        gap: 15px;
+        align-items: center;
+    }
+
+    .details-label {
+        font-weight: 600;
+        color: #00bcd4; 
+        padding: 10px;
+        background-color: rgba(0, 188, 212, 0.1); 
+        border-radius: 4px;
+    }
+
+    .details-value {
+        padding: 10px;
+        background-color: #f5f5f5; 
+        border-radius: 4px;
+        color: #333;
+    }
+
+   
+    .action-buttons {
+        margin-top: 20px;
+        text-align: center;
+    }
+
+    .btn-edit {
+        background-color: #00bcd4; 
+        color: #ffffff;
+        padding: 8px 16px;
+        border-radius: 4px;
+        text-decoration: none;
+        transition: background 0.3s ease;
+        margin-right: 10px;
+    }
+
+    .btn-edit:hover {
+        background-color: #0097a7; 
+        color: #ffffff;
+    }
+
+    .btn-back {
+        background-color: #ffffff;
+        color: #00bcd4; 
+        padding: 8px 16px;
+        border-radius: 4px;
+        text-decoration: none;
+        transition: background 0.3s ease;
+        border: 1px solid #00bcd4;
+    }
+
+    .btn-back:hover {
+        background-color: #00bcd4; 
+        color: #ffffff;
+    }
+</style>
+
+<div class="container">
+
+    <div class="details-card">
+        <div class="details-grid">
+            <label asp-for="Title" class="details-label"></label>
+            <div class="details-value">@Model.Title</div>
+
+            <label asp-for="Type" class="details-label"></label>
+            <div class="details-value">@Model.Type</div>
+
+            <label asp-for="FileUrl" class="details-label"></label>
+            <div class="details-value">@(Model.FileUrl ?? "Not Available")</div>
+
+            <label asp-for="CourseId" class="details-label">Course</label>
+            <div class="details-value">@(ViewBag.CourseName ?? "Unknown Course")</div>
+        </div>
+
+        <div class="action-buttons">
+            <a asp-action="Index" asp-controller="CourseContent" class="btn-back">Go Back</a>
+        </div>
+    </div>
 </div>
