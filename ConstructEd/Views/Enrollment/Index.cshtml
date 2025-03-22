@@ -5,48 +5,44 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>My Enrollments</h2>
+<!-- My Enrollments Section -->
+<section class="enrollments-section">
+    <div class="container mt-4">
+        <h2 class="mb-4">My Enrollments</h2>
 
+        <table class="table table-custom">
+            <thead>
+                <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Category</th>
+                    <th>Duration</th>
+                    <th>Enrollment Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var course in Model.Courses)
+                {
+                    <tr>
+                        <td><span class="badge badge-custom bg-course">Course</span></td>
+                        <td>@course.Title</td>
+                        <td>@course.Category</td>
+                        <td>@course.Duration</td>
+                        <td>@course.EnrolledDate.ToString("dd/MM/yyyy")</td>
+                    </tr>
+                }
 
-<table class="table table-striped">
-    <thead>
-        <tr>
-@*             <th>#</th> *@
-            <th>Type</th>
-            <th>Name</th>
-            <th>Category</th>
-            <th>Duration</th>
-            @* <th>Progress</th> *@
-            <th>Enrollment Date</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var course in Model.Courses)
-        {
-            <tr>
-                <td>@course.Title (Course)</td>
-                <td>@course.Description</td>
-                <td>@course.Category</td>
-                <td> @course.Duration</td>
-                <td>
-                   @course.EnrolledDate
-                </td>
-            </tr>
-        }
-
-        @foreach (var plugin in Model.Plugins)
-        {
-            <tr>
-                <td>@plugin.Title (Plugin)</td>
-                <td>@plugin.Description</td>
-                <td>-</td>
-                <td>-</td>
-                <td>
-                  @plugin.EnrolledDate
-                  
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
-
+                @foreach (var plugin in Model.Plugins)
+                {
+                    <tr>
+                        <td><span class="badge badge-custom bg-plugin">Plugin</span></td>
+                        <td>@plugin.Title</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>@plugin.EnrolledDate.ToString("dd/MM/yyyy")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</section>

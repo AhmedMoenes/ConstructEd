@@ -4,138 +4,58 @@
     ViewData["Title"] = "Sign In";
 }
 
-<style>
-    /* Input Fields */
-    .input-custom {
-        background-color: transparent;
-        border: 1px solid #5b4b8a;
-        color: #fff;
-        border-radius: 5px;
-        padding: 10px;
-    }
+<!-- Sign In Section -->
+<section class="signin-section">
+    <div class="container d-flex justify-content-center align-items-center min-vh-100">
+        <div class="card shadow-lg p-4 rounded-4" style="background-color: var(--main-color); color: var(--bg-color); width: 380px;">
+            <h3 class="text-center mt-3">Sign In</h3>
 
-        .input-custom:focus {
-            border-color: #7663c1;
-            box-shadow: none;
-            outline: none;
-        }
-
-    /* Sign In Button */
-    .btn-signin {
-        border: none; /* Remove any border styles */
-        padding: 10px;
-        color: #fff;
-        font-weight: bold;
-        border-radius: 5px;
-        transition: 0.3s ease;
-    }
-
-        .btn-signin:hover {
-            background: linear-gradient(90deg, #502ea7, #881856);
-            transform: scale(1.02);
-        }
-
-    /* Create Account Button (New Dark Purple Theme) */
-    .btn-create-account {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding: 15px 38px;
-        border-radius: 16px;
-        border: 1px solid transparent;
-        color: #ffffff;
-        background: linear-gradient(90deg, #5B4B8A, #7663C1);
-        font-size: 16px;
-        letter-spacing: 1px;
-        transition: all 0.2s ease-in-out;
-        text-decoration: none;
-    }
-
-        .btn-create-account:hover {
-            background: rgba(193, 158, 224, 0.1);
-            border-color: #C19EE0;
-            color: #C19EE0;
-            transform: translateY(-4px) scale(1.05);
-        }
-
-        .btn-create-account:active {
-            background-color: transparent;
-            border-color: #C19EE0;
-            color: #C19EE0;
-            transform: translateY(4px) scale(0.95);
-        }
-
-        .btn-create-account:disabled {
-            background-color: rgba(255, 255, 255, 0.16);
-            color: #8E8E93;
-            border-color: #8E8E93;
-        }
-
-    /* Validation Error Styles */
-    .alert-danger {
-        background-color: #ff4444;
-        color: #fff;
-        border-radius: 5px;
-        padding: 10px;
-        margin-bottom: 15px;
-    }
-
-    .text-danger {
-        color: #ff4444;
-    }
-</style>
-
-<div class="d-flex justify-content-center align-items-center min-vh-100" style="background-color: #0c081f;">
-    <div class="card shadow-lg p-4 rounded-4" style="background-color: #1b1535; color: #fff; width: 380px;">
-
-        <h3 class="text-center mt-3">Sign in</h3>
-
-        <form asp-action="Login" asp-controller="Account" method="post">
-
-            @if (!ViewData.ModelState.IsValid)
-            {
+            <form asp-action="Login" asp-controller="Account" method="post">
+                @if (!ViewData.ModelState.IsValid)
+                {
                     <div asp-validation-summary="All" class="alert alert-danger"></div>
-            }
+                }
 
-            <!-- Email Input -->
-            <div class="mb-3">
-                <label asp-for="Email" class="form-label">Email</label>
-                <input asp-for="Email" type="email" class="form-control input-custom" required>
-                <span asp-validation-for="Email" class="text-danger"></span>
+                <!-- Email Input -->
+                <div class="mb-3">
+                    <label asp-for="Email" class="form-label">Email</label>
+                    <input asp-for="Email" type="email" class="form-control input-custom" required>
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+
+                <!-- Password Input -->
+                <div class="mb-3">
+                    <label asp-for="Password" class="form-label">Password</label>
+                    <input asp-for="Password" type="password" class="form-control input-custom" required>
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+
+                <!-- Remember Me Checkbox -->
+                <div class="form-check mb-3">
+                    <input asp-for="RememberMe" type="checkbox" class="form-check-input" id="rememberMe">
+                    <label class="form-check-label" for="rememberMe">Remember me</label>
+                </div>
+
+                <!-- Sign In Button -->
+                <button type="submit" class="btn-signin w-100">Log In</button>
+
+                <!-- Forgot Password Link -->
+                <div class="text-center mt-3">
+                    <a asp-action="ForgotPassword" asp-controller="Account" class="text-decoration-none" style="color: var(--secondary-color);">Forgot password?</a>
+                </div>
+            </form>
+
+            <hr class="mt-4 mb-3 border-secondary">
+
+            <!-- Create Account Button -->
+            <div class="text-center">
+                <p class="mb-2">Don't have an account?</p>
+                <a asp-action="Register" asp-controller="Account" class="btn-create-account">Create an account</a>
             </div>
-
-            <!-- Password Input -->
-            <div class="mb-3">
-                <label asp-for="Password" class="form-label">Password</label>
-                <input asp-for="Password" type="password" class="form-control input-custom" required>
-                <span asp-validation-for="Password" class="text-danger"></span>
-            </div>
-
-            <!-- Remember Me Checkbox -->
-            <div class="form-check mb-3">
-                <input asp-for="RememberMe" type="checkbox" class="form-check-input" id="rememberMe">
-                <label class="form-check-label" for="rememberMe">Remember me</label>
-            </div>
-
-            <!-- Sign In Button -->
-            <button type="submit" class="btn-create-account w-100">Log In</button>
-
-            <!-- Additional Options -->
-            <div class="text-center mt-3">
-                <a asp-action="ForgotPassword" asp-controller="Account" class="text-decoration-none" style="color: #5998ff;">Forgot password?</a>
-            </div>
-        </form>
-
-        <hr class="mt-4 mb-3 border-secondary">
-
-        <!-- Create Account Button -->
-        <div class="text-center">
-            <p class="mb-2">Don't have an account?</p>
-            <a asp-action="Register" asp-controller="Account" class="btn-create-account">Create an account</a>
         </div>
     </div>
-</div>
+</section>
 
 @section Scripts {
-        <partial name="_ValidationScriptsPartial" />
+    <partial name="_ValidationScriptsPartial" />
 }
