@@ -1,217 +1,67 @@
 ﻿@model PaymentViewModel
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Payment Modal</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        /* Custom CSS */
-        body {
-            background-color: #121212;
-            color: #fff;
-            font-family: Arial, sans-serif;
-        }
-
-        .payment-modal {
-            background-color: #1E1E1E;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-        }
-
-            .payment-modal .modal-header {
-                border-bottom: 1px solid #333;
-            }
-
-            .payment-modal .form-control {
-                background-color: #2A2A2A;
-                color: #fff;
-                border: 1px solid #444;
-                transition: border-color 0.3s ease;
-            }
-
-                .payment-modal .form-control:focus {
-                    background-color: #333;
-                    border-color: #007bff;
-                    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
-                }
-
-                .payment-modal .form-control.is-invalid {
-                    border-color: #dc3545;
-                }
-
-            .payment-modal .payment-options .payment-btn {
-                background-color: #1E1E1E;
-                border: 1px solid #444;
-                padding: 10px;
-                border-radius: 8px;
-                transition: background-color 0.3s, transform 0.2s;
-            }
-
-                .payment-modal .payment-options .payment-btn:hover {
-                    background-color: #333;
-                    transform: scale(1.05);
-                }
-
-        /* From Uiverse.io by zjssun */
-        .btn-primary {
-            position: relative;
-            padding: 10px 22px;
-            border-radius: 6px;
-            border: none;
-            color: #fff;
-            cursor: pointer;
-            background-color: #7d2ae8;
-            transition: all 0.2s ease;
-        }
-
-            .btn-primary:active {
-                transform: scale(0.96);
-            }
-
-            .btn-primary:before,
-            .btn-primary:after {
-                position: absolute;
-                content: "";
-                width: 150%;
-                left: 50%;
-                height: 100%;
-                transform: translateX(-50%);
-                z-index: -1000;
-                background-repeat: no-repeat;
-            }
-
-            .btn-primary:hover:before {
-                top: -70%;
-                background-image: radial-gradient(circle, #7d2ae8 20%, transparent 20%), radial-gradient(circle, transparent 20%, #7d2ae8 20%, transparent 30%), radial-gradient(circle, #7d2ae8 20%, transparent 20%), radial-gradient(circle, #7d2ae8 20%, transparent 20%), radial-gradient(circle, transparent 10%, #7d2ae8 15%, transparent 20%), radial-gradient(circle, #7d2ae8 20%, transparent 20%), radial-gradient(circle, #7d2ae8 20%, transparent 20%), radial-gradient(circle, #7d2ae8 20%, transparent 20%), radial-gradient(circle, #7d2ae8 20%, transparent 20%);
-                background-size: 10% 10%, 20% 20%, 15% 15%, 20% 20%, 18% 18%, 10% 10%, 15% 15%, 10% 10%, 18% 18%;
-                background-position: 50% 120%;
-                animation: greentopBubbles 0.6s ease;
-            }
-
-        @@keyframes greentopBubbles {
-            0% {
-                background-position: 5% 90%, 10% 90%, 10% 90%, 15% 90%, 25% 90%, 25% 90%, 40% 90%, 55% 90%, 70% 90%;
-            }
-
-            50% {
-                background-position: 0% 80%, 0% 20%, 10% 40%, 20% 0%, 30% 30%, 22% 50%, 50% 50%, 65% 20%, 90% 30%;
-            }
-
-            100% {
-                background-position: 0% 70%, 0% 10%, 10% 30%, 20% -10%, 30% 20%, 22% 40%, 50% 40%, 65% 10%, 90% 20%;
-                background-size: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%;
-            }
-        }
-
-        .btn-primary:hover::after {
-            bottom: -70%;
-            background-image: radial-gradient(circle, #7d2ae8 20%, transparent 20%), radial-gradient(circle, #7d2ae8 20%, transparent 20%), radial-gradient(circle, transparent 10%, #7d2ae8 15%, transparent 20%), radial-gradient(circle, #7d2ae8 20%, transparent 20%), radial-gradient(circle, #7d2ae8 20%, transparent 20%), radial-gradient(circle, #7d2ae8 20%, transparent 20%), radial-gradient(circle, #7d2ae8 20%, transparent 20%);
-            background-size: 15% 15%, 20% 20%, 18% 18%, 20% 20%, 15% 15%, 20% 20%, 18% 18%;
-            background-position: 50% 0%;
-            animation: greenbottomBubbles 0.6s ease;
-        }
-
-        @@keyframes greenbottomBubbles {
-            0% {
-                background-position: 10% -10%, 30% 10%, 55% -10%, 70% -10%, 85% -10%, 70% -10%, 70% 0%;
-            }
-
-            50% {
-                background-position: 0% 80%, 20% 80%, 45% 60%, 60% 100%, 75% 70%, 95% 60%, 105% 0%;
-            }
-
-            100% {
-                background-position: 0% 90%, 20% 90%, 45% 70%, 60% 110%, 75% 80%, 95% 70%, 110% 10%;
-                background-size: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%;
-            }
-        }
-
-        .invalid-feedback {
-            color: #dc3545;
-            font-size: 0.875em;
-        }
-
-        .spinner-border {
-            vertical-align: middle;
-        }
-
-        .payment-btn {
-            width: 100px;
-        }
-    </style>
-</head>
-<body>
-    <!-- Payment Modal -->
-    <div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="paymentModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content payment-modal">
-                <div class="modal-header border-0">
-                    <h5 class="modal-title text-white" id="paymentModalLabel">Complete Your Payment</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+<!-- Payment Modal -->
+<div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="paymentModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="paymentModalLabel">Complete Your Payment</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Payment Options -->
+                <div class="payment-options d-flex justify-content-around mb-4">
+                    <button name="paypal" type="button" class="btn btn-outline-secondary payment-btn" aria-label="Pay with PayPal">
+                        <img src="https://www.paypalobjects.com/webstatic/mktg/logo/pp_cc_mark_111x69.jpg" alt="PayPal" width="100">
+                    </button>
+                    <button name="apple-pay" type="button" class="btn btn-outline-secondary payment-btn" aria-label="Pay with Apple Pay">
+                        <img src="~/Image/Apple_Pay_Mark_RGB_041619.svg" alt="Apple Pay" width="100">
+                    </button>
                 </div>
-                <div class="modal-body">
-                    <!-- Payment Options -->
-                    <div class="payment-options d-flex justify-content-around mb-4">
-                        <button name="paypal" type="button" class="payment-btn" aria-label="Pay with PayPal">
-                            <img src="https://www.paypalobjects.com/webstatic/mktg/logo/pp_cc_mark_111x69.jpg" alt="PayPal" width="100">
-                        </button>
-                        <button name="apple-pay" type="button" class="payment-btn" aria-label="Pay with Apple Pay">
-                            <img src="~/Image/Apple_Pay_Mark_RGB_041619.svg" alt="Apple Pay" width="100">
-                        </button>
+
+                <!-- Payment Form -->
+                <form asp-action="ProcessPayment" asp-controller="ShoppingCart" method="post" id="paymentForm">
+                    <!-- Card Number -->
+                    <div class="mb-3">
+                        <label asp-for="CardNumber" class="form-label">Card Number</label>
+                        <input asp-for="CardNumber" type="text" class="form-control" placeholder="XXXX XXXX XXXX XXXX" required>
+                        <span asp-validation-for="CardNumber" class="invalid-feedback"></span>
                     </div>
 
-                    <!-- Payment Form -->
-                    <form asp-action="ProcessPayment" asp-controller="ShoppingCart" method="post" id="paymentForm" method="post" class="form text-white">
-                        <!-- Card Number -->
-                        <div class="mb-3">
-                            <label asp-for="CardNumber" class="form-label">Card Number</label>
-                            <input asp-for="CardNumber" type="text" class="form-control" placeholder="XXXX XXXX XXXX XXXX" required>
-                            <span asp-validation-for="CardNumber" class="invalid-feedback"></span>
+                    <!-- Expiry Date and CVV -->
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label asp-for="ExpiryDate" class="form-label">Expiry Date</label>
+                            <input asp-for="ExpiryDate" type="text" class="form-control" placeholder="MM/YY" required>
+                            <span asp-validation-for="ExpiryDate" class="invalid-feedback"></span>
                         </div>
-
-                        <!-- Expiry Date and CVV -->
-                        <div class="row mb-3">
-                            <div class="col-md-6">
-                                <label asp-for="ExpiryDate" class="form-label">Expiry Date</label>
-                                <input asp-for="ExpiryDate" type="text" class="form-control" placeholder="MM/YY" required>
-                                <span asp-validation-for="ExpiryDate" class="invalid-feedback"></span>
-                            </div>
-                            <div class="col-md-6">
-                                <label asp-for="CVV" class="form-label">CVV</label>
-                                <input asp-for="CVV" type="text" class="form-control" placeholder="XXX" required>
-                                <span asp-validation-for="CVV" class="invalid-feedback"></span>
-                            </div>
+                        <div class="col-md-6">
+                            <label asp-for="CVV" class="form-label">CVV</label>
+                            <input asp-for="CVV" type="text" class="form-control" placeholder="XXX" required>
+                            <span asp-validation-for="CVV" class="invalid-feedback"></span>
                         </div>
+                    </div>
 
-                        <!-- Card Holder Name -->
-                        <div class="mb-3">
-                            <label asp-for="CardHolderName" class="form-label">Card Holder Name</label>
-                            <input asp-for="CardHolderName" type="text" class="form-control" placeholder="Full Name" required>
-                            <span asp-validation-for="CardHolderName" class="invalid-feedback"></span>
-                        </div>
+                    <!-- Card Holder Name -->
+                    <div class="mb-3">
+                        <label asp-for="CardHolderName" class="form-label">Card Holder Name</label>
+                        <input asp-for="CardHolderName" type="text" class="form-control" placeholder="Full Name" required>
+                        <span asp-validation-for="CardHolderName" class="invalid-feedback"></span>
+                    </div>
 
-                        <!-- Submit Button with Loading State -->
-                        <button type="submit" class="btn btn-primary w-100" id="payButton">
-                            <span class="button-text">Pay Now</span>
-                            <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
-                        </button>
-                    </form>
-                </div>
+                    <!-- Submit Button with Loading State -->
+                    <button type="submit" class="btn btn-primary w-100" id="payButton">
+                        <span class="button-text">Pay Now</span>
+                        <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                    </button>
+                </form>
             </div>
         </div>
     </div>
+</div>
 
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
+@section Scripts {
     <script>
-
         document.getElementById('paymentForm').addEventListener('submit', function (e) {
             const payButton = document.getElementById('payButton');
             payButton.disabled = true;
@@ -219,5 +69,4 @@
             payButton.querySelector('.spinner-border').classList.remove('d-none');
         });
     </script>
-</body>
-</html>
+}

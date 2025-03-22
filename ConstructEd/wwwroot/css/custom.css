@@ -5,12 +5,18 @@
 }
 
 /* General Body Styles */
+html, body {
+    height: 100%; /* Ensure the body and html take up the full height of the viewport */
+    margin: 0; /* Remove default margin */
+    padding: 0; /* Remove default padding */
+}
+
 body {
-    background-color: var(--bg-color); /* Cream color */
-    color: var(--main-color); /* Dark blue for text */
-    min-height: 100vh;
     display: flex;
     flex-direction: column;
+    min-height: 100vh; /* Ensure the body takes at least the full viewport height */
+    background-color: var(--bg-color); /* Cream color */
+    color: var(--main-color); /* Dark blue for text */
     padding-top: 70px; /* Adjust for fixed navbar */
 }
 
@@ -34,10 +40,6 @@ body {
         color: var(--secondary-color) !important; /* Secondary color on hover */
     }
 
-    .navbar-nav .nav-link:hover::after {
-        width: 100%; /* Expand the underline on hover */
-    }
-
 .navbar-brand img {
     vertical-align: middle;
     margin-top: -12px;
@@ -56,14 +58,19 @@ body {
     gap: 1rem;
 }
 
+/* Main Content Styles */
+main {
+    flex-grow: 1; /* Allow the main content to grow and fill the available space */
+    overflow: auto; /* Add scrollbars if content overflows */
+}
+
 /* Footer Styles */
 .footer {
     background-color: var(--main-color); /* Dark blue */
     color: var(--bg-color); /* Cream color for text */
-    margin-top: auto;
+    margin-top: auto; /* Push the footer to the bottom */
     padding: 15px;
     text-align: center;
-    padding-top: 30px;
     width: 100%;
 }
 
@@ -355,14 +362,16 @@ body {
 }
 
 .form-control-custom {
-    background-color: transparent;
+    background-color: rgba(255, 255, 255, 0.1); /* Semi-transparent background */
     border: 1px solid var(--secondary-color); /* Use secondary color for border */
-    color: var(--main-color); /* Use main color for text */
+    color: var(--bg-color); /* Use cream color for text */
     border-radius: 5px;
     padding: 0.75rem; /* Adjusted padding */
+    transition: background-color 0.3s ease;
 }
 
     .form-control-custom:focus {
+        background-color: rgba(255, 255, 255, 0.2); /* Slightly darker on focus */
         border-color: var(--secondary-color); /* Use secondary color for focus */
         box-shadow: none;
         outline: none;
@@ -379,11 +388,78 @@ body {
 }
 
     .btn-submit:hover {
-        background-color: var(--bg-color); /* Use main color on hover */
-        color: var(--main-color); /* Use cream color for text on hover */
-        transform: scale(1.05);
+        background-color: var(--bg-color); /* Use cream color for background on hover */
+        color: var(--main-color); /* Use main color for text on hover */
+        border: 1px solid var(--main-color); /* Add border on hover */
     }
 
+
+/*CooooooooooooooooonnnnnnnnnnnnnnnnnnnnnnttttttttttttttttttaaaaaaaaaaaaaaaaccccccccccccccccccccccttttttttttttttttttttttttttSUUUUUUUUUUUUUUUCCCCCCCCCCCCEEEEEEEEEESSSSSSSSSSSSS*/
+
+/* Message Sent Successfully Page Styles */
+.success-section {
+    background-color: var(--bg-color); /* Use cream color for background */
+    color: var(--main-color); /* Use main color for text */
+    padding: 100px 0; /* Adjusted padding */
+    text-align: center;
+    height: 100vh; /* Full viewport height */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+    .success-section h2 {
+        font-size: 2.5rem; /* Reduced font size */
+        color: var(--secondary-color); /* Use secondary color for headings */
+        margin-bottom: 1.5rem; /* Reduced margin */
+    }
+
+    .success-section p {
+        font-size: 1.4rem; /* Reduced font size */
+        line-height: 1.8;
+        color: var(--main-color); /* Use main color for text */
+        margin-bottom: 2rem; /* Reduced margin */
+    }
+
+.success-icon {
+    font-size: 4rem; /* Adjusted icon size */
+    color: var(--secondary-color); /* Use secondary color for icon */
+    margin-bottom: 1.5rem; /* Reduced margin */
+    animation: bounce 1.5s infinite; /* Bounce animation */
+}
+
+.btn-back {
+    background-color: var(--secondary-color); /* Use secondary color for button */
+    border: none;
+    padding: 0.75rem 1.5rem; /* Adjusted padding */
+    color: var(--bg-color); /* Use cream color for text */
+    font-weight: bold;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+    .btn-back:hover {
+        background-color: var(--bg-color); /* Use cream color for background on hover */
+        color: var(--main-color); /* Use main color for text on hover */
+        border: 1px solid var(--main-color); /* Add border on hover */
+        transform: scale(1.05); /* Slight scale effect on hover */
+    }
+
+/* Bounce Animation */
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+    }
+
+    40% {
+        transform: translateY(-20px);
+    }
+
+    60% {
+        transform: translateY(-10px);
+    }
+}
 
 /*LLLLLLLLLLLLLOOOOOOOOOOOOOOOOOGGGGGGGGGGGGGGGGGGGGIIIIIIIIIIIIIIIIIIIIIIIIIINNNNNNNNNNNNNNNNNN*/
 
@@ -641,4 +717,376 @@ body {
     .badge-custom.bg-plugin {
         background-color: var(--main-color) !important; /* Use main color for plugin badge */
         color: var(--bg-color); /* Use cream color for text */
+    }
+
+
+/*Coooooooooooooooooooooooooooooooooourse Indexxxxxxxxxxxxxxxxxxxxxxxxxxxxxx*/
+
+/* Courses Page Styles */
+.courses-section {
+    background-color: var(--bg-color); /* Use cream color for background */
+    padding: 4rem 0; /* Adjusted padding */
+}
+
+.course-card {
+    background-color: var(--main-color); /* Use main color for card background */
+    border: 1px solid var(--secondary-color); /* Use secondary color for border */
+    border-radius: 10px;
+    padding: 16px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    height: 100%; /* Ensure all cards have the same height */
+}
+
+    .course-card:hover {
+        transform: translateY(-5px); /* Slight lift on hover */
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Subtle shadow on hover */
+    }
+
+    .course-card img {
+        max-height: 180px; /* Adjusted for better image size */
+        width: 100%; /* Ensure it takes the full width of the card */
+        object-fit: cover; /* Maintain the aspect ratio without stretching */
+        border-radius: 8px;
+        margin-bottom: 12px; /* Space between image and text */
+    }
+
+    .course-card .card-title {
+        font-size: 1.5rem; /* Adjusted font size */
+        color: var(--bg-color); /* Use cream color for text */
+        font-weight: 600;
+        margin-bottom: 0.5rem; /* Space below title */
+    }
+
+    .course-card .card-text {
+        font-size: 1rem; /* Adjusted font size */
+        color: var(--secondary-color); /* Use secondary color for text */
+        margin-bottom: 0.5rem; /* Space below text */
+    }
+
+    .course-card .btn {
+        transition: background-color 0.3s ease;
+    }
+
+        .course-card .btn:hover {
+            background-color: var(--secondary-color); /* Use secondary color on hover */
+            color: var(--bg-color); /* Use cream color for text on hover */
+        }
+
+.cart-button, .wish-button {
+    font-size: 1.25rem; /* Adjusted icon size */
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: color 0.3s ease-in-out;
+}
+
+.cart-button {
+    color: var(--secondary-color); /* Use secondary color for cart icon */
+}
+
+    .cart-button:hover {
+        color: var(--bg-color); /* Use cream color on hover */
+    }
+
+.wish-button {
+    color: var(--secondary-color); /* Use secondary color for wishlist icon */
+}
+
+    .wish-button:hover {
+        color: var(--bg-color); /* Use cream color on hover */
+    }
+
+
+/*Coooooooooooooooooooooooooooooooooourse Detailssssssssssssssssssssssssssssssssssssssssssssssssssssssssss*/
+
+/* Course Details Page Styles */
+.course-details-section {
+    background-color: var(--bg-color); /* Use cream color for background */
+    padding: 4rem 0; /* Adjusted padding */
+}
+
+    .course-details-section h1 {
+        font-size: 2.5rem; /* Reduced font size */
+        color: var(--main-color); /* Use main color for headings */
+        margin-bottom: 1.5rem; /* Reduced margin */
+    }
+
+    .course-details-section h2 {
+        font-size: 2rem; /* Reduced font size */
+        color: var(--main-color); /* Use main color for headings */
+        margin-bottom: 1.5rem; /* Reduced margin */
+    }
+
+    .course-details-section h3 {
+        font-size: 1.75rem; /* Reduced font size */
+        color: var(--main-color); /* Use main color for headings */
+        margin-bottom: 1.5rem; /* Reduced margin */
+    }
+
+    .course-details-section .card {
+        background-color: var(--main-color); /* Use main color for card background */
+        border: 1px solid var(--secondary-color); /* Use secondary color for border */
+        border-radius: 10px;
+        padding: 16px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+        .course-details-section .card:hover {
+            transform: translateY(-5px); /* Slight lift on hover */
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Subtle shadow on hover */
+        }
+
+    .course-details-section .card-img-top {
+        max-height: 180px; /* Adjusted for better image size */
+        width: 100%; /* Ensure it takes the full width of the card */
+        object-fit: cover; /* Maintain the aspect ratio without stretching */
+        border-radius: 8px;
+        margin-bottom: 12px; /* Space between image and text */
+    }
+
+    .course-details-section .card-title {
+        font-size: 1.5rem; /* Adjusted font size */
+        color: var(--bg-color); /* Use cream color for text */
+        font-weight: 600;
+        margin-bottom: 0.5rem; /* Space below title */
+    }
+
+    .course-details-section .card-text {
+        font-size: 1rem; /* Adjusted font size */
+        color: var(--secondary-color); /* Use secondary color for text */
+        margin-bottom: 0.5rem; /* Space below text */
+    }
+
+    .course-details-section .btn-main {
+        background-color: var(--secondary-color); /* Use secondary color for button */
+        border: none;
+        padding: 0.75rem 1.5rem; /* Adjusted padding */
+        color: var(--bg-color); /* Use cream color for text */
+        font-weight: bold;
+        border-radius: 5px;
+        transition: all 0.3s ease;
+    }
+
+        .course-details-section .btn-main:hover {
+            background-color: var(--bg-color); /* Use cream color for background on hover */
+            color: var(--main-color); /* Use main color for text on hover */
+            border: 1px solid var(--main-color); /* Add border on hover */
+        }
+
+    .course-details-section .btn-icon {
+        font-size: 1.25rem; /* Adjusted icon size */
+        background: none;
+        border: none;
+        cursor: pointer;
+        transition: color 0.3s ease-in-out;
+    }
+
+        .course-details-section .btn-icon:hover {
+            color: var(--bg-color); /* Use cream color on hover */
+        }
+
+    .course-details-section .accordion-item {
+        border: none;
+        margin-bottom: 0.5rem;
+    }
+
+    .course-details-section .accordion-header {
+        background-color: rgba(255, 255, 255, 0.1); /* Semi-transparent background */
+        border-radius: 5px;
+        padding: 0.75rem 1rem;
+        transition: background-color 0.3s ease;
+    }
+
+        .course-details-section .accordion-header:hover {
+            background-color: rgba(255, 255, 255, 0.2); /* Slightly darker on hover */
+        }
+
+    .course-details-section .sticky-top {
+        position: -webkit-sticky;
+        position: sticky;
+        top: 2rem;
+        z-index: 1000;
+    }
+
+
+/*Plugins Indexxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx*/
+
+/* Plugins Page Styles (Same as Courses Page) */
+.plugins-section {
+    background-color: var(--bg-color); /* Use cream color for background */
+    padding: 4rem 0; /* Adjusted padding */
+}
+
+.plugin-card {
+    background-color: var(--main-color); /* Use main color for card background */
+    border: 1px solid var(--secondary-color); /* Use secondary color for border */
+    border-radius: 10px;
+    padding: 16px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    height: 100%; /* Ensure all cards have the same height */
+}
+
+    .plugin-card:hover {
+        transform: translateY(-5px); /* Slight lift on hover */
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Subtle shadow on hover */
+    }
+
+    .plugin-card img {
+        max-height: 180px; /* Adjusted for better image size */
+        width: 100%; /* Ensure it takes the full width of the card */
+        object-fit: cover; /* Maintain the aspect ratio without stretching */
+        border-radius: 8px;
+        margin-bottom: 12px; /* Space between image and text */
+    }
+
+    .plugin-card .card-title {
+        font-size: 1.5rem; /* Adjusted font size */
+        color: var(--bg-color); /* Use cream color for text */
+        font-weight: 600;
+        margin-bottom: 0.5rem; /* Space below title */
+    }
+
+    .plugin-card .card-text {
+        font-size: 1rem; /* Adjusted font size */
+        color: var(--secondary-color); /* Use secondary color for text */
+        margin-bottom: 0.5rem; /* Space below text */
+    }
+
+    .plugin-card .btn {
+        transition: background-color 0.3s ease;
+    }
+
+        .plugin-card .btn:hover {
+            background-color: var(--secondary-color); /* Use secondary color on hover */
+            color: var(--bg-color); /* Use cream color for text on hover */
+        }
+
+.cart-button, .wish-button {
+    font-size: 1.25rem; /* Adjusted icon size */
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: color 0.3s ease-in-out;
+}
+
+.cart-button {
+    color: var(--secondary-color); /* Use secondary color for cart icon */
+}
+
+    .cart-button:hover {
+        color: var(--bg-color); /* Use cream color on hover */
+    }
+
+.wish-button {
+    color: var(--secondary-color); /* Use secondary color for wishlist icon */
+}
+
+    .wish-button:hover {
+        color: var(--bg-color); /* Use cream color on hover */
+    }
+
+
+
+/*Plugins Detailsssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss*/
+
+/* Plugin Details Page Styles */
+.plugin-details-card {
+    background: var(--main-color);
+    border: 1px solid var(--secondary-color);
+    border-radius: 15px;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    padding: 2rem;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+    color: var(--bg-color);
+}
+
+.plugin-image {
+    max-width: 250px;
+    border: 2px solid var(--secondary-color);
+    transition: transform 0.3s ease;
+}
+
+    .plugin-image:hover {
+        transform: scale(1.05);
+    }
+
+.plugin-title {
+    font-size: 2.5rem;
+    color: var(--secondary-color);
+    margin-bottom: 1rem;
+}
+
+.plugin-description {
+    font-size: 1.2rem;
+    color: var(--bg-color);
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+}
+
+.plugin-price {
+    font-size: 1.75rem;
+    color: var(--secondary-color);
+    margin-bottom: 2rem;
+}
+
+.plugin-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.btn-enrolled {
+    background-color: var(--secondary-color);
+    color: var(--bg-color);
+    border: none;
+    padding: 0.75rem;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: not-allowed;
+}
+
+.btn-buy-now {
+    background-color: var(--secondary-color);
+    color: var(--bg-color);
+    border: none;
+    padding: 0.75rem;
+    font-weight: bold;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+    .btn-buy-now:hover {
+        background-color: var(--main-color);
+        color: var(--bg-color);
+    }
+
+.btn-cart {
+    background-color: transparent;
+    border: 1px solid var(--secondary-color);
+    color: var(--bg-color);
+    padding: 0.75rem;
+    font-weight: bold;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+    .btn-cart:hover {
+        background-color: var(--secondary-color);
+        color: var(--bg-color);
+    }
+
+.btn-wishlist {
+    background-color: transparent;
+    border: 1px solid var(--secondary-color);
+    color: var(--bg-color);
+    padding: 0.75rem;
+    font-weight: bold;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+    .btn-wishlist:hover {
+        background-color: var(--secondary-color);
+        color: var(--bg-color);
     }

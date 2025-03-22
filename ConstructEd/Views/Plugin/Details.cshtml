@@ -9,47 +9,49 @@
 <div class="container mt-5">
     <div class="row justify-content-center">
         <div class="col-md-10">
-            <div class="glass-card p-4 text-white">
-                <div class="row">
-                    <!-- Plugin Image (If available) -->
-                    <div class="col-md-4 text-center">
-                        @if (!string.IsNullOrEmpty(Model.Image))
-                        {
-                            <img src="/Image/@Model.Image" class="img-fluid rounded shadow" alt="@Model.Title" style="max-width: 250px;" />
-                        }
-                    </div>
-
-                    <!-- Plugin Information -->
-                    <div class="col-md-8">
-                        <h1 class="display-5 text-info mb-3">@Model.Title</h1>
-                        <p class="lead">@Model.Description</p>
-                        <h4 class="text-warning">Price: @Model.Price.ToString("C")</h4>
-
-                        <div class="d-grid gap-2 mt-4">
-                            @if (Model.IsEnrolled)
+            <div class="card plugin-details-card">
+                <div class="card-body">
+                    <div class="row">
+                        <!-- Plugin Image (If available) -->
+                        <div class="col-md-4 text-center">
+                            @if (!string.IsNullOrEmpty(Model.Image))
                             {
-                                <button class="btn btn-success" disabled>Enrolled</button>
+                                <img src="/Image/@Model.Image" class="img-fluid rounded shadow plugin-image" alt="@Model.Title" />
                             }
-                            else
-                            {
-                                <button type="button" class="btn btn-primary" id="buyNowButton" data-id="@Model.Id">Buy Now</button>
-                            
-                                <form class="cart-form" data-pluginid="@Model.Id" data-incart="@(Model.IsInCart ? "true" : "false")">
-                                    <input type="hidden" name="id" value="@Model.Id" />
-                                    <input type="hidden" name="type" value="Plugin" />
-                                    <button type="submit" class="cart-button btn btn-outline-success">
-                                        <i class="@(Model.IsInCart ? "fas fa-shopping-cart" : "fas fa-cart-plus")"></i> Add to Cart
-                                    </button>
-                                </form>
+                        </div>
 
-                                <form class="wish-form" data-pluginid="@Model.Id" data-inwishlist="@(Model.IsInWishlist ? "true" : "false")">
-                                    <input type="hidden" name="id" value="@Model.Id" />
-                                    <input type="hidden" name="type" value="Plugin" />
-                                    <button type="submit" class="wish-button btn btn-outline-danger">
-                                    <i class="@(Model.IsInWishlist ? "fas fa-heart" : "far fa-heart")"></i> Add to Wishlist
-                                    </button>
-                                </form>
-                            }
+                        <!-- Plugin Information -->
+                        <div class="col-md-8">
+                            <h1 class="plugin-title">@Model.Title</h1>
+                            <p class="plugin-description">@Model.Description</p>
+                            <h4 class="plugin-price">Price: @Model.Price.ToString("C")</h4>
+
+                            <div class="plugin-actions">
+                                @if (Model.IsEnrolled)
+                                {
+                                    <button class="btn btn-success w-100" disabled>Enrolled</button>
+                                }
+                                else
+                                {
+                                    <button type="button" class="btn btn-primary w-100 mb-2" id="buyNowButton" data-id="@Model.Id">Buy Now</button>
+
+                                    <form class="cart-form" data-pluginid="@Model.Id" data-incart="@(Model.IsInCart ? "true" : "false")">
+                                        <input type="hidden" name="id" value="@Model.Id" />
+                                        <input type="hidden" name="type" value="Plugin" />
+                                        <button type="submit" class="btn btn-outline-success w-100 mb-2">
+                                            <i class="@(Model.IsInCart ? "fas fa-shopping-cart" : "fas fa-cart-plus")"></i> Add to Cart
+                                        </button>
+                                    </form>
+
+                                    <form class="wish-form" data-pluginid="@Model.Id" data-inwishlist="@(Model.IsInWishlist ? "true" : "false")">
+                                        <input type="hidden" name="id" value="@Model.Id" />
+                                        <input type="hidden" name="type" value="Plugin" />
+                                        <button type="submit" class="btn btn-outline-danger w-100">
+                                            <i class="@(Model.IsInWishlist ? "fas fa-heart" : "far fa-heart")"></i> Add to Wishlist
+                                        </button>
+                                    </form>
+                                }
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -58,59 +60,18 @@
     </div>
 </div>
 
-
-<style>
-    body {
-        background: linear-gradient(to right, #1e1e2f, #3a3a5a);
-    }
-
-    .glass-card {
-        background: rgba(255, 255, 255, 0.1);
-        border-radius: 15px;
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
-        padding: 20px;
-        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
-    }
-
-    .btn-primary, .btn-outline-success, .btn-outline-danger {
-        transition: all 0.3s ease-in-out;
-    }
-
-        .btn-primary:hover {
-            background-color: #3a356b;
-        }
-
-        .btn-outline-success:hover {
-            background-color: #28a745;
-            color: white;
-        }
-
-        .btn-outline-danger:hover {
-            background-color: #dc3545;
-            color: white;
-        }
-</style>
-
 <!-- Include the Payment Modal Partial View -->
 @{
     var paymentViewModel = new PaymentViewModel { Amount = Model.Price };
 }
 <partial name="_PaymentModal" model="paymentViewModel" />
 
-
 @section Scripts {
-    <!-- Ensure jQuery is loaded -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-    <!-- Ensure Bootstrap JS is loaded -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <!-- Custom Validation Scripts -->
     <script src="~/js/paymentValidation.js" asp-append-version="true"></script>
 
     <partial name="_ValidationScriptsPartial" />
 
-	<script src="~/js/PluginDetailsWishingListandShoppingCart.js"></script>
-    
+    <script src="~/js/PluginDetailsWishingListandShoppingCart.js"></script>
 }
