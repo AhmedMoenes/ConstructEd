@@ -37,13 +37,13 @@
                         <li class="nav-item"><a class="nav-link" asp-controller="Plugin" asp-action="Index">Plugins</a></li>
                         @if (User.Identity.IsAuthenticated)
                         {
-                            @if (!User.IsInRole("Admin"))
-                            {
-                                <li class="nav-item"><a class="nav-link" asp-controller="Enrollment" asp-action="Index">Enrollments</a></li>
-                            }
                             @if (User.IsInRole("Admin"))
                             {
                                 <li class="nav-item"><a class="nav-link" asp-controller="Admin" asp-action="Dashboard">Dashboard</a></li>
+                            }
+                            else
+                            {
+                                <li class="nav-item"><a class="nav-link" asp-controller="Enrollment" asp-action="Index">Enrollments</a></li>
                             }
                         }
                         <li class="nav-item"><a class="nav-link" asp-controller="About" asp-action="Index">About</a></li>
