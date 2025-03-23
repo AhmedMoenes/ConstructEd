@@ -15,13 +15,13 @@ namespace ConstructEd.Repositories
 
         public async Task AddContactFormAsync(ContactForm contactForm)
         {
-            await _context.ContactForms.AddAsync(contactForm);
+            await _context.ContactForm.AddAsync(contactForm);
             await _context.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<ContactForm>> GetAllContactFormsAsync()
         {
-            return await _context.ContactForms.ToListAsync();
+            return await _context.ContactForm.ToListAsync();
         }
     }
 }
