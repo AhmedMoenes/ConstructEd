@@ -36,7 +36,7 @@ public class AuthService : IAuthService
 
         if (result.Succeeded)
         {
-            if (user.Email == "admin000@gmail.com")
+            if (user.Email == "admin@gmail.com")
             {
                 await _userManager.AddToRoleAsync(user, RoleNames.Admin);
             }
