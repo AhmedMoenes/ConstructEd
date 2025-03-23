@@ -822,7 +822,7 @@ main {
     background-repeat: no-repeat;
     background-position: right 0.75rem center; /* Position the arrow */
     background-size: 12px; /* Size of the arrow */
-}
+}   
 
     #categoryFilter:hover {
         border-color: var(--bg-color); /* Change border color on hover */
