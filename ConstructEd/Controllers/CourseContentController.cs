@@ -21,17 +21,6 @@ namespace ConstructEd.Controllers
             _mapper = mapper;
         }
 
-        public async Task<IActionResult> Index()
-        {
-            var courseContents = await _courseContentRepository.GetAllAsync();
-            var viewModels = _mapper.Map<List<CourseContentViewModel>>(courseContents);
-
-            var courseNames = await _courseContentRepository.GetCourseNamesAsync();
-            ViewBag.CourseNames = courseNames;
-
-            return View(viewModels);
-        }
-
         public async Task<IActionResult> Details(int id)
         {
             var courseContent = await _courseContentRepository.GetByIdAsync(id);
