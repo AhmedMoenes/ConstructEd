@@ -3,7 +3,8 @@ using ConstructEd.Models;
 using ConstructEd.Repositories;
 using ConstructEd.Services;
 using ConstructEd.ViewModels;
-using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -15,14 +16,17 @@ namespace ConstructEd.Controllers
         private readonly IAuthService _authService;
         private readonly IEnrollmentRepository _enrollmentRepository;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IMapper _mapper;
-
-        public AccountController( UserManager<ApplicationUser> userManager
-                            , IAuthService authService, IMapper mapper
-                           , IEnrollmentRepository enrollmentRepository)
+        public AccountController(UserManager<ApplicationUser> userManager,
+                         SignInManager<ApplicationUser> signInManager,  // ✅ Add this
+                         IAuthService authService,
+                         IMapper mapper,
+                         IEnrollmentRepository enrollmentRepository)
         {
             _enrollmentRepository = enrollmentRepository;
-            _userManager =userManager;
+            _userManager = userManager;
+            _signInManager = signInManager; // ✅ Assign it
             _authService = authService;
             _mapper = mapper;
         }
@@ -50,9 +54,9 @@ namespace ConstructEd.Controllers
                         Password = model.Password
                     });
 
-                    return RedirectToAction("Index","Home");
+                    return RedirectToAction("Index", "Home");
                 }
-               
+
                 foreach (var error in result.Errors)
                 {
                     ModelState.AddModelError(string.Empty, error.Description);
@@ -71,26 +75,36 @@ namespace ConstructEd.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                var result = await _authService.LoginUserAsync(model);
-
-                if (result.Succeeded)
-                {
-
-                    return RedirectToAction("Index", "Home");
-                }
-
-                ModelState.AddModelError(string.Empty, "Invalid Username or Password");
+                return View(model);
             }
-            return View(nameof(Login), model);
+
+            var user = await _userManager.FindByEmailAsync(model.Email);
+            if (user == null)
+            {
+                ModelState.AddModelError("", "Invalid login attempt.");
+                return View(model);
+            }
+
+            var result = await _signInManager.PasswordSignInAsync(user, model.Password, model.RememberMe, lockoutOnFailure: false);
+
+            if (result.Succeeded)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            ModelState.AddModelError("", "Invalid login attempt.");
+            return View(model);
         }
 
+
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Logout()
         {
-            await _authService.LogoutAsync();
-            return RedirectToAction("Index", "Home");
+            await _signInManager.SignOutAsync();
+            return RedirectToAction("Login", "Account");
         }
 
         [Authorize(Roles = "User,Instructor,Admin")]
@@ -98,7 +112,7 @@ namespace ConstructEd.Controllers
         {
             var user = await _authService.GetCurrentUserAsync();
             if (user == null) return NotFound();
-      
+
             var profileViewModel = _mapper.Map<ProfileViewModel>(user);
             // Fetch enrollments separately and map them
             var enrollments = await _enrollmentRepository.GetAllEnrollmentsByUserIdAsync(user.Id);
