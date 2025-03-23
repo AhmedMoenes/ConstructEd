@@ -6,8 +6,6 @@
 <!-- Plugins Section -->
 <section class="plugins-section">
     <div class="container">
-        <h2 class="text-center mb-5">Plugins</h2>
-
         <div class="row justify-content-center">
             @foreach (var plugin in Model)
             {
@@ -24,7 +22,7 @@
                             <h5 class="card-title">@plugin.Title</h5>
 
                             <!-- Plugin Price -->
-                            <p class="card-text">Price: @plugin.Price.ToString("C")</p>
+                            <p class="card-text">Price: @plugin.Price EGP</p>
 
                             <!-- View Details Button -->
                             <a asp-controller="Plugin" asp-action="Details" asp-route-id="@plugin.Id" class="btn btn-main btn-block">

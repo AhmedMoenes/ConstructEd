@@ -265,20 +265,13 @@ main {
 }
 
 .cube-container {
-    width: 200px;
-    height: 200px;
-    perspective: 800px;
-    margin: auto;
-    transition: 0.8s ease-out;
+    width: 25vw;
 }
 
-    .cube-container:hover {
-        transform: scale(1.5);
-    }
 
 .cube {
+    width: 25vw;
     position: relative;
-    width: 100%;
     height: 100%;
     transform-style: preserve-3d;
     animation: rotate 8s infinite linear;
@@ -1124,7 +1117,7 @@ main {
 /* Remove Button */
 .remove-item {
     background-color: var(--danger-color); /* Use danger color for remove buttons */
-    color: var(--text-dark-color);
+    color: var(--text-light-color);
     border: none;
     padding: 0.5rem 1rem;
     border-radius: 4px;
