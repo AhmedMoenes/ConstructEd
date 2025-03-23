@@ -33,8 +33,8 @@
                             <h5 class="card-title">@course.Title</h5>
 
                             <!-- Course Details -->
-                            <p class="card-text">Duration: @course.Duration</p>
-                            <p class="card-text">Price: @course.Price EGP </p>
+                            <p class="card-text courses-card-text">Category: @course.Category.ToString().Replace("_", " ")</p>
+                            <p class="card-text courses-card-text">Duration: @course.Duration hrs</p>
 
                             <!-- View Details Button -->
                             <a asp-controller="Course" asp-action="Details" asp-route-id="@course.Id" class="btn btn-main btn-block">
@@ -69,6 +69,7 @@
                                     </form>
                                 }
                             </div>
+
                         </div>
                     </div>
                 </div>
