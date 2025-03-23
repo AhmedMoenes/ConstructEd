@@ -985,11 +985,10 @@ main {
 }
 
     .plugin-card img {
-        max-height: 180px; /* Adjusted for better image size */
-        width: 100%; /* Ensure it takes the full width of the card */
-        object-fit: cover; /* Maintain the aspect ratio without stretching */
+        width: 100%; 
+        object-fit: cover; 
         border-radius: 8px;
-        margin-bottom: 12px; /* Space between image and text */
+        margin-bottom: 12px; 
     }
 
 /*Plugins Details*/
