@@ -1125,7 +1125,7 @@ main {
 /* Remove Button */
 .remove-item {
     background-color: var(--danger-color); /* Use danger color for remove buttons */
-    color: var(--text-light-color);
+    color: var(--text-dark-color);
     border: none;
     padding: 0.5rem 1rem;
     border-radius: 4px;
@@ -1135,6 +1135,7 @@ main {
 
     .remove-item:hover {
         background-color: var(--danger-sec-color); /* Use main color on hover */
+        color: var(--text-light-color);
     }
 
     .remove-item i {
@@ -1391,7 +1392,7 @@ main {
 
     .course-content-table .btn-remove {
         background-color: var(--danger-color);
-        color: var(--text-light-color);
+        color: var(--text-dark-color);
         padding: 6px 12px;
         border-radius: 4px;
         text-decoration: none;
@@ -1400,6 +1401,7 @@ main {
 
         .course-content-table .btn-remove:hover {
             background-color: var(--danger-sec-color);
+            color: var(--text-light-color);
         }
 
     .course-content-table .page-title {
