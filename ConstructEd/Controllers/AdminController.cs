@@ -443,10 +443,10 @@ namespace ConstructEd.Controllers
                 if (viewModel.ImageFile != null && viewModel.ImageFile.Length > 0)
                 {
                     // Define the folder to save the image
-                    var imagesFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Image");
+                    var imagesFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads");
 
                     // Generate a unique file name
-                    var fileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(viewModel.ImageFile.FileName);
+                    var fileName = viewModel.Email;
                     var filePath = Path.Combine(imagesFolder, fileName);
 
                     // Ensure the folder exists

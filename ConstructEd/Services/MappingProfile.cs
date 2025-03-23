@@ -29,7 +29,7 @@ public class MappingProfile : Profile
      .ForMember(dest => dest.IsInstructor, opt => opt.MapFrom(src => src.IsInstructor)); 
 
         CreateMap<InstructorViewModel, ApplicationUser>()
-            .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+            .ForMember(dest => dest.Id, opt => opt.Ignore())
             .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.Email))
             .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email))
             .ForMember(dest => dest.PhoneNumber, opt => opt.MapFrom(src => src.PhoneNumber))

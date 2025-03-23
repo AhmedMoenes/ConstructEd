@@ -16,7 +16,7 @@
             <div class="details-value">@Model.Type</div>
 
             <label asp-for="FileUrl" class="details-label"></label>
-            <a class="details-value" asp-route-url="@Model.FileUrl">Get File</a>
+            <a class="details-value" href="@Model.FileUrl" target="_blank" rel="noopener noreferrer">Open File</a>
 
             <label asp-for="CourseId" class="details-label">Course</label>
             <div class="details-value">@(ViewBag.CourseName ?? "Unknown Course")</div>

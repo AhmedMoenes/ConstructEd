@@ -50,7 +50,7 @@ border: 1px solid #881856 !important;
 <div class="card shadow-lg p-4 rounded-4" style="background-color: #1b1535; color: #fff; width: 420px;">
 <h3 class="text-center mb-4">Add New Instructor</h3>
 
-<form asp-action="Create" asp-controller="Instructor" method="post">
+<form asp-action="CreateInstructor" asp-controller="Admin" method="post">
 @if (!ViewData.ModelState.IsValid)
 {
 	<div asp-validation-summary="All" class="alert alert-danger"></div>

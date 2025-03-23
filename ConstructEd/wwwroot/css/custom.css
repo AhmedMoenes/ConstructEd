@@ -89,7 +89,7 @@ main {
     text-align: center;
     width: 100%;
     position: relative; /* Ensure it's not fixed or sticky */
-    margin-top: auto; /* Push the footer to the bottom */
+    margin-top: auto;  /*Push the footer to the bottom */
 }
 
     .footer .d-flex {
