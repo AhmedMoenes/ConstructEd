@@ -2,12 +2,12 @@
     ViewData["Title"] = "Payment Failed";
 }
 
-<div class="container mt-5 text-center">
-    <div class="card p-4 shadow" style="max-width: 500px; margin: 0 auto;">
-        <h2 class="card-title mb-4">Payment Failed</h2>
-        <p class="card-text">Unfortunately, your payment could not be processed. Please try again.</p>
+<div class="payment-failed-container">
+    <div class="payment-failed-card card">
+        <h2 class="payment-failed-title">Payment Failed</h2>
+        <p class="payment-failed-message">Unfortunately, your payment could not be processed. Please try again.</p>
 
-        <div class="d-flex justify-content-center gap-3">
+        <div class="payment-failed-actions">
             <a asp-controller="ShoppingCart" asp-action="Index" class="btn btn-danger">Try Again</a>
             <a asp-controller="Home" asp-action="Index" class="btn btn-primary">Return to Home</a>
         </div>

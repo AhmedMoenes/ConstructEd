@@ -12,37 +12,48 @@
             @foreach (var plugin in Model)
             {
                 <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="plugin-card">
+                    <div class="card plugin-card">
                         <div class="card-body">
+                            <!-- Plugin Image -->
                             @if (!string.IsNullOrEmpty(plugin.Image))
                             {
                                 <img src="/Image/@plugin.Image" class="card-img-top" alt="@plugin.Title" />
                             }
 
+                            <!-- Plugin Title -->
                             <h5 class="card-title">@plugin.Title</h5>
+
+                            <!-- Plugin Price -->
                             <p class="card-text">Price: @plugin.Price.ToString("C")</p>
 
-                            <a asp-controller="Plugin" asp-action="Details" asp-route-id="@plugin.Id" class="btn btn-primary btn-block">View Details</a>
+                            <!-- View Details Button -->
+                            <a asp-controller="Plugin" asp-action="Details" asp-route-id="@plugin.Id" class="btn btn-main btn-block">
+                                View Details
+                            </a>
 
+                            <!-- Cart and Wishlist Buttons -->
                             <div class="d-flex justify-content-between mt-3">
                                 @if (plugin.IsEnrolled)
                                 {
+                                    <!-- Enrolled Button -->
                                     <button class="btn btn-success w-100" disabled>Enrolled</button>
                                 }
                                 else
                                 {
+                                    <!-- Add to Cart Button -->
                                     <form class="cart-form" data-pluginid="@plugin.Id" data-incart="@(plugin.IsInCart ? "true" : "false" )">
                                         <input type="hidden" name="id" value="@plugin.Id" />
                                         <input type="hidden" name="type" value="Plugin" />
-                                        <button type="submit" class="cart-button btn btn-outline-primary">
+                                        <button type="submit" class="btn btn-icon">
                                             <i class="@(plugin.IsInCart ? "fas fa-shopping-cart" : "fas fa-cart-plus")"></i>
                                         </button>
                                     </form>
 
+                                    <!-- Add to Wishlist Button -->
                                     <form class="wish-form" data-pluginid="@plugin.Id" data-inwishlist="@(plugin.IsInWishlist ? "true" : "false")">
                                         <input type="hidden" name="id" value="@plugin.Id" />
                                         <input type="hidden" name="type" value="Plugin" />
-                                        <button type="submit" class="wish-button btn btn-outline-danger">
+                                        <button type="submit" class="btn btn-icon">
                                             <i class="@(plugin.IsInWishlist ? "fas" : "far") fa-heart"></i>
                                         </button>
                                     </form>

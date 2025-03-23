@@ -33,12 +33,12 @@
                                 }
                                 else
                                 {
-                                    <button type="button" class="btn btn-primary w-100 mb-2" id="buyNowButton" data-id="@Model.Id">Buy Now</button>
+                                    <button type="button" class="btn btn-main w-100 mb-2" id="buyNowButton" data-id="@Model.Id">Buy Now</button>
 
                                     <form class="cart-form" data-pluginid="@Model.Id" data-incart="@(Model.IsInCart ? "true" : "false")">
                                         <input type="hidden" name="id" value="@Model.Id" />
                                         <input type="hidden" name="type" value="Plugin" />
-                                        <button type="submit" class="btn btn-outline-success w-100 mb-2">
+                                        <button type="submit" class="btn btn-cart w-100 mb-2">
                                             <i class="@(Model.IsInCart ? "fas fa-shopping-cart" : "fas fa-cart-plus")"></i> Add to Cart
                                         </button>
                                     </form>
@@ -46,7 +46,7 @@
                                     <form class="wish-form" data-pluginid="@Model.Id" data-inwishlist="@(Model.IsInWishlist ? "true" : "false")">
                                         <input type="hidden" name="id" value="@Model.Id" />
                                         <input type="hidden" name="type" value="Plugin" />
-                                        <button type="submit" class="btn btn-outline-danger w-100">
+                                        <button type="submit" class="btn btn-wishlist w-100">
                                             <i class="@(Model.IsInWishlist ? "fas fa-heart" : "far fa-heart")"></i> Add to Wishlist
                                         </button>
                                     </form>
@@ -67,7 +67,6 @@
 <partial name="_PaymentModal" model="paymentViewModel" />
 
 @section Scripts {
-
     <!-- Custom Validation Scripts -->
     <script src="~/js/paymentValidation.js" asp-append-version="true"></script>
 

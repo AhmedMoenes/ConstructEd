@@ -43,6 +43,7 @@ namespace ConstructEd.Controllers
             var viewModel = _mapper.Map<CourseContentViewModel>(courseContent);
 
             ViewBag.CourseName = courseContent.Course?.Title;
+            ViewBag.CourseID = courseContent.Course?.Id;
 
             return View(viewModel);
         }

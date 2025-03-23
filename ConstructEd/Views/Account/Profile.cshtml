@@ -11,7 +11,7 @@
         <!-- Profile Header -->
         <div class="card mb-4 profile-header">
             <div class="card-body text-center">
-                <img src="@Model.ProfilePicture" class="rounded-circle profile-picture" width="120" height="120" />
+                <img src="@Model.ProfilePicture" class="rounded-circle profile-picture" width="120" height="120" alt="Profile Picture" />
                 <h3 class="mt-3">@Model.FullName</h3>
                 <p class="mb-0">Email: @Model.Email</p>
             </div>
@@ -48,8 +48,8 @@
                                                 <span class="badge badge-custom bg-plugin">Plugin</span> @enrollment.PluginTitle
                                             }
                                         </td>
-                                        <td class="text-light">@enrollment.EnrollmentDate.ToString()</td>
-                                        <td class="text-light">
+                                        <td>@enrollment.EnrollmentDate.ToString()</td>
+                                        <td>
                                             @if (enrollment.CourseId > 0)
                                             {
                                                 <div class="progress progress-custom">
@@ -108,9 +108,7 @@
                                 @foreach (var course in Model.Courses)
                                 {
                                     <tr>
-                                        <td class="text-light">@course.Title</td>
-                                       @*  <td class="text-light">@course.EnrolledStudents</td>
-                                        <td class="text-light">@course.AverageRating</td> *@
+                                        <td>@course.Title</td>
                                     </tr>
                                 }
                             </tbody>

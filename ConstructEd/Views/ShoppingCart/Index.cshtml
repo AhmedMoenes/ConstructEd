@@ -4,13 +4,13 @@
     ViewData["Title"] = "Shopping Cart";
 }
 
-<div class="shopping-cart-container">
+<div class="shopping-cart-container card">
     <h2 class="shopping-cart-title">Your Shopping Cart</h2>
 
     @if (Model.Courses.Any() || Model.Plugins.Any())
     {
         <div class="table-responsive">
-            <table class="shopping-cart-table" id="cartTable">
+            <table class="table shopping-cart-table" id="cartTable">
                 <thead>
                     <tr>
                         <th>Item</th>
@@ -31,7 +31,7 @@
                                     @Html.AntiForgeryToken()
                                     <input type="hidden" name="id" value="@course.Id" />
                                     <input type="hidden" name="type" value="Course" />
-                                    <button type="button" class="btn btn-remove">
+                                    <button type="button" class="btn remove-item">
                                         <i class="fas fa-trash-alt"></i> Remove
                                     </button>
                                 </form>
@@ -50,7 +50,7 @@
                                     @Html.AntiForgeryToken()
                                     <input type="hidden" name="id" value="@plugin.Id" />
                                     <input type="hidden" name="type" value="Plugin" />
-                                    <button type="button" class="btn btn-remove">
+                                    <button type="button" class="btn remove-item">
                                         <i class="fas fa-trash-alt"></i> Remove
                                     </button>
                                 </form>

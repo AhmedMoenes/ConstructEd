@@ -3,14 +3,16 @@
 @{
     ViewData["Title"] = "Index";
 }
+
 @Html.AntiForgeryToken()
 
-<h1>Index</h1>
+<h1>Course Content</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" class="btn btn-main">Create New</a>
 </p>
-<table class="table">
+
+<table class="table course-content-index">
     <thead>
         <tr>
             <th>
@@ -57,13 +59,11 @@
                     <span>@ViewBag.CourseNames[item.CourseId]</span>
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-icon">Edit</a>
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-icon">Details</a>
                     <button type="button" class="btn btn-link text-danger delete-button" data-toggle="modal" data-target="#deleteModal" data-id="@item.Id">Delete</button>
                 </td>
             </tr>
         }
     </tbody>
 </table>
-
-

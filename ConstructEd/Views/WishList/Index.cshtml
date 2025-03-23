@@ -4,13 +4,13 @@
     ViewData["Title"] = "My Wishlist";
 }
 
-<div class="wishlist-container">
+<div class="wishlist-container card">
     <h2 class="wishlist-title">Your Saved Items</h2>
 
     @if (Model.Courses.Any() || Model.Plugins.Any())
     {
         <div class="table-responsive">
-            <table class="wishlist-table">
+            <table class="table wishlist-table">
                 <thead>
                     <tr>
                         <th>Title</th>
@@ -68,7 +68,6 @@
 </div>
 
 @section Scripts {
-
     <!-- FontAwesome for Icons -->
     <script src="https://kit.fontawesome.com/your-kit-id.js" crossorigin="anonymous"></script>
 

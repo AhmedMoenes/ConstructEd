@@ -23,38 +23,49 @@
             @foreach (var course in Model)
             {
                 <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="course-card">
+                    <div class="card course-card">
                         <div class="card-body">
+                            <!-- Course Image -->
                             @if (!string.IsNullOrEmpty(course.Image))
                             {
                                 <img src="/Image/@course.Image" class="card-img-top" alt="@course.Title" />
                             }
 
+                            <!-- Course Title -->
                             <h5 class="card-title">@course.Title</h5>
+
+                            <!-- Course Details -->
                             <p class="card-text">Duration: @course.Duration</p>
                             <p class="card-text">Price: @course.Price</p>
 
-                            <a asp-controller="Course" asp-action="Details" asp-route-id="@course.Id" class="btn btn-primary btn-block">View Details</a>
+                            <!-- View Details Button -->
+                            <a asp-controller="Course" asp-action="Details" asp-route-id="@course.Id" class="btn btn-main btn-block">
+                                View Details
+                            </a>
 
+                            <!-- Cart and Wishlist Buttons -->
                             <div class="d-flex justify-content-between mt-3">
                                 @if (course.IsEnrolled)
                                 {
+                                    <!-- Enrolled Button -->
                                     <button class="btn btn-success w-100" disabled>Enrolled</button>
                                 }
                                 else
                                 {
+                                    <!-- Add to Cart Button -->
                                     <form class="cart-form" data-courseid="@course.Id" data-incart="@(course.IsInCart ? "true" : "false" )">
                                         <input type="hidden" name="id" value="@course.Id" />
                                         <input type="hidden" name="type" value="Course" />
-                                        <button type="submit" class="cart-button btn btn-outline-primary">
+                                        <button type="submit" class="btn btn-icon">
                                             <i class="@(course.IsInCart ? "fas fa-shopping-cart" : "fas fa-cart-plus")"></i>
                                         </button>
                                     </form>
 
+                                    <!-- Add to Wishlist Button -->
                                     <form class="wish-form" data-courseid="@course.Id" data-inwishlist="@(course.IsInWishlist ? "true" : "false")">
                                         <input type="hidden" name="id" value="@course.Id" />
                                         <input type="hidden" name="type" value="Course" />
-                                        <button type="submit" class="wish-button btn btn-outline-danger">
+                                        <button type="submit" class="btn btn-icon">
                                             <i class="@(course.IsInWishlist ? "fas" : "far") fa-heart"></i>
                                         </button>
                                     </form>

@@ -2,17 +2,17 @@
     ViewData["Title"] = "Payment Successful";
 }
 
-<div class="container mt-5 text-center">
-    <div class="card p-4 shadow" style="max-width: 500px; margin: 0 auto;">
-        <h2 class="card-title mb-4">Payment Successful!</h2>
-        <p class="card-text">Thank you for your payment.</p>
+<div class="payment-success-container">
+    <div class="payment-success-card card">
+        <h2 class="payment-success-title">Payment Successful!</h2>
+        <p class="payment-success-message">Thank you for your payment.</p>
 
         @if (ViewBag.TransactionID != null)
         {
-            <p class="mb-3"><strong>Transaction ID:</strong> @ViewBag.TransactionID</p>
+            <p class="transaction-id"><strong>Transaction ID:</strong> @ViewBag.TransactionID</p>
         }
 
-        <p class="mb-3">You will be redirected to your profile in <span id="countdown">5</span> seconds.</p>
+        <p class="redirect-message">You will be redirected to your profile in <span id="countdown">5</span> seconds.</p>
         <a asp-controller="Account" asp-action="Profile" class="btn btn-primary">Go to Profile Now</a>
     </div>
 </div>
