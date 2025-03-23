@@ -7,6 +7,7 @@
     --bg-color: #f9f9f7;
     --secondary-color: #018b87;
     --danger-color: #ff4444;
+    --danger-sec-color: #a71d2a;
     --card-bg-color: #f0f0f0;
     --card-border-color: #d0d0d0;
     --card-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
@@ -1129,11 +1130,11 @@ main {
     padding: 0.5rem 1rem;
     border-radius: 4px;
     font-size: 0.9rem;
-    transition: transform 0.3s ease;
+    transition: background-color 0.3s ease;
 }
 
     .remove-item:hover {
-        transform: scale(1.1); /* Use main color on hover */
+        background-color: var(--danger-sec-color); /* Use main color on hover */
     }
 
     .remove-item i {
@@ -1341,3 +1342,69 @@ main {
         background-color: var(--secondary-color);
         color: var(--text-light-color);
     }
+
+    /*//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
+
+    /*Admin Styles*/
+
+    /*//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
+
+
+/*    Course content Detailsssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss*/
+
+/* Course Content Table Specific Styles */
+.course-content-table {
+    background-color: var(--card-bg-color);
+    color: var(--text-dark-color);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+    .course-content-table th {
+        background-color: var(--main-color);
+        color: var(--text-light-color);
+        padding: 12px;
+        text-align: left;
+    }
+
+    .course-content-table td {
+        padding: 12px;
+        border-bottom: 1px solid var(--card-border-color);
+    }
+
+    .course-content-table tr:hover {
+        background-color: rgba(1, 139, 135, 0.1); /* Light hover effect using secondary color */
+    }
+
+    .course-content-table .btn-edit {
+        background-color: var(--secondary-color);
+        color: var(--text-light-color);
+        padding: 6px 12px;
+        border-radius: 4px;
+        text-decoration: none;
+        transition: background 0.3s ease;
+    }
+
+        .course-content-table .btn-edit:hover {
+            background-color: var(--main-color);
+        }
+
+    .course-content-table .btn-remove {
+        background-color: var(--danger-color);
+        color: var(--text-light-color);
+        padding: 6px 12px;
+        border-radius: 4px;
+        text-decoration: none;
+        transition: background 0.3s ease;
+    }
+
+        .course-content-table .btn-remove:hover {
+            background-color: var(--danger-sec-color);
+        }
+
+    .course-content-table .page-title {
+        color: var(--text-dark-color);
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
