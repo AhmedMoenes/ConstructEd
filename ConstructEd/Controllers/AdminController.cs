@@ -6,6 +6,7 @@ using ConstructEd.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace ConstructEd.Controllers
 {
@@ -228,7 +229,7 @@ namespace ConstructEd.Controllers
                 var courseContent = _mapper.Map<CourseContent>(viewModel);
                 await _courseContentRepository.InsertAsync(courseContent);
                 await _courseContentRepository.SaveAsync();
-                return RedirectToAction(nameof(CourseIndex));
+                return RedirectToAction(nameof(CourseContentDetails), new { id = viewModel.CourseId });
             }
 
             ViewBag.ContentTypes = _courseContentRepository.GetCategories();
@@ -283,17 +284,18 @@ namespace ConstructEd.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> RemoveCourseContentConfirmed(int id)
+        public async Task<IActionResult> RemoveCourseContentConfirmed(int Id)
         {
             try
             {
-                await _courseContentRepository.DeleteAsync(id);
-                return RedirectToAction(nameof(CourseContentDetails));
+                var courseid = await _courseContentRepository.GetCourseIdByContentIdAsync(Id);
+                await _courseContentRepository.DeleteAsync(Id);
+                return RedirectToAction(nameof(CourseContentDetails), new { id= courseid });
             }
             catch (Exception ex)
             {
                 ModelState.AddModelError(string.Empty, ex.InnerException.Message);
-                return View(nameof(RemoveCourseContent), await _courseContentRepository.GetByIdAsync(id));
+                return View(nameof(RemoveCourseContent), await _courseContentRepository.GetByIdAsync(Id));
             }
         }
 
@@ -379,7 +381,7 @@ namespace ConstructEd.Controllers
                 {
                     var plugin = _mapper.Map<Plugin>(viewModel);
                     await _pluginRepository.UpdateAsync(plugin);
-                    return RedirectToAction(nameof(Index));
+                    return RedirectToAction(nameof(PluginIndex));
                 }
                 catch (Exception ex)
                 {
