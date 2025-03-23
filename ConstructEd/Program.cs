@@ -2,7 +2,6 @@ using ConstructEd.Data;
 using ConstructEd.Models;
 using ConstructEd.Repositories;
 using ConstructEd.Services;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 

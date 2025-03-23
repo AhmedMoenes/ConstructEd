@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ConstructEd.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class initialDb : Migration
+    public partial class init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -31,7 +31,11 @@ namespace ConstructEd.Data.Migrations
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     FullName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ProfilePicture = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Bio = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Experience = table.Column<int>(type: "int", nullable: true),
+                    IsInstructor = table.Column<bool>(type: "bit", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -53,20 +57,20 @@ namespace ConstructEd.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Instructors",
+                name: "ContactForm",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Bio = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ProfilePicture = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Subject = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Message = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Instructors", x => x.Id);
+                    table.PrimaryKey("PK_ContactForm", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -78,6 +82,7 @@ namespace ConstructEd.Data.Migrations
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Image = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -193,6 +198,32 @@ namespace ConstructEd.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Courses",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Duration = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Category = table.Column<byte>(type: "tinyint", nullable: false),
+                    Image = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Courses", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Courses_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Payments",
                 columns: table => new
                 {
@@ -214,32 +245,6 @@ namespace ConstructEd.Data.Migrations
                         name: "FK_Payments_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Courses",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Duration = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Category = table.Column<byte>(type: "tinyint", nullable: false),
-                    InstructorId = table.Column<int>(type: "int", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Courses", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Courses_Instructors_InstructorId",
-                        column: x => x.InstructorId,
-                        principalTable: "Instructors",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -268,6 +273,35 @@ namespace ConstructEd.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "CourseReview",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Rating = table.Column<int>(type: "int", nullable: false),
+                    Comment = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CourseId = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CourseReview", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CourseReview_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_CourseReview_Courses_CourseId",
+                        column: x => x.CourseId,
+                        principalTable: "Courses",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Enrollments",
                 columns: table => new
                 {
@@ -276,7 +310,7 @@ namespace ConstructEd.Data.Migrations
                     EnrollmentDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Progress = table.Column<double>(type: "float", nullable: true),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    CourseId = table.Column<int>(type: "int", nullable: false),
+                    CourseId = table.Column<int>(type: "int", nullable: true),
                     PluginId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
@@ -298,7 +332,8 @@ namespace ConstructEd.Data.Migrations
                         name: "FK_Enrollments_Plugins_PluginId",
                         column: x => x.PluginId,
                         principalTable: "Plugins",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -308,8 +343,8 @@ namespace ConstructEd.Data.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    CourseId = table.Column<int>(type: "int", nullable: false),
-                    PluginId = table.Column<int>(type: "int", nullable: false)
+                    CourseId = table.Column<int>(type: "int", nullable: true),
+                    PluginId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -330,8 +365,7 @@ namespace ConstructEd.Data.Migrations
                         name: "FK_ShoppingCarts_Plugins_PluginId",
                         column: x => x.PluginId,
                         principalTable: "Plugins",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -341,8 +375,8 @@ namespace ConstructEd.Data.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    CourseId = table.Column<int>(type: "int", nullable: false),
-                    PluginId = table.Column<int>(type: "int", nullable: false),
+                    CourseId = table.Column<int>(type: "int", nullable: true),
+                    PluginId = table.Column<int>(type: "int", nullable: true),
                     AddedOn = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
@@ -362,6 +396,53 @@ namespace ConstructEd.Data.Migrations
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Wishlists_Plugins_PluginId",
+                        column: x => x.PluginId,
+                        principalTable: "Plugins",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PaymentCourse",
+                columns: table => new
+                {
+                    PaymentId = table.Column<int>(type: "int", nullable: false),
+                    CourseId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PaymentCourse", x => new { x.PaymentId, x.CourseId });
+                    table.ForeignKey(
+                        name: "FK_PaymentCourse_Courses_CourseId",
+                        column: x => x.CourseId,
+                        principalTable: "Courses",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_PaymentCourse_Payments_PaymentId",
+                        column: x => x.PaymentId,
+                        principalTable: "Payments",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PaymentPlugin",
+                columns: table => new
+                {
+                    PaymentId = table.Column<int>(type: "int", nullable: false),
+                    PluginId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PaymentPlugin", x => new { x.PaymentId, x.PluginId });
+                    table.ForeignKey(
+                        name: "FK_PaymentPlugin_Payments_PaymentId",
+                        column: x => x.PaymentId,
+                        principalTable: "Payments",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_PaymentPlugin_Plugins_PluginId",
                         column: x => x.PluginId,
                         principalTable: "Plugins",
                         principalColumn: "Id",
@@ -413,9 +494,19 @@ namespace ConstructEd.Data.Migrations
                 column: "CourseId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Courses_InstructorId",
+                name: "IX_CourseReview_CourseId",
+                table: "CourseReview",
+                column: "CourseId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CourseReview_UserId",
+                table: "CourseReview",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Courses_UserId",
                 table: "Courses",
-                column: "InstructorId");
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Enrollments_CourseId",
@@ -431,6 +522,16 @@ namespace ConstructEd.Data.Migrations
                 name: "IX_Enrollments_UserId",
                 table: "Enrollments",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PaymentCourse_CourseId",
+                table: "PaymentCourse",
+                column: "CourseId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PaymentPlugin_PluginId",
+                table: "PaymentPlugin",
+                column: "PluginId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Payments_UserId",
@@ -487,13 +588,22 @@ namespace ConstructEd.Data.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "ContactForm");
+
+            migrationBuilder.DropTable(
                 name: "CourseContents");
+
+            migrationBuilder.DropTable(
+                name: "CourseReview");
 
             migrationBuilder.DropTable(
                 name: "Enrollments");
 
             migrationBuilder.DropTable(
-                name: "Payments");
+                name: "PaymentCourse");
+
+            migrationBuilder.DropTable(
+                name: "PaymentPlugin");
 
             migrationBuilder.DropTable(
                 name: "ShoppingCarts");
@@ -505,7 +615,7 @@ namespace ConstructEd.Data.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
+                name: "Payments");
 
             migrationBuilder.DropTable(
                 name: "Courses");
@@ -514,7 +624,7 @@ namespace ConstructEd.Data.Migrations
                 name: "Plugins");
 
             migrationBuilder.DropTable(
-                name: "Instructors");
+                name: "AspNetUsers");
         }
     }
 }
