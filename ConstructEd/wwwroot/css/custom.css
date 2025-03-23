@@ -191,20 +191,22 @@ main {
     }
 
 .card-title {
+    text-align: center;
     font-size: 1.5rem;
     color: var(--main-color); /* Use main color for titles */
-    margin-bottom: 1rem;
+    margin-bottom: 2rem;
 }
 
 .card-text {
     font-size: 1rem;
+    font-weight: bold;
     color: var(--main-color); /* Use main color for text */
-    margin-bottom: 1rem;
 }
 
 .btn-main {
     background-color: var(--secondary-color); /* Use secondary color for buttons */
     color: var(--bg-color); /* Use cream color for text */
+    width: 100%;
     border: none;
     padding: 10px 20px;
     border-radius: 5px;
@@ -721,15 +723,19 @@ main {
 }
 
     .course-card img {
-        max-height: 180px; /* Adjusted for better image size */
         width: 100%; /* Ensure it takes the full width of the card */
         object-fit: cover; /* Maintain the aspect ratio without stretching */
         border-radius: 8px;
         margin-bottom: 12px; /* Space between image and text */
     }
 
+    .courses-card-text {
+        font-size: 1rem;
+        color: black;
+    }
+
 .cart-button, .wish-button {
-    font-size: 1.25rem; /* Adjusted icon size */
+    font-size: 5rem;  Adjusted icon size 
     background: none;
     border: none;
     cursor: pointer;
@@ -737,23 +743,25 @@ main {
 }
 
 .cart-button {
-    color: var(--secondary-color); /* Use secondary color for cart icon */
+    color: var(--secondary-color);  Use secondary color for cart icon 
 }
 
     .cart-button:hover {
-        color: var(--text-light-color); /* Use cream color on hover */
+        color: var(--text-light-color);  Use cream color on hover 
     }
 
 .wish-button {
-    color: var(--secondary-color); /* Use secondary color for wishlist icon */
+    color: var(--secondary-color);  Use secondary color for wishlist icon 
 }
 
     .wish-button:hover {
-        color: var(--text-light-color); /* Use cream color on hover */
+        color: var(--text-light-color);  Use cream color on hover 
     }
 
 /* Dropdown Filter Styles */
 #categoryFilter {
+    justify-content:center;
+    align-content:center;
     background-color: var(--secondary-color); /* Use main color for background */
     color: var(--text-light-color); /* Use cream color for text */
     border: 1px solid var(--main-color); /* Use secondary color for border */
