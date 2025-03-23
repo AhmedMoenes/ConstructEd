@@ -1350,34 +1350,31 @@ main {
 
     /*//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
 
-
-/*    Course content Detailsssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss*/
-
-/* Course Content Table Specific Styles */
-.course-content-table {
+/* Admin Table Specific Styles */
+.admin-table {
     background-color: var(--card-bg-color);
     color: var(--text-dark-color);
     border-radius: 8px;
     overflow: hidden;
 }
 
-    .course-content-table th {
+    .admin-table th {
         background-color: var(--main-color);
         color: var(--text-light-color);
         padding: 12px;
         text-align: left;
     }
 
-    .course-content-table td {
+    .admin-table td {
         padding: 12px;
         border-bottom: 1px solid var(--card-border-color);
     }
 
-    .course-content-table tr:hover {
+    .admin-table tr:hover {
         background-color: rgba(1, 139, 135, 0.1); /* Light hover effect using secondary color */
     }
 
-    .course-content-table .btn-edit {
+    .admin-table .btn-edit {
         background-color: var(--secondary-color);
         color: var(--text-light-color);
         padding: 6px 12px;
@@ -1386,11 +1383,11 @@ main {
         transition: background 0.3s ease;
     }
 
-        .course-content-table .btn-edit:hover {
+        .admin-table .btn-edit:hover {
             background-color: var(--main-color);
         }
 
-    .course-content-table .btn-remove {
+    .admin-table .btn-remove {
         background-color: var(--danger-color);
         color: var(--text-dark-color);
         padding: 6px 12px;
@@ -1399,14 +1396,28 @@ main {
         transition: background 0.3s ease;
     }
 
-        .course-content-table .btn-remove:hover {
+        .admin-table .btn-remove:hover {
             background-color: var(--danger-sec-color);
             color: var(--text-light-color);
         }
 
-    .course-content-table .page-title {
+    .admin-table .page-title {
         color: var(--text-dark-color);
         text-align: center;
         margin-bottom: 20px;
     }
 
+.btn-secondary-new {
+    background-color: var(--main-color);
+    color: var(--text-light-color);
+    transition: background-color 0.3s ease;
+}
+
+    .btn-secondary-new:hover {
+        background-color: var(--card-bg-color);
+        color: var(--text-dark-color);
+        border-radius: 4px;
+        border: solid 0.5px var(--main-color);
+    }
+
+/*//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/

@@ -1,109 +1,48 @@
-﻿    @model IEnumerable<CourseViewModel>
+﻿@model IEnumerable<CourseViewModel>
 
-    @{
-        ViewData["Title"] = "CourseIndex";
-        Layout = "~/Views/Shared/_Layout.cshtml";
-    }
+@{
+    ViewData["Title"] = "CourseIndex";
+}
 
-    <style>
-        /* Table Styling */
-        .table-custom {
-            background-color: #1b1535;
-            color: #fff;
-            border-radius: 8px;
-            overflow: hidden;
-        }
+<div class="container">
+    <h1 class="page-title">Courses</h1>
 
-            .table-custom th {
-                background-color: #5b4b8a;
-                color: #fff;
-                padding: 12px;
-                text-align: left;
-            }
-
-            .table-custom td {
-                padding: 12px;
-                border-bottom: 1px solid #3a356b;
-            }
-
-            .table-custom tr:hover {
-                background-color: #2a2753;
-            }
-
-        /* Button Styling */
-        .btn-edit {
-            background-color: #6f42c1;
-            color: #fff;
-            padding: 6px 12px;
-            border-radius: 4px;
-            text-decoration: none;
-            transition: background 0.3s ease;
-        }
-
-            .btn-edit:hover {
-                background-color: #502ea7;
-            }
-
-        .btn-remove {
-            background-color: #dc3545;
-            color: #fff;
-            padding: 6px 12px;
-            border-radius: 4px;
-            text-decoration: none;
-            transition: background 0.3s ease;
-        }
-
-            .btn-remove:hover {
-                background-color: #a71d2a;
-            }
-
-        /* Page Title */
-        .page-title {
-            color: #fff;
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-    </style>
-
-    <div class="container">
-
-        <!-- Courses Table -->
-        <div class="table-responsive">
-            <table class="table table-custom">
-                <thead>
+    <!-- Courses Table -->
+    <div class="table-responsive">
+        <table class="table admin-table">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Price</th>
+                    <th>Duration</th>
+                    <th>Category</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var course in Model)
+                {
                     <tr>
-                        <th>Title</th>
-                        <th>Price</th>
-                        <th>Duration</th>
-                        <th>Category</th>
-                        <th>Actions</th>
+                        <td>@course.Title</td>
+                        <td>@course.Price.ToString("C")</td>
+                        <td>@course.Duration hours</td>
+                        <td>@course.Category.ToString().Replace("_", " ")</td>
+                        <td>
+                            <a asp-action="EditCourse" asp-controller="Admin" asp-route-id="@course.Id" class="btn-edit">Edit</a>
+                            <a asp-action="RemoveCourse" asp-controller="Admin" asp-route-id="@course.Id" class="btn-remove">Remove</a>
+                            <a asp-action="CourseContentDetails" asp-controller="Admin" asp-route-id="@course.Id" class="btn-edit">Contents</a>
+                        </td>
                     </tr>
-                </thead>
-                <tbody>
-                    @foreach (var course in Model)
-                    {
-                            <tr>
-                                <td>@course.Title</td>
-                                <td>@course.Price.ToString("C")</td>
-                                <td>@course.Duration hours</td>
-                                <td>@course.Category.ToString().Replace("_", " ")</td>
-                                <td>
-                                    <a asp-action="EditCourse"  asp-controller="Admin" asp-route-id="@course.Id" class="btn-edit">Edit</a>
-                                    <a asp-action="RemoveCourse" asp-controller="Admin" asp-route-id="@course.Id" class="btn-remove">Remove</a>
-                                    <a asp-action="CourseContentDetails" asp-controller="Admin" asp-route-id="@course.Id" class="btn-edit">Contents</a>
-                                </td>
-                            </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
-        <div class="text-center mt-4">
-        <a asp-action="CreateCourse" class="btn btn-danger">Add New Course</a>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="text-center mt-4">
+        <a asp-action="CreateCourse" class="btn btn-secondary-new">Add New Course</a>
         <a asp-action="Dashboard" class="btn btn-secondary">
             <i class="fas fa-arrow-left"></i> Back to Dashboard
-            </a>
+        </a>
     </div>
-    </div>
-
-
+</div>

@@ -1,76 +1,16 @@
 ﻿@model IEnumerable<CourseContentViewModel>
 
 @{
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "ContentIndex";
     var courseId = ViewBag.CourseId;
 }
-
-<style>
-    /* Table Styling */
-    .table-custom {
-        background-color: #1b1535;
-        color: #fff;
-        border-radius: 8px;
-        overflow: hidden;
-    }
-
-        .table-custom th {
-            background-color: #5b4b8a;
-            color: #fff;
-            padding: 12px;
-            text-align: left;
-        }
-
-        .table-custom td {
-            padding: 12px;
-            border-bottom: 1px solid #3a356b;
-        }
-
-        .table-custom tr:hover {
-            background-color: #2a2753;
-        }
-
-    /* Button Styling */
-    .btn-edit {
-        background-color: #6f42c1;
-        color: #fff;
-        padding: 6px 12px;
-        border-radius: 4px;
-        text-decoration: none;
-        transition: background 0.3s ease;
-    }
-
-        .btn-edit:hover {
-            background-color: #502ea7;
-        }
-
-    .btn-remove {
-        background-color: #dc3545;
-        color: #fff;
-        padding: 6px 12px;
-        border-radius: 4px;
-        text-decoration: none;
-        transition: background 0.3s ease;
-    }
-
-        .btn-remove:hover {
-            background-color: #a71d2a;
-        }
-
-    /* Page Title */
-    .page-title {
-        color: #fff;
-        text-align: center;
-        margin-bottom: 20px;
-    }
-</style>
 
 <div class="container">
     <h1 class="page-title">Course Content</h1>
 
     <!-- Course Content Table -->
     <div class="table-responsive">
-        <table class="table table-custom">
+        <table class="table admin-table">
             <thead>
                 <tr>
                     <th>Title</th>
@@ -83,22 +23,24 @@
             <tbody>
                 @foreach (var content in Model)
                 {
-                        <tr>
-                            <td>@content.Title</td>
-                            <td>@content.Type</td>
-                            <td>@(content.FileUrl ?? "N/A")</td>
-                            <td>@(content.Order?.ToString() ?? "N/A")</td>
-                            <td>
-                                <a asp-action="EditCourseContent" asp-controller="Admin" asp-route-id="@content.Id" class="btn-edit">Edit</a>
-                                <a asp-action="RemoveCourseContent" asp-controller="Admin" asp-route-id="@content.Id" class="btn-remove">Remove</a>
-                            </td>
-                        </tr>
+                    <tr>
+                        <td>@content.Title</td>
+                        <td>@content.Type</td>
+                        <td>@(content.FileUrl ?? "N/A")</td>
+                        <td>@(content.Order?.ToString() ?? "N/A")</td>
+                        <td>
+                            <a asp-action="EditCourseContent" asp-controller="Admin" asp-route-id="@content.Id" class="btn-edit">Edit</a>
+                            <a asp-action="RemoveCourseContent" asp-controller="Admin" asp-route-id="@content.Id" class="btn-remove">Remove</a>
+                        </td>
+                    </tr>
                 }
             </tbody>
         </table>
     </div>
+
+    <!-- Action Buttons -->
     <div class="text-center mt-4">
-        <a asp-action="CreateCourseContent" asp-controller="Admin" asp-route-id="@courseId" class="btn btn-danger">Add New Content</a>
+        <a asp-action="CreateCourseContent" asp-controller="Admin" asp-route-id="@courseId" class="btn btn-secondary-new">Add New Content</a>
         <a asp-action="Dashboard" class="btn btn-secondary">
             <i class="fas fa-arrow-left"></i> Back to Dashboard
         </a>
