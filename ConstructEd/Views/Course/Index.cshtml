@@ -6,8 +6,6 @@
 <!-- Courses Section -->
 <section class="courses-section">
     <div class="container">
-        <h2 class="text-center mb-5">Courses</h2>
-
         <!-- Filter Dropdown -->
         <div class="filter-container">
             <select id="categoryFilter" class="form-control">
@@ -36,7 +34,7 @@
 
                             <!-- Course Details -->
                             <p class="card-text">Duration: @course.Duration</p>
-                            <p class="card-text">Price: @course.Price</p>
+                            <p class="card-text">Price: @course.Price EGP </p>
 
                             <!-- View Details Button -->
                             <a asp-controller="Course" asp-action="Details" asp-route-id="@course.Id" class="btn btn-main btn-block">

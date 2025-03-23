@@ -6,7 +6,7 @@ namespace ConstructEd.ViewModels
 {
     public class CourseContentViewModel
     {
-        public int Id { get; set; }
+        public int? Id { get; set; }
 
         [Required]
         public string Title { get; set; }
