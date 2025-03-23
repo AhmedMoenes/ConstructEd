@@ -1,182 +1,8 @@
 ﻿@{
     ViewData["Title"] = "Dashboard";
-    Layout = "~/Views/Shared/_Layout.cshtml";
     var statistics = ViewBag.Statistics;
     var messages = ViewBag.Messages;
 }
-
-<style>
-    /* Dashboard Container */
-    .dashboard-container {
-        background-color: #0c081f;
-        color: #fff;
-        min-height: 100vh;
-        padding: 20px;
-    }
-
-    /* Sidebar Styling */
-    .sidebar {
-        background-color: #1b1535;
-        padding: 20px;
-        border-radius: 8px;
-        height: 100vh;
-        position: fixed;
-        width: 340px; /* Increased width */
-    }
-
-    .sidebar h3 {
-        color: #fff;
-        text-align: center;
-        margin-bottom: 20px;
-    }
-
-    /* Toggle Button Styling */
-    .toggle-button {
-        background-color: #2a2753;
-        color: #fff;
-        border: none;
-        padding: 10px 20px;
-        border-radius: 5px;
-        font-weight: bold;
-        width: 100%;
-        text-align: left;
-        margin-bottom: 10px;
-        cursor: pointer;
-        transition: background 0.3s ease;
-        font-size: 24px;
-    }
-
-    .toggle-button:hover {
-        background-color: #3a356b;
-    }
-
-    .toggle-button.active {
-        background-color: #6f42c1;
-    }
-
-    /* Submenu Styling */
-    .submenu {
-        margin-left: 15px;
-        margin-top: 10px;
-        margin-bottom: 10px; 
-        display: none; 
-        font-size: 20px;
-    }
-
-    .submenu a {
-        display: block;
-        color: #fff;
-        padding: 8px 16px;
-        text-decoration: none;
-        border-radius: 4px;
-        margin-bottom: 5px;
-        transition: background 0.3s ease;
-    }
-
-    .submenu a:hover {
-        background-color: #3a356b;
-    }
-
-    /* Main Content Styling */
-    .main-content {
-        margin-left: 420px; /* Adjust based on sidebar width */
-        padding: 20px;
-    }
-
-    /* Metric Grid Layout */
-    .metric-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 20px;
-    }
-
-    .metric-card {
-        background-color: #1b1535;
-        padding: 20px;
-        border-radius: 8px;
-        text-align: center;
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    .metric-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    }
-
-    .metric-icon {
-        font-size: 2rem;
-        color: #6f42c1;
-        margin-bottom: 10px;
-    }
-
-    .metric-value {
-        font-size: 1.5rem;
-        font-weight: bold;
-        color: #fff;
-        margin-bottom: 5px;
-    }
-
-    .metric-label {
-        font-size: 1rem;
-        color: #ccc;
-    }
-    /* Messages Section Styling */
-    .messages-section {
-        margin-top: 40px;
-    }
-
-    .messages-card {
-        background-color: #fff; /* White background */
-        padding: 20px;
-        border-radius: 8px;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    }
-
-    .messages-card h3 {
-        color: #6f42c1; /* Purple header */
-        font-weight: bold;
-        margin-bottom: 20px;
-    }
-
-    .messages-list {
-        list-style-type: none;
-        padding: 0;
-    }
-
-    .messages-list li {
-        background-color: #f8f9fa; /* Light gray background for each message */
-        padding: 15px;
-        border-radius: 5px;
-        margin-bottom: 10px;
-        color: #333; /* Dark text color */
-        font-size: 1rem;
-    }
-
-    .message-header {
-        font-weight: bold;
-        color: #6f42c1; /* Purple for the sender's name */
-        margin-bottom: 5px;
-    }
-
-    .message-email {
-        font-weight: bold; /* Bold */
-        font-style: italic; /* Italic */
-        color: #333; /* Dark text color */
-    }
-
-    .message-date {
-        color: #6c757d; /* Gray for the date */
-        margin-left: 10px; /* Space between email and date */
-    }
-
-    .message-details {
-        margin-left: 10px;
-    }
-
-    .message-details p {
-        margin: 5px 0;
-    }
-</style>
 
 <div class="container-fluid dashboard-container">
     <div class="row">
@@ -206,7 +32,6 @@
 
         <!-- Main Content -->
         <div class="col-md-9 main-content">
-
             <!-- Statistics Section -->
             <div class="row mb-4">
                 <div class="col-md-12">
@@ -299,48 +124,42 @@
                         </div>
                     </div>
                 </div>
-                 <!-- Messages Section -->
-   <div class="row messages-section">
-    <div class="col-md-12">
-        <div class="messages-card">
-            <h3>Messages</h3>
-                            @if (messages != null)
-                            {
-                    <ul class="messages-list">
-                                    @foreach (var message in messages)
-                                    {
-                                <li>
-                                    <div class="message-header">From: @message.Name</div>
-                                    <div>
-                                        <span class="message-email">@message.Email</span>
-                                        <span class="message-date">@message.CreatedAt.ToString("MM/dd/yyyy hh:mm tt")</span>
-                                    </div>
-                                    <div class="message-details">
-                                        <p><strong>Subject:</strong> @message.Subject</p>
-                                        <p><strong>Message:</strong> @message.Message</p>
-                                    </div>
-                                </li>
-                                    }
-                    </ul>
-                            }
-                            else
-                            {
-                    <p>No messages to display.</p>
-                            }
-        </div>
-    </div>
+            </div>
+
+            <!-- Messages Section -->
+            <div class="row messages-section">
+                <div class="col-md-12">
+                    <div class="messages-card">
+                        <h3>Messages</h3>
+                        @if (messages != null)
+                        {
+                            <ul class="messages-list">
+                                @foreach (var message in messages)
+                                {
+                                    <li>
+                                        <div class="message-header">From: @message.Name</div>
+                                        <div>
+                                            <span class="message-email">@message.Email</span>
+                                            <span class="message-date">@message.CreatedAt.ToString("MM/dd/yyyy hh:mm tt")</span>
+                                        </div>
+                                        <div class="message-details">
+                                            <p><strong>Subject:</strong> @message.Subject</p>
+                                            <p><strong>Message:</strong> @message.Message</p>
+                                        </div>
+                                    </li>
+                                }
+                            </ul>
+                        }
+                        else
+                        {
+                            <p>No messages to display.</p>
+                        }
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-            </div>
-        </div>
-    </div>
-</div>
-
- 
 
 <script>
     // Toggle submenu visibility

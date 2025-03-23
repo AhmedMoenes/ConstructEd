@@ -14,12 +14,16 @@
     --text-light-color: #ffffff; /* Bright text for dark backgrounds */
     --text-dark-color: #002b54; /* Dark text for light backgrounds */
 }
-
-/* General Reset */
-html, body {
-    height: 100%;
+* {
+    box-sizing: border-box;
     margin: 0;
     padding: 0;
+    scroll-behavior: smooth;
+}
+
+html, body {
+    height: 100%;
+    overflow-x: hidden;
 }
 
 body {
@@ -70,16 +74,11 @@ body {
     gap: 1rem;
 }
 
-.dropdown {
-    z-index: 9999;
-    position: relative;
-}
-
 /* Main Content Styles */
 main {
     flex-grow: 1;
     overflow: auto;
-    margin-bottom: 50px;
+    padding-bottom: 50px; /* Add padding to prevent footer overlap */
 }
 
 /* Footer */
@@ -89,8 +88,8 @@ main {
     padding: 15px;
     text-align: center;
     width: 100%;
-    position: relative; /* Ensure it's not fixed or sticky */
-    margin-top: auto;  /*Push the footer to the bottom */
+    position: relative;
+    bottom: 0;
 }
 
     .footer .d-flex {
@@ -1505,4 +1504,191 @@ main {
 
     .admin-create .text-danger {
         color: var(--danger-color);
+    }
+
+
+/*//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* Dashboard Container */
+.dashboard-container {
+    background-color: var(--bg-color);
+    color: var(--text-dark-color);
+    min-height: 100vh;
+    padding: 20px;
+    overflow-x: hidden;
+}
+
+/* Sidebar Styling */
+.sidebar {
+    background-color: var(--main-color);
+    padding: 20px;
+    border-radius: 8px;
+    height: 100vh;
+    position: fixed;
+    width: 25%; 
+    max-width: 340px; 
+}
+
+    .sidebar h3 {
+        color: var(--text-light-color);
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+/* Toggle Button Styling */
+.toggle-button {
+    background-color: var(--secondary-color);
+    color: var(--text-light-color);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-weight: bold;
+    width: 100%;
+    text-align: left;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    font-size: 24px;
+}
+
+    .toggle-button:hover {
+        background-color: var(--main-color);
+        border: solid 2px var(--secondary-color);
+    }
+
+    .toggle-button.active {
+        background-color: var(--secondary-color);
+    }
+
+/* Submenu Styling */
+.submenu {
+    margin-left: 15px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    display: none;
+    font-size: 20px;
+}
+
+    .submenu a {
+        display: block;
+        color: var(--text-light-color);
+        padding: 8px 16px;
+        text-decoration: none;
+        border-radius: 4px;
+        margin-bottom: 5px;
+        transition: background 0.3s ease;
+    }
+
+        .submenu a:hover {
+            background-color: var(--secondary-color);
+        }
+
+/* Main Content Styling */
+.main-content {
+    margin-left: 25%; /* Match sidebar width */
+    padding: 20px;
+    width: 75%; /* Ensure it fits within the viewport */
+}
+
+/* Metric Grid Layout */
+.metric-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Adjust min value */
+    gap: 20px;
+}
+
+.metric-card {
+    background-color: var(--card-bg-color);
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    max-width: 100%; /* Prevent overflow */
+}
+
+    .metric-card:hover {
+        transform: translateY(-5px);
+        box-shadow: var(--card-shadow);
+    }
+
+.metric-icon {
+    font-size: 2rem;
+    color: var(--secondary-color);
+    margin-bottom: 10px;
+}
+
+.metric-value {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--text-dark-color);
+    margin-bottom: 5px;
+}
+
+.metric-label {
+    font-size: 1rem;
+    color: var(--text-dark-color);
+}
+
+/* Messages Section Styling */
+.messages-section {
+    margin-top: 40px;
+}
+
+.messages-card {
+    background-color: var(--card-bg-color);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: var(--card-shadow);
+    max-width: 100%; /* Prevent overflow */
+}
+
+    .messages-card h3 {
+        color: var(--secondary-color);
+        font-weight: bold;
+        margin-bottom: 20px;
+    }
+
+.messages-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+    .messages-list li {
+        background-color: var(--bg-color);
+        padding: 15px;
+        border-radius: 5px;
+        margin-bottom: 10px;
+        color: var(--text-dark-color);
+        font-size: 1rem;
+    }
+
+.message-header {
+    font-weight: bold;
+    color: var(--secondary-color);
+    margin-bottom: 5px;
+}
+
+.message-email {
+    font-weight: bold;
+    font-style: italic;
+    color: var(--text-dark-color);
+}
+
+.message-date {
+    color: var(--text-dark-color);
+    margin-left: 10px;
+}
+
+.message-details {
+    margin-left: 10px;
+}
+
+    .message-details p {
+        margin: 5px 0;
     }
