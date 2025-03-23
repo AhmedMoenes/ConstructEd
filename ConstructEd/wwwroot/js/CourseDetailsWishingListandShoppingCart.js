@@ -77,10 +77,10 @@
 
                 // Toggle shopping cart icon and color
                 if (newStatus) {
-                    icon.removeClass("fa-cart-plus").addClass("fa-shopping-cart");
+                    icon.removeClass("fas fa-cart-plus").addClass("fas fa-shopping-cart");
                     icon.css("color", "green");
                 } else {
-                    icon.removeClass("fa-shopping-cart").addClass("fa-cart-plus");
+                    icon.removeClass("fas fa-shopping-cart").addClass("fas fa-cart-plus");
                     icon.css("color", "gray");
                 }
             } else {

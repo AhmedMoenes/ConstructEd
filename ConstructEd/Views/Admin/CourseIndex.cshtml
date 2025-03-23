@@ -67,7 +67,6 @@
     </style>
 
     <div class="container">
-        <h1 class="page-title">Our Courses</h1>
 
         <!-- Courses Table -->
         <div class="table-responsive">
@@ -75,7 +74,6 @@
                 <thead>
                     <tr>
                         <th>Title</th>
-                        <th>Description</th>
                         <th>Price</th>
                         <th>Duration</th>
                         <th>Category</th>
@@ -87,13 +85,13 @@
                     {
                             <tr>
                                 <td>@course.Title</td>
-                                <td>@course.Description</td>
                                 <td>@course.Price.ToString("C")</td>
                                 <td>@course.Duration hours</td>
-                                <td>@course.Category</td>
+                                <td>@course.Category.ToString().Replace("_", " ")</td>
                                 <td>
-                                    <a asp-action="EditCourse"  asp-route-id="@course.Id" class="btn-edit">Edit</a>
+                                    <a asp-action="EditCourse"  asp-controller="Admin" asp-route-id="@course.Id" class="btn-edit">Edit</a>
                                     <a asp-action="RemoveCourse" asp-controller="Admin" asp-route-id="@course.Id" class="btn-remove">Remove</a>
+                                    <a asp-action="CourseContentDetails" asp-controller="Admin" asp-route-id="@course.Id" class="btn-edit">Contents</a>
                                 </td>
                             </tr>
                     }

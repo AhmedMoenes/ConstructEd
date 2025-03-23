@@ -1182,7 +1182,7 @@ main {
     }
 
 /* Remove Button */
-.btn-remove {
+.remove-item {
     background-color: var(--secondary-color);
     color: var(--bg-color);
     border: none;
@@ -1192,12 +1192,12 @@ main {
     transition: background-color 0.3s ease;
 }
 
-    .btn-remove:hover {
+    .remove-item:hover {
         background-color: var(--main-color);
         color: var(--bg-color);
     }
 
-    .btn-remove i {
+    .remove-item i {
         margin-right: 0.5rem;
     }
 
@@ -1255,7 +1255,7 @@ main {
     }
 
 /* Remove Button */
-.btn-remove {
+.remove-item {
     background-color: var(--secondary-color);
     color: var(--bg-color);
     border: none;
@@ -1265,12 +1265,12 @@ main {
     transition: background-color 0.3s ease;
 }
 
-    .btn-remove:hover {
+    .remove-item:hover {
         background-color: var(--main-color);
         color: var(--bg-color);
     }
 
-    .btn-remove i {
+    .remove-item i {
         margin-right: 0.5rem;
     }
 

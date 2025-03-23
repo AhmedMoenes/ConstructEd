@@ -1,7 +1,8 @@
 ﻿@model IEnumerable<CourseContentViewModel>
+
 @{
-	SelectList courses = new SelectList(ViewBag.Courses, "Id", "Title");
-	Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var courseId = ViewBag.CourseId;
 }
 
 <style>
@@ -62,20 +63,6 @@
         text-align: center;
         margin-bottom: 20px;
     }
-
-    /* Add Course Content Button */
-    .btn-add-course-content {
-        background-color: #28a745;
-        color: #fff;
-        padding: 10px 20px;
-        border-radius: 5px;
-        text-decoration: none;
-        transition: background 0.3s ease;
-    }
-
-        .btn-add-course-content:hover {
-            background-color: #218838;
-        }
 </style>
 
 <div class="container">
@@ -99,29 +86,21 @@
                         <tr>
                             <td>@content.Title</td>
                             <td>@content.Type</td>
+                            <td>@(content.FileUrl ?? "N/A")</td>
+                            <td>@(content.Order?.ToString() ?? "N/A")</td>
                             <td>
-                            @if (!string.IsNullOrEmpty(content.FileUrl))
-                            {
-                                        <a href="@content.FileUrl" target="_blank">View File</a>
-                            }
-                            else
-                            {
-                                        <span>No file available</span>
-                            }
-                            </td>
-                            <td>@content.Order</td>
-                            <td>
-                                <a asp-controller="Admin" asp-action="EditCourseContent" asp-route-id="@content.Id" class="btn-edit">Edit</a>
-                                <a asp-controller="Admin" asp-action="RemoveCourseContent" asp-route-id="@content.Id" class="btn-remove">Remove</a>
+                                <a asp-action="EditCourseContent" asp-controller="Admin" asp-route-id="@content.Id" class="btn-edit">Edit</a>
+                                <a asp-action="RemoveCourseContent" asp-controller="Admin" asp-route-id="@content.Id" class="btn-remove">Remove</a>
                             </td>
                         </tr>
                 }
             </tbody>
         </table>
     </div>
-
     <div class="text-center mt-4">
-        <a asp-action="CreateCourseContent" class="btn-add-course-content">Add New Course Content</a>
-        <a asp-action="Dashboard" class="btn-add-course-content">Back To Dashboard</a>
+        <a asp-action="CreateCourseContent" asp-controller="Admin" asp-route-id="@courseId" class="btn btn-danger">Add New Content</a>
+        <a asp-action="Dashboard" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Back to Dashboard
+        </a>
     </div>
 </div>

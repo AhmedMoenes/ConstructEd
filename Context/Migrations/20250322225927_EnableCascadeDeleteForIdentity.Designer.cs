@@ -4,6 +4,7 @@ using ConstructEd.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ConstructEd.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20250322225927_EnableCascadeDeleteForIdentity")]
+    partial class EnableCascadeDeleteForIdentity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -135,7 +138,7 @@ namespace ConstructEd.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ContactForm");
+                    b.ToTable("ContactForms");
                 });
 
             modelBuilder.Entity("ConstructEd.Models.Course", b =>
@@ -211,41 +214,6 @@ namespace ConstructEd.Data.Migrations
                     b.HasIndex("CourseId");
 
                     b.ToTable("CourseContents");
-                });
-
-            modelBuilder.Entity("ConstructEd.Models.CourseReview", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Comment")
-                        .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
-
-                    b.Property<int>("CourseId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("Rating")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CourseId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("CourseReview");
                 });
 
             modelBuilder.Entity("ConstructEd.Models.Enrollment", b =>
@@ -603,25 +571,6 @@ namespace ConstructEd.Data.Migrations
                     b.Navigation("Course");
                 });
 
-            modelBuilder.Entity("ConstructEd.Models.CourseReview", b =>
-                {
-                    b.HasOne("ConstructEd.Models.Course", "Course")
-                        .WithMany("Reviews")
-                        .HasForeignKey("CourseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ConstructEd.Models.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Course");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("ConstructEd.Models.Enrollment", b =>
                 {
                     b.HasOne("ConstructEd.Models.Course", "Course")
@@ -631,8 +580,7 @@ namespace ConstructEd.Data.Migrations
 
                     b.HasOne("ConstructEd.Models.Plugin", "Plugin")
                         .WithMany("Enrollments")
-                        .HasForeignKey("PluginId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("PluginId");
 
                     b.HasOne("ConstructEd.Models.ApplicationUser", "User")
                         .WithMany("Enrollments")
@@ -813,8 +761,6 @@ namespace ConstructEd.Data.Migrations
                     b.Navigation("Enrollments");
 
                     b.Navigation("PaymentCourses");
-
-                    b.Navigation("Reviews");
 
                     b.Navigation("ShoppingCarts");
 

@@ -1,9 +1,7 @@
 ﻿using AutoMapper;
-using ConstructEd.Models;
 using ConstructEd.Repositories;
 using ConstructEd.ViewModels;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace ConstructEd.Controllers
 {
@@ -44,82 +42,7 @@ namespace ConstructEd.Controllers
             ;
             var viewModel = _mapper.Map<CourseContentViewModel>(courseContent);
 
-            //var courseName = await _courseContentRepository.GetCourseNameByIdAsync(courseContent.CourseId);
             ViewBag.CourseName = courseContent.Course?.Title;
-
-            return View(viewModel);
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> Create()
-        {
-            var viewModel = new CourseContentViewModel
-            {
-                ContentTypes = _courseContentRepository.GetContentTypesAsSelectList()
-            };
-
-            var courses = await _courseRepository.GetAllAsync();
-            ViewBag.Courses = new SelectList(courses, "Id", "Title");
-
-            return View(viewModel);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(CourseContentViewModel viewModel)
-        {
-            if (ModelState.IsValid)
-            {
-                var courseContent = _mapper.Map<CourseContent>(viewModel);
-                await _courseContentRepository.InsertAsync(courseContent);
-                return RedirectToAction(nameof(Index));
-            }
-
-            viewModel.ContentTypes = _courseContentRepository.GetContentTypesAsSelectList();
-
-            var courses = await _courseRepository.GetAllAsync();
-            ViewBag.Courses = new SelectList(courses, "Id", "Title");
-
-            return View(viewModel);
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> Edit(int id)
-        {
-            var courseContent = await _courseContentRepository.GetByIdAsync(id);
-            if (courseContent == null)
-            {
-                return NotFound();
-            }
-
-            var viewModel = _mapper.Map<CourseContentViewModel>(courseContent);
-
-            viewModel.ContentTypes = _courseContentRepository.GetContentTypesAsSelectList();
-            var courses = await _courseRepository.GetAllAsync();
-            ViewBag.Courses = new SelectList(courses, "Id", "Title", courseContent.CourseId); // Preselect the current course
-
-            return View(viewModel);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, CourseContentViewModel viewModel)
-        {
-            if (id != viewModel.Id)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                var courseContent = _mapper.Map<CourseContent>(viewModel);
-                await _courseContentRepository.UpdateAsync(courseContent);
-                return RedirectToAction(nameof(Index));
-            }
-
-            viewModel.ContentTypes = _courseContentRepository.GetContentTypesAsSelectList();
-            var courses = await _courseRepository.GetAllAsync();
-            ViewBag.Courses = new SelectList(courses, "Id", "Title", viewModel.CourseId); // Preselect the current course
 
             return View(viewModel);
         }

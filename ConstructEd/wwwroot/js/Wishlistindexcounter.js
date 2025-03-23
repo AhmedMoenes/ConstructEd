@@ -21,6 +21,7 @@
     // Handle remove item functionality (FIXED)
     $(document).on("click", ".remove-item", function (e) {
         e.preventDefault();
+        console.log("Remove button clicked"); // Debugging line
 
         const button = $(this);
         const form = button.closest(".remove-item-form");
@@ -36,6 +37,7 @@
                 __RequestVerificationToken: token
             },
             success: function (response) {
+                console.log("AJAX response:", response); // Debugging line
                 if (response.success) {
                     row.fadeOut(300, function () {
                         $(this).remove();

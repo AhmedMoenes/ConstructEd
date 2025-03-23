@@ -28,6 +28,7 @@ namespace ConstructEd
             builder.Services.AddScoped<IWishListRepository,WishListRepository>();
             builder.Services.AddScoped<IStatisticsRepository, StatisticsRepository>();
             builder.Services.AddScoped<IContactFormRepository, ContactFormRepository>();
+            builder.Services.AddScoped<ICourseReviewRepository, CourseReviewRepository>();
 
             builder.Services.AddDbContext<DataContext>(options =>
                      options.UseSqlServer(builder.Configuration.GetConnectionString("CS")));

@@ -19,7 +19,7 @@
     });
 
     // Handle remove item functionality
-    $('.remove-item').on('click', function (e) {
+    $('.btn-remove').on('click', function (e) {
         e.preventDefault();
 
         const button = $(this);

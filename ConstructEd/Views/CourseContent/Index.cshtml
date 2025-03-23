@@ -66,41 +66,4 @@
     </tbody>
 </table>
 
-<!-- Include the Delete Modal Partial View -->
-@await Html.PartialAsync("_DeleteModal", new ConstructEd.ViewModels.CourseContentViewModel())
 
-@section Scripts {
-    <script>
-        $(document).ready(function () {
-            var deleteId;
-
-            // Set the ID of the item to delete when the modal is shown
-            $('.delete-button').on('click', function () {
-                deleteId = $(this).data('id');
-            });
-
-            // Handle the delete confirmation
-            $('#confirmDelete').on('click', function () {
-                $.ajax({
-                    url: '/CourseContent/DeleteConfirmed/' + deleteId,
-                    type: 'POST',
-                    headers: {
-                        'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
-                    },
-                    success: function (response) {
-                        if (response.success) {
-                            // Remove the deleted row from the table
-                            $('#row-' + deleteId).remove();
-                            $('#deleteModal').modal('hide');
-                        } else {
-                            alert('Failed to delete the item.');
-                        }
-                    },
-                    error: function () {
-                        alert('An error occurred while deleting the item.');
-                    }
-                });
-            });
-        });
-    </script>
-}
