@@ -1453,17 +1453,18 @@ main {
     .admin-create .input-custom {
         background-color: transparent;
         border: 1px solid var(--secondary-color);
-        color: var(--text-light-color);
+        color: #47b1e9;
         border-radius: 5px;
         padding: 0.75rem;
         transition: border-color 0.3s ease;
     }
+ 
 
-        .admin-create .input-custom:focus {
-            border-color: var(--secondary-color);
-            box-shadow: none;
-            outline: none;
-        }
+.admin-create .input-custom:focus {
+    border-color: var(--secondary-color);
+    box-shadow: none;
+    outline: none;
+}
 
     .admin-create .btn-create {
         background-color: var(--secondary-color);
