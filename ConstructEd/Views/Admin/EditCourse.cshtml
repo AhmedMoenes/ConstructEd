@@ -6,78 +6,14 @@
     SelectList categories = new SelectList(ViewBag.categoryList);
 }
 
-<style>
-    /* Input Fields */
-    .input-custom {
-        background-color: transparent;
-        border: 1px solid #5b4b8a;
-        color: #fff;
-        border-radius: 5px;
-        padding: 10px;
-    }
-
-        .input-custom:focus {
-            border-color: #7663c1;
-            box-shadow: none;
-            outline: none;
-        }
-
-    /* Save Button */
-    .btn-save {
-        background: linear-gradient(90deg, #6f42c1, #aa2068);
-        border: none;
-        padding: 10px;
-        color: #fff;
-        font-weight: bold;
-        border-radius: 5px;
-        transition: 0.3s ease;
-    }
-
-        .btn-save:hover {
-            background: linear-gradient(90deg, #502ea7, #881856);
-            transform: scale(1.02);
-        }
-
-    /* Back to List Button */
-    .btn-back-to-list {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding: 15px 38px;
-        border-radius: 16px;
-        border: 1px solid transparent;
-        color: #ffffff;
-        background: linear-gradient(90deg, #5B4B8A, #7663C1);
-        font-size: 16px;
-        letter-spacing: 1px;
-        transition: all 0.2s ease-in-out;
-        text-decoration: none;
-    }
-
-        .btn-back-to-list:hover {
-            background: rgba(193, 158, 224, 0.1);
-            border-color: #C19EE0;
-            color: #C19EE0;
-            transform: translateY(-4px) scale(1.05);
-        }
-
-        .btn-back-to-list:active {
-            background-color: transparent;
-            border-color: #C19EE0;
-            color: #C19EE0;
-            transform: translateY(4px) scale(0.95);
-        }
-</style>
-
-<div class="d-flex justify-content-center align-items-center min-vh-100" style="background-color: #0c081f;">
-    <div class="card shadow-lg p-4 rounded-4" style="background-color: #1b1535; color: #fff; width: 380px;">
-
-        <h3 class="text-center mt-3">Edit Course</h3>
+<div class="admin-create-container">
+    <div class="admin-create">
+        <h3 class="text-center mb-4">Edit Course</h3>
 
         <form asp-action="EditCourse" enctype="multipart/form-data">
             @if (!ViewData.ModelState.IsValid)
             {
-                    <div asp-validation-summary="All" class="alert alert-danger"></div>
+                <div asp-validation-summary="All" class="alert alert-danger"></div>
             }
 
             <!-- Hidden ID Field -->
@@ -130,16 +66,16 @@
             </div>
 
             <!-- Save Button -->
-            <button type="submit" class="btn-save w-100">Save</button>
+            <button type="submit" class="btn-create">Save</button>
 
             <!-- Back to List Button -->
             <div class="text-center mt-3">
-                <a asp-action="CourseIndex" class="btn-back-to-list">Back to List</a>
+                <a asp-action="CourseIndex" class="btn-back">Back to List</a>
             </div>
         </form>
     </div>
 </div>
 
 @section Scripts {
-        <partial name="_ValidationScriptsPartial" />
+    <partial name="_ValidationScriptsPartial" />
 }
