@@ -1421,3 +1421,88 @@ main {
     }
 
 /*//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
+
+/* Admin Create Form Styles */
+
+/* Admin Create Container */
+.admin-create-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 50px 0; /* 50px margin top and bottom */
+    /*background-color: #0c081f;*/ /* Background color for the container */
+}
+
+/* Admin Create Form Styles */
+.admin-create {
+    background-color: var(--main-color);
+    color: var(--text-light-color);
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    padding: 2rem;
+    width: 400px; /* Standardized width */
+    margin: 0 auto; /* Center the form */
+}
+
+    .admin-create .form-label {
+        color: var(--text-light-color);
+        font-weight: 500;
+    }
+
+    .admin-create .input-custom {
+        background-color: transparent;
+        border: 1px solid var(--secondary-color);
+        color: var(--text-light-color);
+        border-radius: 5px;
+        padding: 0.75rem;
+        transition: border-color 0.3s ease;
+    }
+
+        .admin-create .input-custom:focus {
+            border-color: var(--secondary-color);
+            box-shadow: none;
+            outline: none;
+        }
+
+    .admin-create .btn-create {
+        background-color: var(--secondary-color);
+        border: none;
+        padding: 0.75rem 1.5rem;
+        color: var(--text-light-color);
+        font-weight: bold;
+        border-radius: 5px;
+        transition: all 0.3s ease;
+        width: 100%;
+        text-decoration: none;
+    }
+
+        .admin-create .btn-create:hover {
+            background-color: var(--bg-color);
+            color: var(--main-color);
+            border: 1px solid var(--main-color);
+        }
+
+    .admin-create .btn-back {
+        background-color: var(--danger-color);
+        color: var(--text-light-color);
+        padding: 0.75rem 1.5rem;
+        border-radius: 5px;
+        transition: all 0.3s ease;
+        text-decoration: none;
+    }
+
+        .admin-create .btn-back:hover {
+            background-color: var(--danger-sec-color);
+        }
+
+    .admin-create .alert-danger {
+        background-color: var(--danger-color);
+        color: var(--text-light-color);
+        border-radius: 5px;
+        padding: 10px;
+        margin-bottom: 15px;
+    }
+
+    .admin-create .text-danger {
+        color: var(--danger-color);
+    }

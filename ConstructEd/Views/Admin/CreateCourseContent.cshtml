@@ -6,78 +6,9 @@
     SelectList contentTypes = new SelectList(ViewBag.ContentTypes);
 }
 
-<style>
-    /* Card and Container */
-    .create-container {
-        background-color: #ffffff;
-        min-height: 100vh;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-
-    .create-card {
-        background-color: #ffffff;
-        color: #333;
-        border: 1px solid #00bcd4; /* Cyan border */
-        border-radius: 8px;
-        padding: 20px;
-        width: 420px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    }
-
-    /* Input Fields */
-    .input-custom {
-        background-color: #ffffff;
-        border: 1px solid #00bcd4; /* Cyan */
-        color: #333;
-        border-radius: 5px;
-        padding: 10px;
-    }
-
-        .input-custom:focus {
-            border-color: #0097a7; /* Darker cyan */
-            box-shadow: 0 0 5px rgba(0, 188, 212, 0.5);
-            outline: none;
-        }
-
-    /* Labels */
-    .form-label {
-        color: #00bcd4; /* Cyan */
-        font-weight: 500;
-    }
-
-    /* Create Button */
-    .btn-create {
-        background: #00bcd4; /* Cyan */
-        border: none;
-        padding: 10px;
-        color: #ffffff;
-        font-weight: bold;
-        border-radius: 5px;
-        transition: all 0.3s ease;
-    }
-
-        .btn-create:hover {
-            background: #0097a7; /* Darker cyan */
-            transform: scale(1.02);
-        }
-
-    /* Back Link */
-    .back-link {
-        color: #00bcd4; /* Cyan */
-        text-decoration: none;
-    }
-
-        .back-link:hover {
-            color: #0097a7; /* Darker cyan */
-            text-decoration: underline;
-        }
-</style>
-
-<div class="create-container">
-    <div class="create-card shadow-lg">
-        <h3 class="text-center mb-4" style="color: #00bcd4;">Create Course Content</h3>
+<div class="admin-create-container">
+    <div class="admin-create">
+        <h3 class="text-center mb-4">Create Course Content</h3>
 
         <form asp-action="CreateCourseContent" method="post">
             <div asp-validation-summary="All" class="text-danger mb-3"></div>
@@ -111,16 +42,16 @@
             </div>
 
             <div class="d-grid">
-                <button type="submit" class="btn-create w-100">Create</button>
+                <button type="submit" class="btn-create">Create</button>
             </div>
         </form>
 
         <div class="text-center mt-4">
-            <a asp-action="CourseIndex" class="back-link">Back to List</a>
+            <a asp-action="CourseIndex" class="btn-back">Back to List</a>
         </div>
     </div>
 </div>
 
 @section Scripts {
-        <partial name="_ValidationScriptsPartial" />
+    <partial name="_ValidationScriptsPartial" />
 }
