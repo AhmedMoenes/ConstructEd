@@ -6,17 +6,6 @@
 <!-- Courses Section -->
 <section class="courses-section">
     <div class="container">
-        <!-- Filter Dropdown -->
-        <div class="filter-container">
-            <select id="categoryFilter" class="form-control">
-                <option value="">All Categories</option>
-                @foreach (var category in Enum.GetValues(typeof(Category)))
-                {
-                    <option value="@category">@category.ToString().Replace("_", " ")</option>
-                }
-            </select>
-        </div>
-
         <div class="row justify-content-center">
             @foreach (var course in Model)
             {
@@ -41,35 +30,6 @@
                                 View Details
                             </a>
 
-                            <!-- Cart and Wishlist Buttons -->
-                            <div class="d-flex justify-content-between mt-3">
-                                @if (course.IsEnrolled)
-                                {
-                                    <!-- Enrolled Button -->
-                                    <button class="btn btn-success w-100" disabled>Enrolled</button>
-                                }
-                                else
-                                {
-                                    <!-- Add to Cart Button -->
-                                    <form class="cart-form" data-courseid="@course.Id" data-incart="@(course.IsInCart ? "true" : "false" )">
-                                        <input type="hidden" name="id" value="@course.Id" />
-                                        <input type="hidden" name="type" value="Course" />
-                                        <button type="submit" class="btn btn-icon">
-                                            <i class="@(course.IsInCart ? "fas fa-shopping-cart" : "fas fa-cart-plus")"></i>
-                                        </button>
-                                    </form>
-
-                                    <!-- Add to Wishlist Button -->
-                                    <form class="wish-form" data-courseid="@course.Id" data-inwishlist="@(course.IsInWishlist ? "true" : "false")">
-                                        <input type="hidden" name="id" value="@course.Id" />
-                                        <input type="hidden" name="type" value="Course" />
-                                        <button type="submit" class="btn btn-icon">
-                                            <i class="@(course.IsInWishlist ? "fas" : "far") fa-heart"></i>
-                                        </button>
-                                    </form>
-                                }
-                            </div>
-
                         </div>
                     </div>
                 </div>
@@ -80,6 +40,5 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
-    <script src="~/js/filterCourses.js"></script>
     <script src="~/js/CourseIndexWishingListandShoppingCart.js"></script>
 }

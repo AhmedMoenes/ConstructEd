@@ -2,6 +2,7 @@
 
 using ConstructEd.Repositories;
 using ConstructEd.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 using System.Security.Claims;
@@ -23,7 +24,8 @@ public class EnrollmentController : Controller
         _mapper = mapper;
 
     }
-  
+
+    [Authorize(Roles = "User,Instructor")]
     public async Task<IActionResult> Index()
     {
         string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);

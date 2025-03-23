@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using ConstructEd.Repositories;
 using ConstructEd.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ConstructEd.Controllers
@@ -21,6 +22,7 @@ namespace ConstructEd.Controllers
             _mapper = mapper;
         }
 
+        [Authorize(Roles = "User,Instructor,Admin")]
         public async Task<IActionResult> Details(int id)
         {
             var courseContent = await _courseContentRepository.GetByIdAsync(id);

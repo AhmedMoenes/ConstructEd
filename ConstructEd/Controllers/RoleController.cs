@@ -24,23 +24,5 @@ namespace ConstructEd.Controllers
             return View();
         }
 
-        //[HttpPost]
-        //public async Task<IActionResult> AddRole(RoleViewModel model)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        IdentityResult result = await _authService.AddRoleAsync(model);
-        //        if (result.Succeeded)
-        //        {
-        //            return RedirectToAction(nameof(HomeController.Index), nameof(HomeController));
-        //        }
-        //        foreach (var error in result.Errors)
-        //        {
-        //            ModelState.AddModelError(string.Empty, error.Description);
-        //        }
-        //    }
-        //    return View(nameof(AddRole), model);
-        //}
-
     }
 }

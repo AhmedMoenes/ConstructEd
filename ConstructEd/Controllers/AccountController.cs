@@ -3,6 +3,7 @@ using ConstructEd.Models;
 using ConstructEd.Repositories;
 using ConstructEd.Services;
 using ConstructEd.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -92,6 +93,7 @@ namespace ConstructEd.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        [Authorize(Roles = "User,Instructor,Admin")]
         public async Task<IActionResult> Profile()
         {
             var user = await _authService.GetCurrentUserAsync();

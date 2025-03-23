@@ -1,7 +1,5 @@
-﻿using AutoMapper;
-using ConstructEd.Models;
+﻿using ConstructEd.Models;
 using ConstructEd.Repositories;
-using ConstructEd.Services;
 using ConstructEd.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -47,18 +45,14 @@ namespace ConstructEd.Controllers
             return Json(new { success = false, message = "Item is already in wishlist" });
         }
 
-        // 🔹 Display the shopping cart
         public async Task<IActionResult> Index()
 		{
-			// Get logged-in user ID
 			string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (string.IsNullOrEmpty(userId))
                 if (string.IsNullOrEmpty(userId)) return RedirectToAction("Login", "Account");
 
-            // Get shopping cart items for the user
             var wish = await _wishlistRepository.GetByUserIdAsync(userId);
 
-			// Map to ShoppingCartViewModel
 			var viewModel = new WishListViewModel
 			{
 				UserFullName = User.Identity.Name,
@@ -74,7 +68,7 @@ namespace ConstructEd.Controllers
 						Duration = sc.Course.Duration,
 						Category = sc.Course.Category
 					}).ToList(),
-				Plugins = wish
+				     Plugins = wish
 					.Where(sc => sc.Plugin != null)
 					.Select(sc => new PluginViewModel
 					{

@@ -49,6 +49,7 @@ body {
 .navbar-nav .nav-link {
     color: var(--bg-color) !important;
     transition: color 0.3s ease;
+    font-size:18px;
     position: relative;
 }
 
@@ -254,7 +255,7 @@ main {
         background-color: rgba(255, 255, 255, 0.05);
     }
 
-/*HOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMEEEEEEEEEEEEEEEEEEEEEEEEEEE*/
+/*Home*/
 
 /* Cube-specific styles */
 .cube-section {
@@ -375,7 +376,7 @@ main {
             color: var(--bg-color);
         }
 
-/*ABBBBOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT*/
+/*About*/
 
 /* About Us Page Styles */
 .about-section, .mission-section, .team-section {
@@ -431,7 +432,7 @@ main {
     }
 
 
-/*Cooooooooooooooooonnnnnnnnnnnnnnnnnnnnnnttttttttttttttttttaaaaaaaaaaaaaaaacccccccccccccccccccccctttttttttttttttttttttttttt*/
+/*Contact*/
 
 /* Contact Us Page Styles */
 .contact-section {
@@ -490,7 +491,7 @@ main {
     }
 
 
-/*CooooooooooooooooonnnnnnnnnnnnnnnnnnnnnnttttttttttttttttttaaaaaaaaaaaaaaaaccccccccccccccccccccccttttttttttttttttttttttttttSUUUUUUUUUUUUUUUCCCCCCCCCCCCEEEEEEEEEESSSSSSSSSSSSS*/
+/*Contact Success*/
 
 /* Message Sent Successfully Page Styles */
 .success-section {
@@ -557,7 +558,7 @@ main {
     }
 }
 
-/*LLLLLLLLLLLLLOOOOOOOOOOOOOOOOOGGGGGGGGGGGGGGGGGGGGIIIIIIIIIIIIIIIIIIIIIIIIIINNNNNNNNNNNNNNNNNN*/
+/*Login*/
 
 /* Auth Section Styles */
 .auth-section {
@@ -634,7 +635,7 @@ main {
 .text-danger {
     color: var(--danger-color);
 }
-/*Profileeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee*/
+/*Profile*/
 
 /* Profile Page Styles */
 .profile-section {
@@ -710,7 +711,7 @@ main {
         color: var(--text-light-color); /* Use cream color for text */
     }
 
-/*Coooooooooooooooooooooooooooooooooourse Indexxxxxxxxxxxxxxxxxxxxxxxxxxxxxx*/
+/*Course Index*/
 
 /* Courses Page Styles */
 .courses-section {
@@ -731,7 +732,7 @@ main {
 
     .courses-card-text {
         font-size: 1rem;
-        color: black;
+        color: darkblue;
     }
 
 .cart-button, .wish-button {
@@ -804,7 +805,7 @@ main {
     margin-bottom: 1.5rem; /* Space below the dropdown */
 }
 
-/*Coooooooooooooooooooooooooooooooooourse Detailssssssssssssssssssssssssssssssssssssssssssssssssssssssssss*/
+/*Course Details*/
 
 /* Course Details Page Styles */
 .course-details-section {
@@ -906,7 +907,7 @@ main {
     }
 
 
-/*Reviewwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww*/
+/*Review*/
 
 /* Add Review Page Specific Styles */
 .review-container {
@@ -971,7 +972,7 @@ main {
             text-decoration: underline; /* Add underline on hover */
         }
 
-/*Plugins Indexxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx*/
+/*Plugins Index*/
 
 /* Plugins Page Styles */
 .plugins-section {
@@ -991,7 +992,7 @@ main {
         margin-bottom: 12px; /* Space between image and text */
     }
 
-/*Plugins Detailsssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss*/
+/*Plugins Details*/
 
 /* Plugin Details Page Styles */
 .plugin-details-card {
@@ -1075,7 +1076,7 @@ main {
         color: var(--text-light-color);
     }
 
-/*Wishlistttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt*/
+/*Wishlist*/
 
 /* Wishlist and Shopping Cart Container */
 .wishlist-container, .shopping-cart-container {
@@ -1243,7 +1244,7 @@ main {
     margin-top: 1.5rem;
 }
 
-/*Course Contentttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt*/
+/*Course Content*/
 
 /* Course Content Index Page Styles */
 .course-content-index .table {

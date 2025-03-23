@@ -32,8 +32,8 @@ namespace ConstructEd.Controllers
 		}
 
 
-
         [HttpPost]
+        [Authorize(Roles = "User,Instructor")]
         public async Task<IActionResult> AddToCart(int id, string type)
         {
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -64,6 +64,7 @@ namespace ConstructEd.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "User,Instructor")]
         public async Task<IActionResult> RemoveFromCart(int id, string type)
         {
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -93,8 +94,7 @@ namespace ConstructEd.Controllers
             return Json(new { success = false, message = "Item not found in cart" });
         }
 
-
-        // 🔹 Display the shopping cart
+        [Authorize(Roles = "User,Instructor")]
         public async Task<IActionResult> Index()
         {
             // Get logged-in user ID
@@ -136,6 +136,7 @@ namespace ConstructEd.Controllers
 
 
         [HttpPost]
+        [Authorize(Roles = "User,Instructor")]
         public async Task<IActionResult> ProcessPayment(PaymentViewModel model)
         {
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -165,7 +166,6 @@ namespace ConstructEd.Controllers
                 return RedirectToAction("Failure", new { transactionId = payment.TransactionID });
             }
 
-            // 🔹 Create Enrollment Records
             var enrollments = new List<Enrollment>();
             foreach (var item in cartItems)
             {
@@ -185,7 +185,7 @@ namespace ConstructEd.Controllers
                     enrollment.PluginId = item.PluginId;
                 }
 
-                if (enrollment.IsValid)  // Ensure only one of Course or Plugin is assigned
+                if (enrollment.IsValid)  
                 {
                     enrollments.Add(enrollment);
                 }
@@ -194,7 +194,6 @@ namespace ConstructEd.Controllers
             await _enrollmentRepository.InsertRangeAsync(enrollments);
             await _enrollmentRepository.SaveAsync();
 
-            // 🔹 Clear cart after successful payment
             await _shoppingCartRepository.ClearCartAsync(userId);
 
             payment.Status = PaymentStatus.Success;
@@ -204,17 +203,20 @@ namespace ConstructEd.Controllers
 
             return RedirectToAction("Success", new { transactionId = payment.TransactionID });
         }
-      
+
+        [Authorize(Roles = "User,Instructor")]
         public IActionResult Success(Guid transactionId)
 		{
 			ViewBag.TransactionID = transactionId;
 			return View();
 		}
 
-		public IActionResult Failure()
+        [Authorize(Roles = "User,Instructor")]
+        public IActionResult Failure()
 		{
 			return View();
 		}
+
         [HttpGet]
         public async Task<IActionResult> GetCartCount()
         {
