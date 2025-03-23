@@ -75,5 +75,12 @@ namespace ConstructEd.Repositories
                 .FirstOrDefaultAsync(c => c.Id == courseId);
             return course?.Title;
         }
+        public async Task<int?> GetCourseIdByContentIdAsync(int courseContentId)
+        {
+            return await _dataContext.CourseContents
+                .Where(cc => cc.Id == courseContentId)
+                .Select(cc => cc.CourseId)
+                .FirstOrDefaultAsync();
+        }
     }
 }

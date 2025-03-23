@@ -10,5 +10,7 @@ namespace ConstructEd.Repositories
         Task<string> GetCourseNameByIdAsync(int courseId);
         Task<ICollection<CourseContent>> GetCourseContent(int id);
         ICollection<string> GetCategories();
+        Task<int?> GetCourseIdByContentIdAsync(int courseContentId);
+
     }
 }
