@@ -3,11 +3,9 @@ using ConstructEd.Models;
 using ConstructEd.Repositories;
 using ConstructEd.Services;
 using ConstructEd.ViewModels;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
 
 namespace ConstructEd.Controllers
 {
@@ -19,14 +17,14 @@ namespace ConstructEd.Controllers
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IMapper _mapper;
         public AccountController(UserManager<ApplicationUser> userManager,
-                         SignInManager<ApplicationUser> signInManager,  // ✅ Add this
+                         SignInManager<ApplicationUser> signInManager,
                          IAuthService authService,
                          IMapper mapper,
                          IEnrollmentRepository enrollmentRepository)
         {
             _enrollmentRepository = enrollmentRepository;
             _userManager = userManager;
-            _signInManager = signInManager; // ✅ Assign it
+            _signInManager = signInManager;
             _authService = authService;
             _mapper = mapper;
         }
@@ -114,7 +112,7 @@ namespace ConstructEd.Controllers
             if (user == null) return NotFound();
 
             var profileViewModel = _mapper.Map<ProfileViewModel>(user);
-            // Fetch enrollments separately and map them
+
             var enrollments = await _enrollmentRepository.GetAllEnrollmentsByUserIdAsync(user.Id);
             profileViewModel.Enrollments = _mapper.Map<List<EnrollmentViewModel>>(enrollments);
 

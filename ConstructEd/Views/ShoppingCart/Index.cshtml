@@ -30,7 +30,7 @@
                                 <form asp-action="RemoveFromCart" asp-controller="ShoppingCart" method="post" class="remove-item-form">
                                     <input type="hidden" name="id" value="@course.Id" />
                                     <input type="hidden" name="type" value="Course" />
-                                    <button type="button" class="btn remove-item">
+                                    <button type="button" class="btn btn-remove">
                                         <i class="fas fa-trash-alt"></i> Remove
                                     </button>
                                 </form>
@@ -48,7 +48,7 @@
                                 <form asp-action="RemoveFromCart" asp-controller="ShoppingCart" method="post" class="remove-item-form">
                                     <input type="hidden" name="id" value="@plugin.Id" />
                                     <input type="hidden" name="type" value="Plugin" />
-                                    <button type="button" class="btn remove-item">
+                                    <button type="button" class="btn btn-remove">
                                         <i class="fas fa-trash-alt"></i> Remove
                                     </button>
                                 </form>
