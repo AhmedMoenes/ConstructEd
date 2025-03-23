@@ -217,5 +217,14 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.Message, opt => opt.MapFrom(src => src.Message));
 
         #endregion
+
+        #region Reviews
+        CreateMap<CourseReview, CourseReviewViewModel>()
+            .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.User.UserName));
+        CreateMap<CourseReviewViewModel, CourseReview>()
+            .ForMember(dest => dest.Id, opt => opt.Ignore())
+            .ForMember(dest => dest.UserId, opt => opt.Ignore()) 
+            .ForMember(dest => dest.CreatedAt, opt => opt.Ignore()); 
+        #endregion
     }
 }

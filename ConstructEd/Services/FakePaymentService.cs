@@ -8,7 +8,7 @@ namespace ConstructEd.Services
 
         public bool ProcessPayment(PaymentViewModel payment)
         {
-            // Simulate failure in 5% of cases haahahahahaha
+            // Simulate failure in 5% of cases 
             return _random.Next(1, 101) > 5;
         }
     }

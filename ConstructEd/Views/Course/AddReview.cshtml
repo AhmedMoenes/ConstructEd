@@ -1,0 +1,105 @@
+﻿@model ConstructEd.ViewModels.CourseReviewViewModel
+
+@{
+    ViewData["Title"] = "Add Review";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .review-container {
+        background-color: #ffffff;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .review-card {
+        background-color: #ffffff;
+        color: #333;
+        border: 1px solid #00bcd4;
+        border-radius: 8px;
+        padding: 20px;
+        width: 420px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    .input-custom {
+        background-color: #ffffff;
+        border: 1px solid #00bcd4;
+        color: #333;
+        border-radius: 5px;
+        padding: 10px;
+    }
+    .input-custom:focus {
+        border-color: #0097a7;
+        box-shadow: 0 0 5px rgba(0, 188, 212, 0.5);
+        outline: none;
+    }
+    .form-label {
+        color: #00bcd4;
+        font-weight: 500;
+    }
+    .btn-submit {
+        background: #00bcd4;
+        border: none;
+        padding: 10px;
+        color: #ffffff;
+        font-weight: bold;
+        border-radius: 5px;
+        transition: all 0.3s ease;
+    }
+    .btn-submit:hover {
+        background: #0097a7;
+        transform: scale(1.02);
+    }
+    .back-link {
+        color: #00bcd4;
+        text-decoration: none;
+    }
+    .back-link:hover {
+        color: #0097a7;
+        text-decoration: underline;
+    }
+</style>
+
+<div class="review-container">
+    <div class="review-card shadow-lg">
+        <h3 class="text-center mb-4" style="color: #00bcd4;">Add Review</h3>
+
+        <form asp-action="AddReview" asp-controller="Course" method="post">
+            <div asp-validation-summary="All" class="text-danger mb-3"></div>
+
+            <input asp-for="CourseId" type="hidden" />
+
+            <div class="mb-3">
+                <label asp-for="Rating" class="form-label"></label>
+                <select asp-for="Rating" class="form-control input-custom">
+                    <option value="">Select Rating</option>
+                    <option value="1">1 Star</option>
+                    <option value="2">2 Stars</option>
+                    <option value="3">3 Stars</option>
+                    <option value="4">4 Stars</option>
+                    <option value="5">5 Stars</option>
+                </select>
+                <span asp-validation-for="Rating" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Comment" class="form-label"></label>
+                <textarea asp-for="Comment" class="form-control input-custom" rows="4"></textarea>
+                <span asp-validation-for="Comment" class="text-danger"></span>
+            </div>
+
+            <div class="d-grid">
+                <button type="submit" class="btn-submit w-100">Submit Review</button>
+            </div>
+        </form>
+
+        <div class="text-center mt-4">
+            <a asp-action="CourseContentDetails" asp-controller="Admin" asp-route-id="@Model.CourseId" class="back-link">Back to Course</a>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+        <partial name="_ValidationScriptsPartial" />
+}

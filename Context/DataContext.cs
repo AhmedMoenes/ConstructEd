@@ -17,6 +17,7 @@ namespace ConstructEd.Data
         public DbSet<ShoppingCart> ShoppingCarts { get; set; }
         public DbSet<Wishlist> Wishlists { get; set; }
         public DbSet<ContactForm> ContactForms { get; set; }
+        public DbSet<CourseReview> CourseReview { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
