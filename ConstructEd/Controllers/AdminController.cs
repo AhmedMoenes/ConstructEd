@@ -6,8 +6,6 @@ using ConstructEd.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace ConstructEd.Controllers
 {
@@ -19,7 +17,7 @@ namespace ConstructEd.Controllers
         private readonly IInstructorRepository _instructorRepository;
         private readonly ICourseContentRepository _courseContentRepository;
         private readonly IPluginRepository _pluginRepository;
-        private readonly IStatisticsRepository _statisticsRepository; 
+        private readonly IStatisticsRepository _statisticsRepository;
         private readonly IContactFormRepository _contactFormRepository;
         private readonly IMapper _mapper;
 
@@ -34,14 +32,14 @@ namespace ConstructEd.Controllers
                                IMapper mapper)
 
         {
-                                _authService = authService;
-                                _courseRepository = courseRepository;
-                                _instructorRepository = instructorRepository;
-                                _courseContentRepository = courseContentRepository;
-                                _pluginRepository = pluginRepository;
-                                _statisticsRepository = statisticsRepository; 
-                                _contactFormRepository = contactFormRepository;
-                                _mapper = mapper;
+            _authService = authService;
+            _courseRepository = courseRepository;
+            _instructorRepository = instructorRepository;
+            _courseContentRepository = courseContentRepository;
+            _pluginRepository = pluginRepository;
+            _statisticsRepository = statisticsRepository;
+            _contactFormRepository = contactFormRepository;
+            _mapper = mapper;
         }
         #endregion
 
@@ -60,8 +58,8 @@ namespace ConstructEd.Controllers
         public async Task<IActionResult> CourseIndex()
         {
             var courses = await _courseRepository.GetAllAsync();
-            var viewModels = _mapper.Map<IEnumerable<CourseViewModel>>(courses); 
-            return View(nameof(CourseIndex), viewModels); 
+            var viewModels = _mapper.Map<IEnumerable<CourseViewModel>>(courses);
+            return View(nameof(CourseIndex), viewModels);
         }
         public async Task<IActionResult> CreateCourse()
         {
@@ -201,7 +199,7 @@ namespace ConstructEd.Controllers
             ViewBag.Courses = courses;
             return View(viewModels);
         }
-         public async Task<IActionResult> CourseContentDetails(int id)
+        public async Task<IActionResult> CourseContentDetails(int id)
         {
             var courseContents = await _courseContentRepository.GetCourseContent(id);
             var viewModels = _mapper.Map<List<CourseContentViewModel>>(courseContents);
@@ -239,7 +237,7 @@ namespace ConstructEd.Controllers
             return View(viewModel);
         }
 
-       
+
 
         [HttpGet]
         public async Task<IActionResult> EditCourseContent(int id)
@@ -253,7 +251,7 @@ namespace ConstructEd.Controllers
             var viewModel = _mapper.Map<CourseContentViewModel>(courseContent);
             ViewBag.ContentTypes = _courseContentRepository.GetCategories();
 
-            return View(nameof(EditCourseContent),viewModel);
+            return View(nameof(EditCourseContent), viewModel);
         }
 
         [HttpPost]
@@ -268,7 +266,7 @@ namespace ConstructEd.Controllers
             }
             ViewBag.ContentTypes = _courseContentRepository.GetCategories();
 
-            return View(nameof(EditCourseContent),viewModel);
+            return View(nameof(EditCourseContent), viewModel);
         }
 
         [HttpGet]
@@ -292,7 +290,7 @@ namespace ConstructEd.Controllers
             {
                 var courseid = await _courseContentRepository.GetCourseIdByContentIdAsync(Id);
                 await _courseContentRepository.DeleteAsync(Id);
-                return RedirectToAction(nameof(CourseContentDetails), new { id= courseid });
+                return RedirectToAction(nameof(CourseContentDetails), new { id = courseid });
             }
             catch (Exception ex)
             {
@@ -370,12 +368,8 @@ namespace ConstructEd.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditPlugin(int id, PluginViewModel viewModel)
+        public async Task<IActionResult> EditPluginConfirmed(PluginViewModel viewModel)
         {
-            if (id != viewModel.Id)
-            {
-                return NotFound();
-            }
 
             if (ModelState.IsValid)
             {
@@ -383,6 +377,8 @@ namespace ConstructEd.Controllers
                 {
                     var plugin = _mapper.Map<Plugin>(viewModel);
                     await _pluginRepository.UpdateAsync(plugin);
+                    await _pluginRepository.SaveAsync();
+
                     return RedirectToAction(nameof(PluginIndex));
                 }
                 catch (Exception ex)
@@ -602,7 +598,7 @@ namespace ConstructEd.Controllers
 
         #endregion
 
-       
+
 
     }
 }

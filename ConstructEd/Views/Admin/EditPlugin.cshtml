@@ -1,4 +1,4 @@
-﻿@model ConstructEd.ViewModels.PluginViewModel
+﻿@model  PluginViewModel
 
 @{
     ViewData["Title"] = "Edit Plugin";
@@ -8,7 +8,7 @@
     <div class="admin-create">
         <h3 class="text-center mb-4">Edit Plugin</h3>
 
-        <form asp-action="Edit" method="post" enctype="multipart/form-data">
+        <form asp-action="EditPluginConfirmed" method="post" enctype="multipart/form-data">
             @if (!ViewData.ModelState.IsValid)
             {
                 <div asp-validation-summary="All" class="alert alert-danger"></div>

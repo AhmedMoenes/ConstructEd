@@ -16,7 +16,7 @@ namespace ConstructEd.ViewModels
         [Required(ErrorMessage = "Price is required")]
         [DataType(DataType.Currency)]
         public decimal Price { get; set; }
-        public IFormFile ImageFile { get; set; } 
+        public IFormFile? ImageFile { get; set; } 
         public string? Image { get; set; }
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
