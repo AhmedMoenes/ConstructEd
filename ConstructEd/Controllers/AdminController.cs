@@ -408,17 +408,18 @@ namespace ConstructEd.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> RemoveConfirmed(int id)
+        public async Task<IActionResult> RemovePluginConfirmed(int id)
         {
             try
             {
                 await _pluginRepository.DeleteAsync(id);
+                await _pluginRepository.SaveAsync();
                 return RedirectToAction(nameof(PluginIndex));
             }
             catch (Exception ex)
             {
                 ModelState.AddModelError(string.Empty, ex.InnerException.Message);
-                return View(nameof(RemoveConfirmed), await _pluginRepository.GetByIdAsync(id));
+                return View(nameof(RemovePluginConfirmed), await _pluginRepository.GetByIdAsync(id));
             }
         }
         #endregion
