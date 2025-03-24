@@ -17,7 +17,6 @@
                     <th>Email</th>
                     <th>Bio</th>
                     <th>Experience (Years)</th>
-                    <th>Profile Picture</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -29,16 +28,6 @@
                         <td>@instructor.Email</td>
                         <td>@instructor.Bio</td>
                         <td>@instructor.Experience</td>
-                        <td>
-                            @if (!string.IsNullOrEmpty(instructor.ProfilePicture))
-                            {
-                                <img src="~/Image/@instructor.ProfilePicture" alt="Profile Picture" class="img-thumbnail" style="max-width: 100px;" />
-                            }
-                            else
-                            {
-                                <span>No Image</span>
-                            }
-                        </td>
                         <td>
                             <a asp-action="EditInstructor" asp-route-id="@instructor.Id" class="btn-edit">Edit</a>
                             <a asp-action="RemoveInstructor" asp-route-id="@instructor.Id" class="btn-remove">Remove</a>
