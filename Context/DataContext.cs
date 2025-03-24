@@ -131,6 +131,27 @@ namespace ConstructEd.Data
                 .HasForeignKey(e => e.PluginId)
                 .OnDelete(DeleteBehavior.Cascade); // Automatically delete enrollments when a plugin is deleted
 
+            #region Delete Plugins
+
+            modelBuilder.Entity<Enrollment>()
+                .HasOne(e => e.Plugin)
+                .WithMany()
+                .HasForeignKey(e => e.PluginId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<ShoppingCart>()
+                .HasOne(sc => sc.Plugin)
+                .WithMany()
+                .HasForeignKey(sc => sc.PluginId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Wishlist>()
+                .HasOne(w => w.Plugin)
+                .WithMany()
+                .HasForeignKey(w => w.PluginId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            #endregion
         }
     }
 }
