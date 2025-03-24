@@ -1,35 +1,41 @@
 ﻿@model IEnumerable<CourseViewModel>
+
 @{
     ViewData["Title"] = "Courses";
+    var categories = Enum.GetNames(typeof(Category));
 }
+
+<!-- Category Filter -->
+<div class="container my-3">
+    <label for="categoryFilter">Filter by Category:</label>
+    <select id="categoryFilter" class="form-control">
+        <option value="All">All Categories</option>
+        @foreach (var category in categories)
+        {
+            <option value="@category">@category.Replace("_", " ")</option>
+        }
+    </select>
+</div>
 
 <!-- Courses Section -->
 <section class="courses-section">
     <div class="container">
-        <div class="row justify-content-center">
+        <div class="row justify-content-center" id="coursesContainer">
             @foreach (var course in Model)
             {
-                <div class="col-lg-4 col-md-6 mb-4">
+                <div class="col-lg-4 col-md-6 mb-4 course-item">
                     <div class="card course-card">
                         <div class="card-body">
-                            <!-- Course Image -->
                             @if (!string.IsNullOrEmpty(course.Image))
                             {
                                 <img src="/Image/@course.Image" class="card-img-top" alt="@course.Title" />
                             }
-
-                            <!-- Course Title -->
                             <h5 class="card-title">@course.Title</h5>
-
-                            <!-- Course Details -->
-                            <p class="card-text courses-card-text">Category: @course.Category.ToString().Replace("_", " ")</p>
-                            <p class="card-text courses-card-text">Duration: @course.Duration hrs</p>
-
-                            <!-- View Details Button -->
+                            <p class="card-text">Category: @course.Category.ToString().Replace("_", " ")</p>
+                            <p class="card-text">Duration: @course.Duration hrs</p>
                             <a asp-controller="Course" asp-action="Details" asp-route-id="@course.Id" class="btn btn-main btn-block">
                                 View Details
                             </a>
-
                         </div>
                     </div>
                 </div>
@@ -38,7 +44,47 @@
     </div>
 </section>
 
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-    <script src="~/js/CourseIndexWishingListandShoppingCart.js"></script>
-}
+@* @section Scripts {
+    <script>
+        $(document).ready(function () {
+            $("#categoryFilter").change(function () {
+                var selectedCategory = $(this).val();
+                $.ajax({
+                    url: "/Course/FilterCoursesByCategory",
+                    type: "GET",
+                    data: { category: selectedCategory },
+                    success: function (data) {
+                        var coursesContainer = $("#coursesContainer");
+                        coursesContainer.empty(); 
+
+                        if (data.length === 0) {
+                            coursesContainer.append("<p class='text-center'>No courses found.</p>");
+                        } else {
+                            $.each(data, function (index, course) {
+                                var courseHtml = `
+                                    <div class="col-lg-4 col-md-6 mb-4 course-item">
+                                        <div class="card course-card">
+                                            <div class="card-body">
+                                                ${course.image ? `<img src="/Image/${course.image}" class="card-img-top" alt="${course.title}" />` : ""}
+                                                <h5 class="card-title">${course.title}</h5>
+                                                <p class="card-text">Category: ${course.category.replace("_", " ")}</p>
+                                                <p class="card-text">Duration: ${course.duration} hrs</p>
+                                                <a href="/Course/Details/${course.id}" class="btn btn-main btn-block">
+                                                    View Details
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                `;
+                                coursesContainer.append(courseHtml);
+                            });
+                        }
+                    },
+                    error: function () {
+                        console.log("Error fetching courses.");
+                    }
+                });
+            });
+        });
+    </script>
+} *@

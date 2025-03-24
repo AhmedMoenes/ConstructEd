@@ -5,6 +5,8 @@ using ConstructEd.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
 namespace ConstructEd.Controllers
@@ -112,15 +114,35 @@ namespace ConstructEd.Controllers
 
             return View(viewModel);
         }
-
         [HttpGet]
-        public async Task<IActionResult> GetCoursesByCategory(Category? category)
+        public async Task<IActionResult> FilterCoursesByCategory(string category)
         {
-            var courses = await _courseRepository.GetByCategoryAsync(category);
-            var courseViewModels = _mapper.Map<List<CourseViewModel>>(courses);
-            return Json(new { success = true, courses = courseViewModels });
+            var courses = await _courseRepository.GetAllAsync();
+
+            if (!string.IsNullOrEmpty(category) && category != "All")
+            {
+                if (Enum.TryParse(category, out Category categoryEnum))
+                {
+                    courses = courses.Where(c => c.Category == categoryEnum).ToList();
+                }
+            }
+
+            var courseViewModels = courses.Select(c => new
+            {
+                c.Id,
+                c.Title,
+                c.Duration,
+                c.Image,
+                Category = c.Category.ToString()
+            }).ToList();
+
+            return Json(courseViewModels);
         }
+
 
 
     }
 }
+
+
+
